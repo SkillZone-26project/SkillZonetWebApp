@@ -9,6 +9,8 @@ export default {
        colors: {
         "textColor": "#0A0A0A", //Main text color
         "textGray": "#717182",
+        "bgGray": "#F3F3F5",
+        "black": "#030213",
         "textRed": "#E7000B",
         "textBlue": "#193CB8",
         "textGreen": "#016630",
@@ -36,11 +38,18 @@ export default {
         "bgUnread": "#FFEDD4",
         "pending": "#D08700",
         "bgPending": "#FEF9C2",
+        "iconGreen": "#00C950",
+        "yellowIcon": "#FDC700",
+
+        //Others 
         "primary": "#2563EB",
         "secondary": "#64748B",
         "background": "#F8FAFC",
         "accent": "#22C55E",
         "error": "#EF4444",
+      },
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
       },
     },
   },

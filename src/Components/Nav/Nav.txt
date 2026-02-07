@@ -58,6 +58,14 @@ function Nav() {
         </div>
       </div>
 
+      {/* Mobile Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/20 z-40"
+          onClick={() => setIsOpen(false)}
+        ></div>
+      )}
+
       {/* Mobile Dropdown */}
       <ul
         className={`md:hidden fixed top-16 left-0 w-full bg-white shadow-md z-50 flex flex-col gap-4 px-6 pb-4 transition-all duration-300 ${

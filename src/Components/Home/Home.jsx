@@ -1,9 +1,18 @@
-import React from 'react'
+import React from "react";
+import Nav from "../../Components/Nav/Nav"
+import Hero from "../../Components/Hero/Hero";
+// import MainBody from "./MainBody";
+// import Footer from "./Footer";
 
-const Home = () => {
+function Home() {
   return (
-    <div>Home</div>
-  )
+    <div className="flex flex-col min-h-screen font-inter">
+      <Nav />
+      <Hero />
+      {/* <MainBody />
+      <Footer /> */}
+    </div>
+  );
 }
 
-export default Home
+export default Home;
