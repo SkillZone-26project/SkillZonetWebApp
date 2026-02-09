@@ -32,7 +32,8 @@ function Nav() {
             </Link>
           </li>
           <li>
-            <Link to="/signin" className="hover:text-primary transition-colors">
+            {/* ✅ ONLY CHANGE HERE */}
+            <Link to="/dashboard" className="hover:text-primary transition-colors">
               Sign In
             </Link>
           </li>
@@ -83,8 +84,9 @@ function Nav() {
           </Link>
         </li>
         <li>
+          {/* ✅ ONLY CHANGE HERE */}
           <Link
-            to="/signin"
+            to="/dashboard"
             className="block hover:text-primary transition-colors"
             onClick={() => setIsOpen(false)}
           >
