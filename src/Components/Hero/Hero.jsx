@@ -5,43 +5,46 @@ import { LuCircleCheckBig } from "react-icons/lu";
 
 const Hero = () => {
   return (
-    <section className="pt-20 mt-[128px]">
+    <section className="pt-12 sm:pt-16 lg:pt-20 mt-12 sm:mt-16 lg:mt-[108px] overflow-x-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start px-4 md:px-6 gap-6">
-        {/* Left content */}
-        <div className="flex flex-col gap-4 flex-1">
+        
+        {/* LEFT CONTENT */}
+        <div className="flex flex-col gap-4 flex-1 w-full">
+          
           <button className="bg-black text-white text-[12px] rounded-[8px] w-[166px] h-[22px]">
             Trusted by 10,000+ Users
           </button>
 
-          {/* Headline */}
+          {/* HEADLINE */}
           <h1 className="text-[40px] sm:text-[50px] lg:text-[60px] font-bold leading-[1]">
-            <span className="flex items-center">
+            <span className="flex items-center flex-wrap">
               Find Trusted
-              <span className="ml-[-12px] sm:ml-[-15px] lg:ml-[-17px] relative -top-1 text-black">
+              <span className="ml-[-6px] sm:ml-[-12px] lg:ml-[-17px] relative -top-1 text-black">
                 Artisans
               </span>
             </span>
             <span className="flex">Near You</span>
           </h1>
 
-          {/* Search Box */}
-          <div className="flex flex-col md:flex-row items-center gap-4 mt-6 w-full">
+          {/* SEARCH AREA */}
+          <div className="flex flex-col md:flex-row items-stretch gap-4 mt-6 w-full">
+            
             <div className="flex items-center flex-1 border border-bgGray rounded-lg px-4 py-2 focus-within:ring-2 focus-within:ring-textGray text-[14px]">
-              <CiSearch className="text-xl text-textGray mr-2" />
+              <CiSearch className="text-xl text-textGray mr-2 shrink-0" />
               <input
                 type="text"
                 placeholder="What service do you need?"
-                className="w-full outline-none text-sm text-textGray"
+                className="w-full outline-none text-sm text-textGray bg-transparent"
               />
             </div>
 
-            <button className="flex items-center bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors text-[14px]">
+            <button className="w-full md:w-auto flex items-center justify-center bg-black text-white px-6 py-2 rounded-lg hover:bg-gray-800 transition-colors text-[14px]">
               <span>Search Artisans</span>
               <IoArrowForwardOutline className="ml-2 text-lg" />
             </button>
           </div>
 
-          {/* Features */}
+          {/* FEATURES */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 text-[14px] mt-4">
             <div className="flex items-center gap-2">
               <LuCircleCheckBig className="text-[#00C950] text-xl" />
@@ -49,44 +52,65 @@ const Hero = () => {
                 Verified Professionals
               </span>
             </div>
+
             <div className="flex items-center gap-2">
               <LuCircleCheckBig className="text-[#00C950] text-xl" />
-              <span className="text-black font-medium">Secure Payment</span>
+              <span className="text-black font-medium">
+                Secure Payment
+              </span>
             </div>
           </div>
         </div>
 
-        {/* Right content: Cards */}
-        <div className="flex flex-col md:flex-row gap-6 mt-6 md:mt-0 md:items-end">
-          {/* Card 1 */}
-          <div className="flex flex-col items-start border border-gray-200 rounded-[14px] overflow-hidden w-full sm:w-[292px] h-[362px] p-[16px]">
+        {/* RIGHT CONTENT */}
+        <div className="flex flex-col items-center md:flex-row gap-6 mt-6 md:mt-0 md:items-end w-full lg:w-auto">
+          
+          {/* CARD 1 */}
+          <div className="flex flex-col items-start border border-gray-200 rounded-[14px] overflow-hidden w-full sm:w-[292px] h-[362px] p-[16px] bg-white">
             <img
               src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770420324/LandingPage_aqguza.png"
               alt="Plumbing Service"
               className="w-full h-[192px] object-cover"
             />
+
             <div className="flex items-center gap-1 mt-[36px]">
               <span className="text-[#FDC700] text-lg">★</span>
-              <span className="font-medium text-textColour text-[14px]">4.9</span>
-              <span className="font-medium text-textColour text-[14px]">Rating</span>
+              <span className="font-medium text-textColour text-[14px]">
+                4.9
+              </span>
+              <span className="font-medium text-textColour text-[14px]">
+                Rating
+              </span>
             </div>
-            <p className="pb-4 pt-[36px] font-semibold text-textGray">Plumbing Services</p>
+
+            <p className="pb-4 pt-[36px] font-semibold text-textGray">
+              Plumbing Services
+            </p>
           </div>
 
-          {/* Card 2 */}
-          <div className="flex flex-col items-start border border-gray-200 rounded-[14px] overflow-hidden w-full sm:w-[292px] h-[330px] p-[16px]">
+          {/* CARD 2 */}
+          <div className="flex flex-col items-start border border-gray-200 rounded-[14px] overflow-hidden w-full sm:w-[292px] h-[330px] p-[16px] bg-white">
             <img
               src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770420324/LandingPage_1_vtrxai.png"
               alt="Electrical Service"
               className="w-full h-[192px] object-cover"
             />
+
             <div className="flex items-center gap-1 mt-[36px]">
               <span className="text-[#FDC700] text-lg">★</span>
-              <span className="font-medium text-textColour text-[14px]">4.8</span>
-              <span className="font-medium text-textColour text-[14px]">Rating</span>
+              <span className="font-medium text-textColour text-[14px]">
+                4.8
+              </span>
+              <span className="font-medium text-textColour text-[14px]">
+                Rating
+              </span>
             </div>
-            <p className="pt-[36px] pb-[15px] font-semibold text-textGray">Electrical Work</p>
+
+            <p className="pt-[36px] pb-[15px] font-semibold text-textGray">
+              Electrical Work
+            </p>
           </div>
+
         </div>
       </div>
     </section>
@@ -94,4 +118,3 @@ const Hero = () => {
 };
 
 export default Hero;
-  
