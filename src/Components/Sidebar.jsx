@@ -2,7 +2,8 @@ import { NavLink } from "react-router-dom";
 import {
   LuHouse,
   LuBriefcase,
-  LuMessageSquare,
+  LuCalendar,
+  LuMessageCircle,
   LuWallet,
   LuStar,
   LuUser,
@@ -16,37 +17,37 @@ const Sidebar = () => {
   const navigate = useNavigate();
 
   return (
-    <aside className="w-[288px] bg-white text-textColor min-h-screen px-6 py-8 flex flex-col justify-between border-r">
+    <aside className="w-[288px] bg-white text-textColor min-h-screen  flex flex-col justify-between border-r-2 border-textGay">
       {/* LOGO */}
-      <div>
+      <div className="">
         <img
           src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670870/LogoDashboard_x6i5e2.png"
           alt="Dashboard Logo"
-          className="mb-10"
+          className="mb-8 mt-[2px] px-6"
         />
-
-        <div className="flex gap-[10px]">
+<hr className="w-full"/>
+        <div className="flex gap-[70px] px-6 mt-[20px]">
           {/* PROFILE */}
         <div className="flex items-center gap-3 mb-8">
           <img
             src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
             alt="Profile Pic"
-            className="w-10 h-10 rounded-full"
+            className="w-[48px] h-[48px] rounded-full"
           />
-          <div>
-            <p className="font-semibold text-sm">John</p>
+          <div className="text-[16px] font-medium">
+            <p className="text-textColor">John</p>
             <p className="text-xs text-textGray">Artisan</p>
           </div>
         </div>
 
         {/* PREMIUM BADGE */}
-        <div className="bg-bgActive text-active text-xs px-3 py-1 rounded-full w-fit mb-10">
+        <div className="bg-[#FE9A00] flex items-center justify-center text-white text-[12px] px-3 py-1 rounded-[8px] font-medium w-fit mb-10">
           Premium
         </div>
         </div>
-
+<hr />
         {/* NAV LINKS */}
-        <nav className="space-y-2 text-[14px]">
+        <nav className="space-y-2 text-[16px] mt-[16px] font-medium px-6">
           <SidebarLink
             to="/dashboard"
             icon={<LuHouse />}
@@ -62,13 +63,13 @@ const Sidebar = () => {
 
           <SidebarLink
             to="/dashboard/activejobs"
-            icon={<LuBriefcase />}
+            icon={<LuCalendar />}
             label="Active Jobs"
           />
 
           <SidebarLink
             to="/dashboard/messages"
-            icon={<LuMessageSquare />}
+            icon={<LuMessageCircle />}
             label="Messages"
           />
 
@@ -108,7 +109,7 @@ const Sidebar = () => {
       {/* LOGOUT */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center gap-3 text-red-500 text-sm hover:bg-red-50 px-3 py-2 rounded"
+        className="flex items-center gap-3 text-textRed text-sm hover:bg-red-50 px-3 py-2 rounded mt-[80px]"
       >
         <LuLogOut />
         Logout

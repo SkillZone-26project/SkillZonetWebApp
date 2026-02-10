@@ -1,16 +1,37 @@
-import React from 'react'
+import React from "react";
+import { LuBell } from "react-icons/lu";
+import { useLocation } from "react-router-dom";
 
 const Topbar = () => {
+  const location = useLocation();
+
+  const pageTitles = {
+    "/dashboard": "Artisan Dashboard",
+    "/dashboard/jobrequests": "Job Requests",
+    "/dashboard/activejobs": "Active Jobs",
+    "/dashboard/messages": "Messages",
+    "/dashboard/wallet": "Wallet",
+    "/dashboard/reviews": "Reviews",
+    "/dashboard/profile": "Profile",
+    "/dashboard/settings": "Settings",
+  };
+
+  const title = pageTitles[location.pathname] || "Dashboard";
+
   return (
     <header className="h-[64px] bg-white border-b flex items-center justify-between px-6">
-      
-      <h3 className="font-semibold text-lg">Dashboard</h3>
-
-      <div className="flex items-center gap-4">
-        <span className="text-sm text-gray-500">Hello, Chidinma</span>
-        <div className="w-8 h-8 rounded-full bg-gray-300" />
+      <div>
+        <h3 className="font-semibold text-textColor text-[24px]">
+          {title}
+        </h3>
+        <p className="text-[14px] text-textGray">
+          Welcome back, John!
+        </p>
       </div>
 
+      <div className="flex items-center gap-4 text-textColor text-[24px]">
+        <LuBell />
+      </div>
     </header>
   );
 };

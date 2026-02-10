@@ -21,6 +21,7 @@ export default {
         "danger": "#9F0712",
         "bgDanger": "#FFC9C9",
         "bgGreen": "#B9F8CF",
+        "premiumbg": "FE9A00",
         //Icons
         "active": "#155DFC",
         "bgActive": "#DBEAFE",
