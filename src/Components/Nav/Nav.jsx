@@ -22,24 +22,26 @@ function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-textColor font-medium">
           <li>
-            <Link to="/features" className="hover:text-primary transition-colors">
+            <Link to="/features" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Features
             </Link>
           </li>
           <li>
-            <Link to="/how-it-works" className="hover:text-primary transition-colors">
+            <Link to="/how-it-works" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               How It Works
             </Link>
           </li>
           <li>
             {/* ✅ ONLY CHANGE HERE */}
-            <Link to="/dashboard" className="hover:text-primary transition-colors">
+            <Link to="/dashboard" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Sign In
             </Link>
+            {/* signIn */}
+            {/* dashboard */}
           </li>
           <li>
             <Link
-              to="/join"
+              to="/joinAs"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join as Artisan
@@ -68,7 +70,7 @@ function Nav() {
         <li>
           <Link
             to="/features"
-            className="block hover:text-primary transition-colors"
+            className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
             Features
@@ -77,7 +79,7 @@ function Nav() {
         <li>
           <Link
             to="/how-it-works"
-            className="block hover:text-primary transition-colors"
+            className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
             How It Works
@@ -86,8 +88,8 @@ function Nav() {
         <li>
           {/* ✅ ONLY CHANGE HERE */}
           <Link
-            to="/dashboard"
-            className="block hover:text-primary transition-colors"
+            to="/"
+            className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
             Sign In
@@ -95,7 +97,7 @@ function Nav() {
         </li>
         <li>
           <Link
-            to="/join"
+            to="/joinAs"
             className="block bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             onClick={() => setIsOpen(false)}
           >

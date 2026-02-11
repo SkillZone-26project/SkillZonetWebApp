@@ -1,5 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "./Components/Home/Home";
+import Features from "./Components/Features/Features"
+import SignIn from "./Components/SignIn/SignIn"
+import JoinAs from "./Components/JoinAs/JoinAs"
 import DashboardLayout from "./Layouts/DashboardLayout";
 
 import Dashboard from "./Components/Pages/dashboard/Dashboard";
@@ -18,6 +21,9 @@ function App() {
     <Routes>
       {/* Public */}
       <Route path="/" element={<Home />} />
+      <Route path="features" element={<Features />} />
+      <Route path="signIn" element={<SignIn />} />
+      <Route path="joinAs" element={<JoinAs />} />
 
       {/* Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>
