@@ -160,7 +160,7 @@ function PersonalInformation() {
         <div className="flex gap-3 justify-center mt-8">
           <button
             type="button"
-            onClick={() => navigate(-1)} // Use navigate(-1) to go back
+            onClick={() => navigate("/home")} // Use navigate(-1) to go back
             className="w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2 transition-all active:scale-[0.98]"
           >
             <ArrowLeft size={16} className="text-textColor" />

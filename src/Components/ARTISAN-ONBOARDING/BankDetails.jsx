@@ -137,9 +137,7 @@ const BankDetails = () => {
         <div className="flex gap-3 pt-6">
           <button
             type="button"
-            onClick={() =>
-              navigate("/artisan-onboarding/document-verification")
-            }
+            onClick={() => navigate(-1)}
             className="w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2 transition-all"
           >
             <ArrowLeft size={16} />
