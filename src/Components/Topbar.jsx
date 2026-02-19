@@ -19,7 +19,7 @@ const Topbar = () => {
   const title = pageTitles[location.pathname] || "Dashboard";
 
   return (
-    <header className="h-[85px] bg-white border-b flex items-center justify-between px-6">
+    <header className="h-[85px] bg-white border-b flex items-center justify-between px-6 fixed z-50 w-[1152px]">
       <div>
         <h3 className="font-semibold text-textColor text-[24px]">
           {title}

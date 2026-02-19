@@ -16,9 +16,12 @@ const Hero = () => {
           </button>
 
           {/* HEADLINE */}
-          <h1 className="text-[20px] sm:text-[40px] lg:text-[50px] font-bold leading-[1]">
-            <span className="">
+          <h1 className="text-[40px] sm:text-[50px] lg:text-[60px] font-bold leading-[1]">
+            <span className="flex items-center flex-wrap">
               Find Trusted Artisans
+              <span className="ml-[-6px] sm:ml-[-12px] lg:ml-[-17px] relative -top-1 text-black">
+                Artisans
+              </span>
             </span>
             <span className="flex">Near You</span>
           </h1>

@@ -25,7 +25,7 @@ const Dashboard = () => {
   const [requestStatus, setRequestStatus] = useState(null);
 
   return (
-    <main className="space-y-6 px-2 sm:px-4">
+    <main className="space-y-6 px-2 sm:px-4 h-[800px] pt-[85px]">
       {/* SECTION 1  */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Card 1 */}
@@ -192,7 +192,7 @@ const Dashboard = () => {
             : "text-textColor"
         }`}
           >
-            Job Requests (1)
+            Job Requests <span>(1)</span>
           </button>
 
           <button
@@ -202,7 +202,7 @@ const Dashboard = () => {
           activeTab === "active" ? "bg-white text-textColor" : "text-textColor"
         }`}
           >
-            Active Jobs (1)
+            Active Jobs <span>(1)</span>
           </button>
 
           <button
@@ -219,9 +219,10 @@ const Dashboard = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="parentDiv border rounded-[14px] p-[16px] mt-[24px]">
+        <div className="mt-[24px]">
+          {/* REQUESTS TAB */}
           {activeTab === "requests" && (
-            <div>
+            <div className="border rounded-[14px] p-4">
               <div className="flex justify-between">
                 <div className="flex gap-[16px]">
                   <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px] font-normal">
@@ -245,102 +246,27 @@ const Dashboard = () => {
                     </p>
                   </div>
                 </div>
-                <div>
-                  <div className="flex flex-col items-end gap-[12px] relative">
-                    {/* Amount */}
-                    <p className="text-[18px] font-semibold text-textColor">
-                      ₦45,000
-                    </p>
 
-                    {/* Buttons */}
-                    <div className="flex gap-[8px]">
-                      <button
-                        onClick={() => setRequestStatus("declined")}
-                        className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-textColor"
-                      >
-                        <IoCloseCircleOutline />
-                        <p>Decline</p>
-                      </button>
-
-                      <button
-                        onClick={() => setRequestStatus("accepted")}
-                        className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-white bg-black"
-                      >
-                        <LuCircleCheckBig />
-                        <p>Accept</p>
-                      </button>
-                    </div>
-
-                    {/* Fixed Height Message Container */}
-                    <div className="h-[80px] w-[280px]">
-                      {requestStatus === "accepted" && (
-                        <div className="p-4 bg-[#ECECF0] rounded-[10px]">
-                          <p className="font-semibold text-textColor">
-                            Welcome to SkillZonet!
-                          </p>
-                          <p className="text-sm text-textGray">
-                            Your profile is under review. You'll be notified
-                            once approved.
-                          </p>
-                        </div>
-                      )}
-
-                      {requestStatus === "declined" && (
-                        <div className="p-4 bg-red-50 rounded-[10px]">
-                          <p className="font-semibold text-red-600">
-                            Request Declined
-                          </p>
-                          <p className="text-sm text-textGray">
-                            You have declined this job request.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {activeTab === "active" && (
-            <div>
-              <div className="flex justify-between">
-                <div className="flex gap-[16px]">
-                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px] font-normal">
-                    D
+                <div className="flex flex-col items-end gap-[12px]">
+                  <p className="text-[18px] font-semibold text-textColor">
+                    ₦45,000
                   </p>
-                  <div>
-                    <p className="text-[18px] font-semibold text-textColor mb-[8px]">
-                      Plumbing - Bathroom Renovation
-                    </p>
-                    <p className="text-[14px] font-normal text-textGray mb-[8px]">
-                      David Brown
-                    </p>
-                    <div className="flex items-center text-[14px] font-normal text-textGray mb-[8px]">
-                      <LuCalendar />
-                      <p>
-                        <span>15/01/2026</span> at <span>09:00</span>
-                      </p>
-                    </div>
-                    <p className="text-[14px] font-normal text-textColor mb-[8px]">
-                      Ikeja, Lagos
-                    </p>
-                  </div>
-                </div>
-                <div>
-                  <div className="flex flex-col items-end gap-[12px]">
-                    <p className="text-[18px] font-semibold text-textColor">
-                      ₦45,000
-                    </p>
-                  </div>
+
                   <div className="flex gap-[8px]">
-                    <button className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-textColor">
+                    <button
+                      onClick={() => setRequestStatus("declined")}
+                      className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-textColor"
+                    >
                       <IoCloseCircleOutline />
-                      <p>Decline</p>
+                      Decline
                     </button>
-                    <button className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-white bg-black">
+
+                    <button
+                      onClick={() => setRequestStatus("accepted")}
+                      className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-white bg-black"
+                    >
                       <LuCircleCheckBig />
-                      <p>Accept</p>
+                      Accept
                     </button>
                   </div>
                 </div>
@@ -348,10 +274,106 @@ const Dashboard = () => {
             </div>
           )}
 
+          {/* ACTIVE TAB */}
+          {activeTab === "active" && (
+            <div className="border rounded-[14px] p-4">
+              
+              <div className="flex justify-between">
+                
+                <div className="flex gap-[16px]">
+                  
+                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px] font-normal">
+                    
+                    S
+                  </p>
+                  <div>
+                    
+                    <p className="text-[18px] font-semibold text-textColor mb-[2px]">
+                      
+                      Plumbing - Kitchen Sink Repair
+                    </p>
+                    <p className="text-[14px] font-normal text-textGray mb-[2px]">
+                      
+                      Sarah Johnson
+                    </p>
+                    <div className="flex items-center text-[14px] font-normal text-textGray mb-[2px]">
+                      
+                    </div>
+                    <p className="text-[14px] font-normal text-textColor mb-[2px]">
+                      
+                      Lekki, Lagos
+                    </p>
+                  </div>
+                </div>
+                <div>
+                  
+                  <div className="flex flex-col items-end gap-[12px]">
+                    
+                    <button className="w-[95px] h-[22px] rounded-[8px] bg-[#AD46FF] text-[12px] font-medium flex items-center justify-center text-white">
+                      
+                      ON THE-WAY
+                    </button>
+                  </div>
+                  <div className="flex flex-col items-end">
+                    
+                    <p className="font-medium text-[16px] text-textColor">
+                      
+                      ₦18,000
+                    </p>
+                    <button className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] w-[118px] h-[32px] font-medium text-[14px] text-white bg-black">
+                      
+                      Update Status
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* TRANSACTIONS TAB */}
           {activeTab === "transactions" && (
-            <div>
-              <h4 className="font-semibold mb-2">Transactions</h4>
-              <p className="text-textGray">Here are your transactions...</p>
+            <div className="space-y-4">
+              {/* Transaction 1 */}
+              <div className="border rounded-[14px] p-4">
+                <div className="flex justify-between">
+                  <div>
+                    <p className="text-[16px] font-medium text-textColor mb-[2px]">
+                      Payment from Sarah Johnson - Socket Installation
+                    </p>
+                    <p className="text-[14px] text-textGray">08/01/2026</p>
+                  </div>
+
+                  <div className="flex flex-col items-end">
+                    <p className="font-semibold text-[18px] text-[#00A63E]">
+                      +₦<span>20,000</span>
+                    </p>
+                    <button className="mt-[6px] px-[10px] py-[6px] rounded-[8px] text-[12px] bg-black text-white">
+                      Completed
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Transaction 2 */}
+              <div className="border rounded-[14px] p-4">
+                <div className="flex justify-between">
+                  <div>
+                    <p className="text-[16px] font-medium text-textColor mb-[2px]">
+                      Platform Commission (10%)
+                    </p>
+                    <p className="text-[14px] text-textGray">08/01/2026</p>
+                  </div>
+
+                  <div className="flex flex-col items-end">
+                    <p className="font-semibold text-[18px] text-[#E7000B]">
+                      +₦<span>2,000</span> 
+                    </p>
+                    <button className="mt-[6px] px-[10px] py-[6px] rounded-[8px] text-[12px] bg-black text-white">
+                      Completed
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>

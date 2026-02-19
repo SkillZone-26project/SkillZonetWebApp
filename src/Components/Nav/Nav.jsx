@@ -44,7 +44,7 @@ function Nav() {
               to="/joinAs"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
-              Join as Artisan
+              Join
             </Link>
           </li>
         </ul>
@@ -101,7 +101,7 @@ function Nav() {
             className="block bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             onClick={() => setIsOpen(false)}
           >
-            Join as Artisan
+            Join 
           </Link>
         </li>
       </ul>

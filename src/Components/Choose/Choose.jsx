@@ -8,8 +8,8 @@ const Choose = () => {
     <section className="mx-4 md:mx-10 lg:mx-[80px] mb-16 md:mb-24 ">
       <div className="w-full mt-12 md:mt-16 lg:mt-[150px] bg-bgGray">
         {/* Heading container */}
-        <div className="flex flex-col items-center px-4 md:px-6 text-center">
-          <h3 className="text-[28px] md:text-[32px] lg:text-[36px] font-bold mb-2 text-textColor">
+        <div className="flex flex-col items-center px-4  md:px-6 text-center">
+          <h3 className="text-[28px] md:text-[32px] lg:text-[36px] mt-[25px] font-bold mb-2 text-textColor">
             Why Choose SkillZonet?
           </h3>
           <p className="text-textGray text-[16px] md:text-[17px] lg:text-[18px] font-normal">

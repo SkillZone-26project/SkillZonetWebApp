@@ -12,9 +12,9 @@ function Home() {
       <Nav />
       <Hero />
       <Choose />
-      {/* <HowItWorks />
+      <HowItWorks />
       <Ready />
-      <Footer />  */}
+      <Footer /> 
     </div>
   );
 }
