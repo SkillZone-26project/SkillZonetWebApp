@@ -1,22 +1,29 @@
 import { Outlet } from "react-router-dom";
+import { useState } from "react";
 import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 
 const DashboardLayout = () => {
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <div className="flex min-h-screen bg-white mb-[55px]">
       
       {/* Sidebar */}
-      <Sidebar />
+      <Sidebar
+        sidebarOpen={sidebarOpen}
+        setSidebarOpen={setSidebarOpen}
+      />
 
       {/* Right Section */}
       <div className="flex flex-col flex-1">
 
         {/* Topbar */}
-        <Topbar />
+        <Topbar setSidebarOpen={setSidebarOpen} />
 
         {/* Main Content */}
-        <main className="flex-1 p-6">
+        <main className="p-6 bg-white min-h-screen">
           <Outlet />
         </main>
 

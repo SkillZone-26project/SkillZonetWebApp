@@ -22,12 +22,12 @@ function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-textColor font-medium">
           <li>
-            <Link to="/features" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/user-onboarding" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Features
             </Link>
           </li>
           <li>
-            <Link to="/how-it-works" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/user" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               How It Works
             </Link>
           </li>
@@ -38,10 +38,11 @@ function Nav() {
             </Link>
             {/* signIn */}
             {/* dashboard */}
+            {/* artisan-onboarding */}
           </li>
           <li>
             <Link
-              to="/joinAs"
+              to="/dashboard"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join

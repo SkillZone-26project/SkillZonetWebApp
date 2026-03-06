@@ -1,54 +1,28 @@
 import { NavLink } from "react-router-dom";
 import {
   LuHouse,
-  LuBriefcase,
+  LuSearch,
   LuCalendar,
   LuMessageCircle,
-  LuWallet,
-  LuStar,
+  LuBookmark,
   LuUser,
   LuSettings,
   LuLogOut,
 } from "react-icons/lu";
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-
+const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
-  const sidebarRef = useRef();
-
-  /* CLOSE WHEN CLICKING OUTSIDE */
-  useEffect(() => {
-
-    const handleClickOutside = (event) => {
-      if (
-        sidebarRef.current &&
-        !sidebarRef.current.contains(event.target)
-      ) {
-        setSidebarOpen(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-
-  }, []);
 
   return (
     <aside
-      ref={sidebarRef}
       className={`fixed lg:static z-50 top-0 left-0 h-screen w-[288px] bg-white text-textColor flex flex-col justify-between border-r-2 border-textGay transform transition-transform duration-300
       ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
     >
-
+      
       {/* LOGO */}
-      <div>
-
+      <div className="">
         <img
           src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670870/LogoDashboard_x6i5e2.png"
           alt="Dashboard Logo"
@@ -59,6 +33,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
         <div className="flex gap-[70px] px-6 mt-[20px]">
 
+          {/* PROFILE */}
           <div className="flex items-center gap-3 mb-8">
             <img
               src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
@@ -67,13 +42,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             />
 
             <div className="text-[16px] font-medium">
-              <p className="text-textColor">John</p>
-              <p className="text-xs text-textGray">Artisan</p>
+              <p className="text-textColor">Sarah Johnson</p>
+              <p className="text-xs text-textGray">User</p>
             </div>
-          </div>
-
-          <div className="bg-[#FE9A00] flex items-center justify-center text-white text-[12px] px-3 py-1 rounded-[8px] font-medium w-fit mb-10">
-            Premium
           </div>
 
         </div>
@@ -83,24 +54,57 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {/* NAV LINKS */}
         <nav className="space-y-2 text-[16px] mt-[16px] font-medium px-6">
 
-          <SidebarLink to="/dashboard" icon={<LuHouse />} label="Dashboard" end setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/dashboard"
+            icon={<LuHouse />}
+            label="Dashboard"
+            end
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/jobrequests" icon={<LuBriefcase />} label="Job Requests" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/find-artisans"
+            icon={<LuSearch />}
+            label="Find Artisans"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/activejobs" icon={<LuCalendar />} label="Active Jobs" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/bookings"
+            icon={<LuCalendar />}
+            label="My Bookings"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/messages" icon={<LuMessageCircle />} label="Messages" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/messages"
+            icon={<LuMessageCircle />}
+            label="Messages"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/wallet" icon={<LuWallet />} label="Wallet" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/saved-artisans"
+            icon={<LuBookmark />}
+            label="Saved Artisans"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/reviews" icon={<LuStar />} label="Reviews" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/profile"
+            icon={<LuUser />}
+            label="Profile"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/profile" icon={<LuUser />} label="Profile" setSidebarOpen={setSidebarOpen} />
-
-          <SidebarLink to="/dashboard/settings" icon={<LuSettings />} label="Settings" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/user/settings"
+            icon={<LuSettings />}
+            label="Settings"
+            setSidebarOpen={setSidebarOpen}
+          />
 
         </nav>
-
       </div>
 
       {/* LOGOUT */}
@@ -113,14 +117,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           Logout
         </button>
       </div>
-
     </aside>
   );
 };
 
 
 /* REUSABLE NAV LINK */
-
 const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
   return (
     <NavLink
@@ -141,4 +143,4 @@ const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
   );
 };
 
-export default Sidebar;
+export default UserSidebar;

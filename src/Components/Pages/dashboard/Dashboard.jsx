@@ -21,13 +21,14 @@ const Dashboard = () => {
   const satisfactionProgress = (satisfactionScore / satisfactionTotal) * 100;
 
   const [activeTab, setActiveTab] = useState("requests");
-
   const [requestStatus, setRequestStatus] = useState(null);
 
   return (
-    <main className="space-y-6 px-2 sm:px-4 h-[800px] pt-[85px]">
-      {/* SECTION 1  */}
+    <main className="space-y-6 px-2 sm:px-4 min-h-screen pt-[85px]">
+      
+      {/* SECTION 1 */}
       <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
         {/* Card 1 */}
         <div className="border rounded-[14px] p-4 sm:p-5 flex items-center gap-3 sm:gap-4">
           <div className="w-[36px] h-[36px] rounded-[10px] bg-bgCompleted text-completed flex items-center justify-center">
@@ -81,8 +82,9 @@ const Dashboard = () => {
         </div>
       </section>
 
-      {/* SECTION 2 – WALLET & SUBSCRIPTION */}
+      {/* SECTION 2 */}
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        
         {/* Wallet */}
         <div className="border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
@@ -123,17 +125,17 @@ const Dashboard = () => {
         <h4 className="text-[18px] font-semibold text-textColor mb-[39px]">
           This Month's Performance
         </h4>
-        <div className="flex gap-[10px]">
-          {/* Monthly Goal */}
-          <div className="w-[320px] space-y-4">
-            <div className="flex text-[14px] justify-between">
-              <p className=" text-textGray font-normal">Monthly Goal</p>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          {/* Monthly Goal */}
+          <div className="space-y-4">
+            <div className="flex text-[14px] justify-between">
+              <p className="text-textGray font-normal">Monthly Goal</p>
               <p className="text-textColor font-medium">
                 {completedJobs}/{totalJobs} Jobs
               </p>
             </div>
-
             <div className="w-full h-[8px] bg-[#ECECF0] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#030213]"
@@ -143,13 +145,11 @@ const Dashboard = () => {
           </div>
 
           {/* Response Rate */}
-          <div className="w-[320px] space-y-4">
+          <div className="space-y-4">
             <div className="flex text-[14px] justify-between">
-              <p className=" text-textGray font-normal">Response Rate</p>
-
+              <p className="text-textGray font-normal">Response Rate</p>
               <p className="text-textColor font-medium">{responseRate}%</p>
             </div>
-
             <div className="w-full h-[8px] bg-[#ECECF0] rounded-full overflow-hidden">
               <div
                 className="h-full bg-[#030213]"
@@ -159,12 +159,11 @@ const Dashboard = () => {
           </div>
 
           {/* Customer Satisfaction */}
-          <div className="w-[320px] space-y-4">
+          <div className="space-y-4">
             <div className="flex text-[14px] justify-between">
-              <p className=" text-textGray font-normal">
+              <p className="text-textGray font-normal">
                 Customer's Satisfaction
               </p>
-
               <p className="text-textColor font-medium">
                 {satisfactionScore}/{satisfactionTotal}
               </p>
@@ -176,86 +175,89 @@ const Dashboard = () => {
               ></div>
             </div>
           </div>
+
         </div>
       </section>
 
-      {/* Section 4 */}
+      {/* SECTION 4 */}
       <section className="space-y-6">
+
         {/* Tabs */}
-        <div className="flex gap-[10px] w-[353px] h-[36px] bg-[#ECECF0] rounded-[14px] text-[12px] font-medium p-[4px]">
+        <div className="flex gap-[10px] w-full md:w-[353px] h-[36px] bg-[#ECECF0] rounded-[14px] text-[12px] font-medium p-[4px] overflow-x-auto">
+          
           <button
             onClick={() => setActiveTab("requests")}
-            className={`flex-1 rounded-[14px] transition-all
-        ${
-          activeTab === "requests"
-            ? "bg-white text-textColor"
-            : "text-textColor"
-        }`}
+            className={`flex-1 rounded-[14px] ${
+              activeTab === "requests" ? "bg-white text-textColor" : ""
+            }`}
           >
             Job Requests <span>(1)</span>
           </button>
 
           <button
             onClick={() => setActiveTab("active")}
-            className={`flex-1 rounded-[14px] transition-all
-        ${
-          activeTab === "active" ? "bg-white text-textColor" : "text-textColor"
-        }`}
+            className={`flex-1 rounded-[14px] ${
+              activeTab === "active" ? "bg-white text-textColor" : ""
+            }`}
           >
             Active Jobs <span>(1)</span>
           </button>
 
           <button
             onClick={() => setActiveTab("transactions")}
-            className={`flex-1 rounded-[14px] transition-all
-        ${
-          activeTab === "transactions"
-            ? "bg-white text-textColor"
-            : "text-textColor"
-        }`}
+            className={`flex-1 rounded-[14px] ${
+              activeTab === "transactions" ? "bg-white text-textColor" : ""
+            }`}
           >
             Transactions
           </button>
+
         </div>
 
         {/* Tab Content */}
         <div className="mt-[24px]">
+
           {/* REQUESTS TAB */}
           {activeTab === "requests" && (
             <div className="border rounded-[14px] p-4">
-              <div className="flex justify-between">
+              <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
+
                 <div className="flex gap-[16px]">
-                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px] font-normal">
+                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px]">
                     D
                   </p>
+
                   <div>
                     <p className="text-[18px] font-semibold text-textColor mb-[8px]">
                       Plumbing - Bathroom Renovation
                     </p>
-                    <p className="text-[14px] font-normal text-textGray mb-[8px]">
+
+                    <p className="text-[14px] text-textGray mb-[8px]">
                       David Brown
                     </p>
-                    <div className="flex items-center text-[14px] font-normal text-textGray mb-[8px]">
+
+                    <div className="flex items-center text-[14px] text-textGray mb-[8px] gap-2">
                       <LuCalendar />
                       <p>
                         <span>15/01/2026</span> at <span>09:00</span>
                       </p>
                     </div>
-                    <p className="text-[14px] font-normal text-textColor mb-[8px]">
+
+                    <p className="text-[14px] text-textColor mb-[8px]">
                       Ikeja, Lagos
                     </p>
                   </div>
                 </div>
 
-                <div className="flex flex-col items-end gap-[12px]">
+                <div className="flex flex-col items-start lg:items-end gap-[12px]">
                   <p className="text-[18px] font-semibold text-textColor">
                     ₦45,000
                   </p>
 
-                  <div className="flex gap-[8px]">
+                  <div className="flex gap-[8px] flex-wrap">
                     <button
                       onClick={() => setRequestStatus("declined")}
-                      className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-textColor"
+                      className="flex items-center px-[10px] py-[6px] border rounded-[8px] gap-[8px]"
                     >
                       <IoCloseCircleOutline />
                       Decline
@@ -263,12 +265,13 @@ const Dashboard = () => {
 
                     <button
                       onClick={() => setRequestStatus("accepted")}
-                      className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] font-medium gap-[8px] text-white bg-black"
+                      className="flex items-center px-[10px] py-[6px] border rounded-[8px] gap-[8px] text-white bg-black"
                     >
                       <LuCircleCheckBig />
                       Accept
                     </button>
                   </div>
+
                 </div>
               </div>
             </div>
@@ -277,54 +280,42 @@ const Dashboard = () => {
           {/* ACTIVE TAB */}
           {activeTab === "active" && (
             <div className="border rounded-[14px] p-4">
-              
-              <div className="flex justify-between">
-                
+              <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
+
                 <div className="flex gap-[16px]">
-                  
-                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px] font-normal">
-                    
+                  <p className="w-[48px] h-[48px] rounded-[26px] bg-[#ECECF0] flex items-center justify-center text-[16px]">
                     S
                   </p>
+
                   <div>
-                    
                     <p className="text-[18px] font-semibold text-textColor mb-[2px]">
-                      
                       Plumbing - Kitchen Sink Repair
                     </p>
-                    <p className="text-[14px] font-normal text-textGray mb-[2px]">
-                      
+
+                    <p className="text-[14px] text-textGray mb-[2px]">
                       Sarah Johnson
                     </p>
-                    <div className="flex items-center text-[14px] font-normal text-textGray mb-[2px]">
-                      
-                    </div>
-                    <p className="text-[14px] font-normal text-textColor mb-[2px]">
-                      
+
+                    <p className="text-[14px] text-textColor mb-[2px]">
                       Lekki, Lagos
                     </p>
                   </div>
                 </div>
-                <div>
-                  
-                  <div className="flex flex-col items-end gap-[12px]">
-                    
-                    <button className="w-[95px] h-[22px] rounded-[8px] bg-[#AD46FF] text-[12px] font-medium flex items-center justify-center text-white">
-                      
-                      ON THE-WAY
-                    </button>
-                  </div>
-                  <div className="flex flex-col items-end">
-                    
-                    <p className="font-medium text-[16px] text-textColor">
-                      
-                      ₦18,000
-                    </p>
-                    <button className="flex items-center justify-center px-[10px] py-[6px] border rounded-[8px] w-[118px] h-[32px] font-medium text-[14px] text-white bg-black">
-                      
-                      Update Status
-                    </button>
-                  </div>
+
+                <div className="flex flex-col items-start lg:items-end gap-[12px]">
+
+                  <button className="w-[95px] h-[22px] rounded-[8px] bg-[#AD46FF] text-[12px] flex items-center justify-center text-white">
+                    ON THE-WAY
+                  </button>
+
+                  <p className="font-medium text-[16px] text-textColor">
+                    ₦18,000
+                  </p>
+
+                  <button className="px-[10px] py-[6px] border rounded-[8px] text-white bg-black">
+                    Update Status
+                  </button>
+
                 </div>
               </div>
             </div>
@@ -333,7 +324,7 @@ const Dashboard = () => {
           {/* TRANSACTIONS TAB */}
           {activeTab === "transactions" && (
             <div className="space-y-4">
-              {/* Transaction 1 */}
+
               <div className="border rounded-[14px] p-4">
                 <div className="flex justify-between">
                   <div>
@@ -345,7 +336,7 @@ const Dashboard = () => {
 
                   <div className="flex flex-col items-end">
                     <p className="font-semibold text-[18px] text-[#00A63E]">
-                      +₦<span>20,000</span>
+                      +₦20,000
                     </p>
                     <button className="mt-[6px] px-[10px] py-[6px] rounded-[8px] text-[12px] bg-black text-white">
                       Completed
@@ -354,7 +345,6 @@ const Dashboard = () => {
                 </div>
               </div>
 
-              {/* Transaction 2 */}
               <div className="border rounded-[14px] p-4">
                 <div className="flex justify-between">
                   <div>
@@ -366,7 +356,7 @@ const Dashboard = () => {
 
                   <div className="flex flex-col items-end">
                     <p className="font-semibold text-[18px] text-[#E7000B]">
-                      +₦<span>2,000</span> 
+                      -₦2,000
                     </p>
                     <button className="mt-[6px] px-[10px] py-[6px] rounded-[8px] text-[12px] bg-black text-white">
                       Completed
@@ -374,10 +364,13 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
+
             </div>
           )}
+
         </div>
       </section>
+
     </main>
   );
 };
