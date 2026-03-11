@@ -39,7 +39,9 @@ import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
 import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
 import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
-import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
+import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding"; 
+
+import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile"
 
 function App() {
   return (
@@ -74,6 +76,7 @@ function App() {
         <Route path="profile" element={<UserProfile />} />
         <Route path="settings" element={<UserSettings />} />
       </Route>
+<Route path="/artisan-profile/:id" element={<ArtisanProfile />} />
 
       {/* Artisan Onboarding */}
       <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>

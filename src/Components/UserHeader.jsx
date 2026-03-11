@@ -7,7 +7,7 @@ const UserHeader = ({ setSidebarOpen }) => {
 
   const pageTitles = {
     "/user/dashboard": "Client Dashboard",
-    "/user/find-artisans": "Find Artisans",
+    "/user/find-artisans": "Search",
     "/user/bookings": "My Bookings",
     "/user/messages": "Messages",
     "/user/saved-artisans": "Saved Artisans",
