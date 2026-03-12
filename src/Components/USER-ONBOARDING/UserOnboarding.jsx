@@ -1,6 +1,6 @@
 import React from 'react'
 import { useState } from 'react'
-import { Outlet, useLocation } from 'react-router-dom'
+import { Outlet, useLocation, Link } from 'react-router-dom'
 
 
 const UserOnboarding = () => {
@@ -9,8 +9,8 @@ const [formValues, setFormValues] = useState({});
 const location = useLocation();
 const stepMap = {
   "/user-onboarding/user-personal-info": 1,
-  "/user-onboarding/user-location": 2,
-  "/user-onboarding/user-service-preference": 3,
+  // "/user-onboarding/user-location": 2,
+  // "/user-onboarding/user-service-preference": 3,
 };
 const step = stepMap[location.pathname] || 1;
 const TOTAL_STEPS = 3;
@@ -38,7 +38,7 @@ const percent = Math.round((step / TOTAL_STEPS) * 100);
           </p>
         </div>
 
-        {/* Progress */}
+        {/* Progress
         <div className="mb-5">
           <div className="flex justify-between my-2 font-inter font-normal text-sm leading-5 tracking-[-0.15px]">
             <p>
@@ -52,7 +52,7 @@ const percent = Math.round((step / TOTAL_STEPS) * 100);
               style={{ width: `${percent}%` }}
             />
           </div>
-        </div>
+        </div> */}
 
         {/* Card */}
         <div className="bg-white rounded-xl shadow p-6 ">
@@ -63,7 +63,9 @@ const percent = Math.round((step / TOTAL_STEPS) * 100);
         {/* Footer */}
         <div className="text-xs text-center text-textGray">
         <p className="mt-3">
-          Already have an Account? <span className="text-black">Sign in</span>
+          Already have an Account? <Link to="/login" className="text-black font-semibold">
+  Sign in
+</Link>
         </p>
         <p className="mt-3 mb-3">
           Need help? <span className="text-black">Contact support</span>
