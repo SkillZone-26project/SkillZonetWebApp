@@ -43,7 +43,7 @@ import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 
 import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile"
 
-function App() {
+function App() { 
   return (
     <Routes>
 
