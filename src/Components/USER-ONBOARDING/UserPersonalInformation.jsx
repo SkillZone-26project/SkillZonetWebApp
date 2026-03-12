@@ -1,30 +1,67 @@
-import React from 'react'
+import { registerUser } from "../../api/authApi"; // Import the API function to register the user
 import { useForm } from "react-hook-form";
 import { Mail, Phone, Lock, User, ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom"; // 1. Import these hooks
 
 const UserPersonalInformation = () => {
   const navigate = useNavigate();
-    // 2. Get the state and setter from the Parent (ArtisanOnboarding)
+    // 2. Get the state and setter from the Parent (UserOnboarding)
     const { formValues, setFormValues } = useOutletContext();
   
     const {
       register,
       handleSubmit,
+      watch,
       formState: { errors, isValid },
     } = useForm({
       defaultValues: formValues,
       mode: "onChange", // important
     });
+
+    const password = watch("password");
   
-    
-    const onSubmit = (data) => {
-      // 4. Update the global state with this step's data
-      setFormValues((prev) => ({ ...prev, ...data }));
-      
-      // 5. Navigate to the next URL in your stepMap
-      navigate("/user-onboarding/user-location");
-    };
+
+
+const onSubmit = async (data) => {
+  try {
+    const payload = {
+  email: data.email,
+  password: data.password,
+  fullName: `${data.firstName} ${data.lastName}`,
+  sex: data.gender.toUpperCase(),
+  age: parseInt(data.age),
+  phone: data.phone.trim(),
+  // device: navigator.platform,
+  // ipAddress: "127.0.0.1",
+  // userAgent: navigator.userAgent,
+};
+
+    console.log("Payload being sent:", payload);
+
+   const response = await registerUser(payload);
+
+if (response.status === 201) {
+  const { token, refreshToken } = response.data;
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("refreshToken", refreshToken);
+
+  alert("Account created successfully. Please login.");
+
+  navigate("/login");
+}
+
+
+
+  } catch (error) {
+   if (error.response) {
+    console.log("Backend error:", error.response.data);
+    console.log("Status:", error.response.status);
+  } else {
+    console.log("Network error:", error.message);
+  }
+  }
+};
     
     return (
       <div>
@@ -43,7 +80,7 @@ const UserPersonalInformation = () => {
   
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-left">
           {/* First & Last Name */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-1">
               <label className="text-sm font-semibold">First Name *</label>
               <input
@@ -80,6 +117,65 @@ const UserPersonalInformation = () => {
               )}
             </div>
           </div>
+          {/* Age & Gender */}
+<div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
+
+  {/* Age */}
+  <div className="space-y-1">
+    <label className="text-sm font-semibold">Age *</label>
+    <select
+      {...register("age", {
+        required: "Age is required",
+      })}
+      className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
+        errors.age ? "ring-1 ring-red-500" : ""
+      }`}
+      defaultValue=""
+    >
+      <option value="" disabled>
+        Select age
+      </option>
+      {[...Array(83)].map((_, i) => (
+        <option key={i} value={i + 18}>
+          {i + 18}
+        </option>
+      ))}
+    </select>
+
+    {errors.age && (
+      <p className="text-xs text-red-500 mt-1">
+        {errors.age.message}
+      </p>
+    )}
+  </div>
+
+  {/* Gender */}
+  <div className="space-y-1">
+    <label className="text-sm font-semibold">Gender *</label>
+    <select
+      {...register("gender", {
+        required: "Gender is required",
+      })}
+      className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
+        errors.gender ? "ring-1 ring-red-500" : ""
+      }`}
+      defaultValue=""
+    >
+      <option value="" disabled>
+        Select gender
+      </option>
+      <option value="male">Male</option>
+      <option value="female">Female</option>
+    </select>
+
+    {errors.gender && (
+      <p className="text-xs text-red-500 mt-1">
+        {errors.gender.message}
+      </p>
+    )}
+  </div>
+
+</div>
   
           {/* Email Address */}
           <div className="space-y-1">
@@ -156,6 +252,34 @@ const UserPersonalInformation = () => {
               )}
             </div>
           </div>
+          {/* Confirm Password */}
+<div className="space-y-1">
+  <label className="text-sm font-semibold">Confirm Password *</label>
+
+  <div className="relative">
+    <Lock className="absolute left-3 top-3 text-textGray" size={18} />
+
+    <input
+      {...register("confirmPassword", {
+        required: "Please confirm your password",
+        validate: (value) =>
+          value === password || "Passwords do not match",
+      })}
+      type="password"
+      placeholder="Re-enter password"
+      className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
+        errors.confirmPassword ? "ring-1 ring-red-500" : ""
+      }`}
+    />
+
+  </div>
+
+  {errors.confirmPassword && (
+    <p className="text-xs text-red-500 mt-1">
+      {errors.confirmPassword.message}
+    </p>
+  )}
+</div>
   
           {/* Action Buttons */}
           <div className="flex gap-3 justify-center mt-8">
@@ -180,7 +304,7 @@ const UserPersonalInformation = () => {
               }`}
             >
               <span className="font-['Inter'] font-medium text-[14px]">
-                Continue
+                Create Account
               </span>
               <ArrowRight size={16} />
             </button>

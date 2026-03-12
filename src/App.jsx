@@ -8,9 +8,14 @@ import DocumentVerification from "./Components/ARTISAN-ONBOARDING/DocumentVerifi
 import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
-import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
-import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
+// import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
+// import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
+
+import SignIn from "./Components/Auth/SignIn";
+import LoginForm from "./Components/Auth/LoginForm";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import ResetPassword from "./Components/Auth/ResetPassword";
 
 
 function App() {
@@ -18,6 +23,13 @@ function App() {
     <Routes>
   <Route path="/home" element={<Home />} />
   <Route path="/" element={<Navigate to="/home" replace />} />
+
+  <Route element={<SignIn />}>
+  <Route path="login" element={<LoginForm />} />
+  <Route path="forgot-password" element={<ForgotPassword />} />
+  <Route path="reset-password" element={<ResetPassword />} />
+</Route>
+
 
   {/* Artisan Onboarding Flow */}
   <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>
@@ -33,8 +45,8 @@ function App() {
   <Route path="/user-onboarding" element={<UserOnboarding />}>
     <Route index element={<Navigate to="user-personal-info" replace />} />
     <Route path="user-personal-info" element={<UserPersonalInformation />} />
-    <Route path="user-location" element={<UserLocation />} />
-    <Route path="user-service-preference" element={<UserServicePreference />} />
+    {/* <Route path="user-location" element={<UserLocation />} />
+    <Route path="user-service-preference" element={<UserServicePreference />} /> */}
   </Route>
 </Routes>
 
