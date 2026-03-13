@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "axios": "^1.13.4",
+<<<<<<< HEAD
     "lucide-react": "^0.563.0",
+=======
+    "lucide-react": "^0.575.0",
+>>>>>>> c85aed94755eacfb20d0c6399dbc0c37bcab543d
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.1",

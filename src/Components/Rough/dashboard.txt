@@ -1,0 +1,93 @@
+import React from "react";
+import { LuDollarSign, LuClock4 } from "react-icons/lu";
+import { FaArrowTrendUp } from "react-icons/fa6";
+import { FiAward } from "react-icons/fi";
+
+const Orders = () => {
+  return (
+    <main className="space-y-6">
+      {/* SECTION 1 – STATS */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StatCard
+          icon={<LuDollarSign />}
+          iconBg="bg-bgCompleted"
+          iconColor="text-completed"
+          title="₦1,250"
+          subtitle="Wallet Balance"
+        />
+
+        <StatCard
+          icon={<FaArrowTrendUp />}
+          iconBg="bg-bgActive"
+          iconColor="text-active"
+          title="₦3,450"
+          subtitle="This Month"
+        />
+
+        <StatCard
+          icon={<FiAward />}
+          iconBg="bg-bgCompleted"
+          iconColor="text-completed"
+          title="24"
+          subtitle="Jobs Completed"
+        />
+
+        <StatCard
+          icon={<LuClock4 />}
+          iconBg="bg-bgPending"
+          iconColor="text-pending"
+          title="1"
+          subtitle="Pending Requests"
+        />
+      </section>
+
+      {/* SECTION 2 – WALLET & SUBSCRIPTION */}
+      <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Wallet */}
+        <div className="rounded-[14px] border p-6 flex items-center justify-between">
+          <div>
+            <p className="font-semibold text-[18px] text-textColor">
+              Wallet
+            </p>
+            <p className="font-bold text-[30px] text-textColor">
+              ₦1,250
+            </p>
+            <p className="text-textGray text-[14px]">
+              Available to withdraw
+            </p>
+          </div>
+
+          <button className="w-[95px] h-[36px] rounded-[8px] bg-black text-white text-[14px] font-medium">
+            Withdraw
+          </button>
+        </div>
+
+        {/* Subscription */}
+        <div className="rounded-[14px] border p-6 flex items-center justify-between">
+          <div>
+            <p className="font-semibold text-[18px] text-textColor">
+              Subscription
+            </p>
+            <span className="inline-flex items-center justify-center text-[12px] bg-[#FE9A00] text-white px-3 py-1 rounded-[8px] font-medium mt-1">
+              Premium Plan
+            </span>
+            <p className="text-textGray text-[14px] mt-1">
+              Renews on Jan 25, 2026
+            </p>
+          </div>
+
+          <button className="w-[95px] h-[36px] rounded-[8px] border text-textColor text-[14px] font-medium">
+            Manage
+          </button>
+        </div>
+      </section>
+
+      {/* SECTION 3 */}
+      <section>
+        {/* Future content */}
+      </section>
+    </main>
+  );
+};
+
+export default Orders;
