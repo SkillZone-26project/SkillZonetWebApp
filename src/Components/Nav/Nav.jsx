@@ -33,20 +33,23 @@ function Nav() {
           </li>
           <li>
             {/* ✅ ONLY CHANGE HERE */}
-            <Link to="/dashboard" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/otpVerification" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Sign In
             </Link>
             {/* signIn */}
             {/* dashboard */}
             {/* artisan-onboarding */}
+            {/* user-onboarding */}
           </li>
           <li>
             <Link
-              to="/dashboard"
+              to="/user-onboarding"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join
             </Link>
+            {/* user-onboarding */}
+            {/* dashboard */}
           </li>
         </ul>
 

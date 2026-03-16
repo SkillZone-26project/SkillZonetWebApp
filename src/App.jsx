@@ -17,6 +17,7 @@ import Profile from "./Components/Pages/dashboard/Profile";
 
 // User Dashboard Layout
 import UserDashboardLayout from "./UserLayout/UserDashboardLayout";
+import OTPVerification from "./Components/Auth/OTPVerification";
 
 // User Dashboard Pages
 import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
@@ -90,6 +91,7 @@ function App() {
         <Route path="settings" element={<UserSettings />} />
       </Route>
       <Route path="/artisan-profile/:id" element={<ArtisanProfile />} />
+      <Route path="/otpVerification" element={<OTPVerification />} />
 
       {/* Artisan Onboarding */}
       <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>
