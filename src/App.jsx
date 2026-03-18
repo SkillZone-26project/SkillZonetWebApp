@@ -46,6 +46,8 @@ import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalIn
 import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
 import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
 
+import OTPVerification from "./Components/Auth/OTPVerification";
+
 function App() {
   return (
     <Routes>
@@ -61,6 +63,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
+         <Route path="/otpVerification" element={<OTPVerification />} />
       </Route>
 
       {/* Artisan Dashboard */}

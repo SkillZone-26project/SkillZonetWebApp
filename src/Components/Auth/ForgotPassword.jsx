@@ -1,5 +1,8 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+
 
 const ForgotPassword = () => {
 
@@ -9,14 +12,37 @@ const ForgotPassword = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
+  const navigate = useNavigate();
+
   const onSubmit = async (data) => {
-    console.log("Form Submitted:", data);
+  try {
+    const res = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/forgot-password`,
+      {
+        email: data.email,
+      }
+    );
 
-    // Simulate API delay
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    if (res.status === 200) {
+      // ✅ Save email for OTP step
+      localStorage.setItem("resetEmail", data.email);
 
-    alert("Login successful (backend not connected yet)");
-  };
+      // ✅ Optional: small feedback
+      alert("OTP sent to your email");
+
+      // ✅ Navigate to OTP page (reset flow)
+      navigate(`/reset-otp?email=${data.email}`);
+    }
+
+  } catch (err) {
+    console.error(err);
+
+    alert(
+      err.response?.data?.message ||
+      "Failed to send OTP"
+    );
+  }
+};
 
   return (
     <div className="w-full bg-white">

@@ -33,7 +33,7 @@ function Nav() {
           </li>
           <li>
             {/* ✅ ONLY CHANGE HERE */}
-            <Link to="/dashboard" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/otpVerification" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Sign In
             </Link>
             {/* signIn */}
@@ -42,7 +42,7 @@ function Nav() {
           </li>
           <li>
             <Link
-              to="/dashboard"
+              to="/joinAs"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join
@@ -89,7 +89,7 @@ function Nav() {
         <li>
           {/* ✅ ONLY CHANGE HERE */}
           <Link
-            to="/"
+            to="/otpVerification"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >

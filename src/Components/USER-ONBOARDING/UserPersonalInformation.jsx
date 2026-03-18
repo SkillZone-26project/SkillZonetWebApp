@@ -1,6 +1,7 @@
-import { registerUser } from "../../api/authApi"; // Import the API function to register the user
+import axios from "axios";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Mail, Phone, Lock, User, ArrowLeft, ArrowRight } from "lucide-react";
+import { Mail, Phone, Lock, LockOpen, User, ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom"; // 1. Import these hooks
 
 const UserPersonalInformation = () => {
@@ -19,47 +20,46 @@ const UserPersonalInformation = () => {
     });
 
     const password = watch("password");
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   
-
 
 const onSubmit = async (data) => {
   try {
     const payload = {
-  email: data.email,
-  password: data.password,
-  fullName: `${data.firstName} ${data.lastName}`,
-  sex: data.gender.toUpperCase(),
-  age: parseInt(data.age),
-  phone: data.phone.trim(),
-  // device: navigator.platform,
-  // ipAddress: "127.0.0.1",
-  // userAgent: navigator.userAgent,
-};
+      fullName: `${data.firstName} ${data.lastName}`,
+      email: data.email,
+      password: data.password,
+      sex: data.gender?.toUpperCase(),
+      age: Number(data.age),
+      phone: data.phone.replace(/\s+/g, ""),
+      device: navigator.platform,
+      userAgent: navigator.userAgent,
+    };
 
-    console.log("Payload being sent:", payload);
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/register`,
+      payload
+    );
 
-   const response = await registerUser(payload);
+    if (response.status === 201) {
+      const { token, refreshToken } = response.data;
 
-if (response.status === 201) {
-  const { token, refreshToken } = response.data;
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      // ✅ Store email for OTP page
+      localStorage.setItem("userEmail", data.email);
 
-  localStorage.setItem("token", token);
-  localStorage.setItem("refreshToken", refreshToken);
-
-  alert("Account created successfully. Please login.");
-
-  navigate("/login");
-}
-
-
+      navigate(`/otpVerification?email=${data.email}`);
+    }
 
   } catch (error) {
-   if (error.response) {
-    console.log("Backend error:", error.response.data);
-    console.log("Status:", error.response.status);
-  } else {
-    console.log("Network error:", error.message);
-  }
+    console.error("Register failed:", error.response?.data || error.message);
+
+    alert(
+      error.response?.data?.message ||
+      "Registration failed"
+    );
   }
 };
     
@@ -230,7 +230,13 @@ if (response.status === 201) {
           <div className="space-y-1">
             <label className="text-sm font-semibold">Create Password *</label>
             <div className="relative">
-              <Lock className="absolute left-3 top-3 text-textGray" size={18} />
+             <button
+        type="button"
+        onClick={() => setShowPassword(!showPassword)}
+        className="absolute left-3 top-3 text-textGray hover:text-black transition-colors"
+      >
+        {showPassword ? <LockOpen size={18} /> : <Lock size={18} />}
+      </button>
               <input
                 {...register("password", {
                   required: "Password is required",
@@ -239,7 +245,7 @@ if (response.status === 201) {
                     message: "Password must be at least 8 characters",
                   },
                 })}
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 placeholder="Min. 8 characters"
                 className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                   errors.password ? "ring-1 ring-red-500" : ""
@@ -257,7 +263,13 @@ if (response.status === 201) {
   <label className="text-sm font-semibold">Confirm Password *</label>
 
   <div className="relative">
-    <Lock className="absolute left-3 top-3 text-textGray" size={18} />
+      <button
+      type="button"
+        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+        className="absolute left-3 top-3 text-textGray hover:text-black transition-colors"
+      >
+        {showConfirmPassword ? <LockOpen size={18} /> : <Lock size={18} />}
+    </button>
 
     <input
       {...register("confirmPassword", {
@@ -265,7 +277,7 @@ if (response.status === 201) {
         validate: (value) =>
           value === password || "Passwords do not match",
       })}
-      type="password"
+      type={showConfirmPassword ? "text" : "password"}
       placeholder="Re-enter password"
       className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
         errors.confirmPassword ? "ring-1 ring-red-500" : ""
