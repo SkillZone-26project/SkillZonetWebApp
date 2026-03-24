@@ -9,6 +9,7 @@ import SignIn from "./Components/Auth/SignIn";
 import LoginForm from "./Components/Auth/LoginForm";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
 import ResetPassword from "./Components/Auth/ResetPassword";
+import OTPVerification from "./Components/Auth/OTPVerification";
 
 // Artisan Dashboard
 import DashboardLayout from "./Layouts/DashboardLayout";
@@ -23,6 +24,8 @@ import Profile from "./Components/Pages/dashboard/Profile";
 
 // User Dashboard
 import UserDashboardLayout from "./UserLayout/UserDashboardLayout";
+
+// User Dashboard Pages
 import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
 import UserFindArtisans from "./Components/UserPages/Userdashboard/UserFindArtisans";
 import UserMyBookings from "./Components/UserPages/Userdashboard/UserMyBookings";
@@ -43,10 +46,6 @@ import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 // User Onboarding
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
-import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
-import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
-
-import OTPVerification from "./Components/Auth/OTPVerification";
 
 function App() {
   return (
@@ -63,7 +62,7 @@ function App() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-         <Route path="/otpVerification" element={<OTPVerification />} />
+        <Route path="/otpVerification" element={<OTPVerification />} />
       </Route>
 
       {/* Artisan Dashboard */}
@@ -90,6 +89,7 @@ function App() {
         <Route path="settings" element={<UserSettings />} />
       </Route>
 
+      {/* Extra Routes */}
       <Route path="/artisan-profile/:id" element={<ArtisanProfile />} />
 
       {/* Artisan Onboarding */}
@@ -106,8 +106,6 @@ function App() {
       <Route path="/user-onboarding" element={<UserOnboarding />}>
         <Route index element={<Navigate to="user-personal-info" replace />} />
         <Route path="user-personal-info" element={<UserPersonalInformation />} />
-        <Route path="user-location" element={<UserLocation />} />
-        <Route path="user-service-preference" element={<UserServicePreference />} />
       </Route>
 
     </Routes>

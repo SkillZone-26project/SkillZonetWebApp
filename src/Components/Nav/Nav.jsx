@@ -39,14 +39,17 @@ function Nav() {
             {/* signIn */}
             {/* dashboard */}
             {/* artisan-onboarding */}
+            {/* user-onboarding */}
           </li>
           <li>
             <Link
-              to="/joinAs"
+              to="/user-onboarding"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join
             </Link>
+            {/* user-onboarding */}
+            {/* dashboard */}
           </li>
         </ul>
 
