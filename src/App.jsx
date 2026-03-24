@@ -17,7 +17,7 @@ import Settings from "./Components/Pages/dashboard/Settings";
 import JobRequests from "./Components/Pages/dashboard/JobRequests";
 import ActiveJobs from "./Components/Pages/dashboard/ActiveJobs";
 import Messages from "./Components/Pages/dashboard/Messages";
-import Wallet from "./Components/Pages/dashboard/Wallet";
+import Wallet from "./Components/Pages/dashboard/Wallet/Wallet";
 import Reviews from "./Components/Pages/dashboard/Reviews";
 import Profile from "./Components/Pages/dashboard/Profile";
 
