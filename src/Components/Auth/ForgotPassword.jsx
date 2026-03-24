@@ -23,10 +23,10 @@ const ForgotPassword = () => {
       {/* LOGO SECTION */}
       <div className="flex items-center justify-center mb-10">
         <img
-          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770385830/LogoBlack_itldr3.png"
-          alt="SkillZonet Logo"
-          className="w-28 h-auto"
-        />
+            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+            alt="SkillZonet Logo"
+            className="w-[70px] h-[75px]"
+          />
       </div>
 
       {/* HEADER */}

@@ -9,20 +9,20 @@ function Nav() {
 
   return (
     <nav className="w-full bg-white shadow-md fixed top-0 left-0 z-50 text-[14px]">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-2">
         {/* Logo */}
         <div className="flex items-center">
           <img
-            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770385830/LogoBlack_itldr3.png"
+            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
             alt="SkillZonet Logo"
-            className="w-32 h-auto"
+            className="w-[70px] h-[75px]"
           />
         </div>
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-textColor font-medium">
           <li>
-            <Link to="/user-onboarding" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/dashboard" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Features
             </Link>
           </li>
@@ -33,21 +33,25 @@ function Nav() {
           </li>
           <li>
             {/* ✅ ONLY CHANGE HERE */}
-            <Link to="/otpVerification" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/login" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Sign In
             </Link>
             {/* signIn */}
             {/* dashboard */}
             {/* artisan-onboarding */}
             {/* user-onboarding */}
+            {/* otpVerification*/}
+            {/* selectYourRole */}
+            {/* login */}
           </li>
           <li>
             <Link
-              to="/user-onboarding"
+              to="/selectYourRole"
               className="bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             >
               Join
             </Link>
+            {/* selectYourRole */}
             {/* user-onboarding */}
             {/* dashboard */}
           </li>

@@ -24,9 +24,9 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* LOGO */}
       <div className="">
         <img
-          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670870/LogoDashboard_x6i5e2.png"
+          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
           alt="Dashboard Logo"
-          className="mb-8 mt-[2px] px-6"
+          className="mb-8 mt-[2px] px-6 w-[100px] h-[95px]"
         />
 
         <hr className="w-full" />

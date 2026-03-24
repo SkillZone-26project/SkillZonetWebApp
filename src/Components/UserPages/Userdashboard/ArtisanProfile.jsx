@@ -1,6 +1,6 @@
-import { React, useState } from "react";
-import { useParams, useNavigate,  } from "react-router-dom";
-import { LuArrowLeft, LuHeart, LuCalendar, LuMessageCircle, LuPhone, LuClock4   } from "react-icons/lu";
+import React, { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { LuArrowLeft, LuHeart, LuCalendar, LuMessageCircle, LuPhone, LuClock4 } from "react-icons/lu";
 import { TbRosetteFilled } from "react-icons/tb";
 import { FaStar } from "react-icons/fa";
 import { GrLocation } from "react-icons/gr";
@@ -8,24 +8,24 @@ import { IoLocationOutline } from "react-icons/io5";
 
 const ArtisanProfile = () => {
   const { id } = useParams();
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const [activeTab, setActiveTab] = useState("requests");
+  const [activeTab, setActiveTab] = useState("requests");
 
   return (
     <main className="px-[16px]">
 
       {/* Header */}
-     <header className="border-b w-full">
-  <div className="flex items-center gap-[14px] w-full max-w-[854px] mx-auto py-[12px]">
+      <header className="border-b w-full">
+        <div className="flex items-center gap-[14px] w-full max-w-[854px] mx-auto py-[12px]">
+          <button onClick={() => navigate(-1)}>
+            <LuArrowLeft />
+          </button>
 
-    <button onClick={() => navigate(-1)}>
-      <LuArrowLeft />
-    </button>
+          <p className="text-[18px] font-medium">Artisan Profile</p>
+        </div>
+      </header>
 
-    <p className="text-[18px] font-medium">Artisan Profile</p>
-  </div>
-</header>
       {/* Section 1 */}
       <section className="w-full max-w-[854px] mx-auto border rounded-[14px] mt-[24px] p-[16px] md:p-[24px]">
 
@@ -110,7 +110,6 @@ const [activeTab, setActiveTab] = useState("requests");
 
         {/* Bottom Card */}
         <div className="border-t mt-[28px] pt-[20px]">
-
           <div className="flex flex-col sm:flex-row items-center justify-between gap-[20px] w-full max-w-[600px] mx-auto">
 
             <div className="flex flex-col items-center">
@@ -138,34 +137,34 @@ const [activeTab, setActiveTab] = useState("requests");
 
           </div>
         </div>
-        
+
       </section>
 
-{/* Button Section */}
-<section className="w-full max-w-[854px] mx-auto mt-[24px] flex flex-col sm:flex-row gap-[12px]">
+      {/* Button Section */}
+      <section className="w-full max-w-[854px] mx-auto mt-[24px] flex flex-col sm:flex-row gap-[12px]">
 
-  <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
-    <LuCalendar />
-    Book Now
-  </button>
+        <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
+          <LuCalendar />
+          Book Now
+        </button>
 
-  <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
-    <LuMessageCircle />
-    Send Message
-  </button>
+        <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
+          <LuMessageCircle />
+          Send Message
+        </button>
 
-  <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
-    <LuPhone />
-    Call
-  </button>
+        <button className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]">
+          <LuPhone />
+          Call
+        </button>
 
-</section>
+      </section>
 
- {/* Portfolio and Review */}
-   <section className="w-full max-w-[854px] mx-auto mt-[24px] ">
+      {/* Portfolio and Review */}
+      <section className="w-full max-w-[854px] mx-auto mt-[24px] ">
 
         {/* Tabs */}
-        <div className="flex gap-[10px] w-full  h-[38px] bg-[#ECECF0] rounded-[14px] text-[12px] font-medium p-[4px] overflow-x-auto">
+        <div className="flex gap-[10px] w-full h-[38px] bg-[#ECECF0] rounded-[14px] text-[12px] font-medium p-[4px] overflow-x-auto">
 
           <button
             onClick={() => setActiveTab("requests")}
@@ -190,86 +189,78 @@ const [activeTab, setActiveTab] = useState("requests");
         {/* Tab Content */}
         <div className="mt-[24px]">
 
-          {/* ACTIVE TAB */}
+          {/* Portfolio */}
           {activeTab === "requests" && (
             <div>
-
-              {/* CARD 1 */}
               <div className="border rounded-[14px] p-4">
-      <p className="text-[18px] font-semibold text-textColor mt-[20px] mb-[30px]">Work Gallery</p>
-      <div className="flex  gap-[16px]">
-        <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Container_4_kqat3x.png" alt="" className="w-[260px] rounded-[14px]"/>
+                <p className="text-[18px] font-semibold text-textColor mt-[20px] mb-[30px]">
+                  Work Gallery
+                </p>
 
-        <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Image_Portfolio_2_xsk52y.png" alt="" className="w-[260px] rounded-[14px]"/>
-
-        <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Image_Portfolio_3_xbwaev.png" alt=""  className="w-[260px] rounded-[14px]"/>
-      </div>
+                <div className="flex gap-[16px]">
+                  <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Container_4_kqat3x.png" alt="" className="w-[260px] rounded-[14px]" />
+                  <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Image_Portfolio_2_xsk52y.png" alt="" className="w-[260px] rounded-[14px]" />
+                  <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773600402/Image_Portfolio_3_xbwaev.png" alt="" className="w-[260px] rounded-[14px]" />
+                </div>
               </div>
-
             </div>
           )}
 
+          {/* Reviews */}
+          {activeTab === "active" && (
+            <div>
+                {/* Card 1 */}
 
-        {/* COMPLETED TAB */}
-{activeTab === "active" && (
-  <div>
+              <div className="border rounded-[14px] p-4 flex justify-between">
+                <div className="flex gap-[10px] ">
+                  <div className="bg-[#ECECF0] w-[40px] h-[40px] rounded-[20px] text-{16px] font-normal flex items-center justify-center">
+                    <p>M</p>
+                    </div>
+                   <div className="text-[16px]">
+                     <div className="">
+                      <p className="text-textColor">Michael Chen</p>
+                      <div className="flex items-center text-[#FDC700] mt-[7px]">
+                   <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar /> 
+                    <FaStar />
+                      </div>
+                    </div>
+                    <p className="mt-[7px] text-textGray">John is amazing! Fixed my leaking pipes in no time. Will definitely call again.</p>
+                   </div>
 
-    {/* CARD 1 */}
-    <div className="border rounded-[14px] p-4">
-      <div className="flex flex-col lg:flex-row lg:justify-between gap-4">
+                  </div>
+                                   <p className="text-textGray">05/01/2026</p>
 
-        <div className="flex gap-[16px]">
-          <img
-            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1772140352/Primitive.img_5_sqmsfy.png"
-            alt=""
-            className="w-[48px] h-[48px] rounded-[26px]"
-          />
-
-          <div>
-            <p className="text-[18px] font-semibold text-textColor mb-[8px]">
-              Plumbing - Kitchen Sink Repair
-            </p>
-
-            <p className="text-[14px] text-textGray mb-[8px]">
-              John Mensah
-            </p>
-
-            <div className="flex flex-col md:flex-row md:gap-[8px]">
-
-              <div className="flex items-center text-[14px] text-textGray gap-[4px]">
-                <LuCalendar />
-                <p>12/01/2026</p>
               </div>
 
-              <div className="flex items-center text-[14px] text-textGray gap-[4px]">
-                <LuClock4 />
-                <p>14:00</p>
-              </div>
+                {/* Card 2 */}
+                <div className="border rounded-[14px] p-4 flex justify-between">
+                <div className="flex gap-[10px]  ">
+                  <div className="bg-[#ECECF0] w-[40px] h-[40px] rounded-[20px] text-{16px] font-normal flex items-center justify-center">
+                    <p>E</p>
+                    </div>
+                   <div className="text-[16px]">
+                     <div className="">
+                      <p className="text-textColor">Emily Davis</p>
+                      <div className="flex items-center text-[#FDC700] mt-[7px]">
+                   <FaStar />
+                    <FaStar />
+                    <FaStar />
+                    <FaStar /> 
+                    <FaStar text-white />
+                      </div>
+                    </div>
+                    <p className="mt-[7px] text-textGray">Good service, arrived on time and did quality work.</p>
+                   </div>
 
-              <div className="flex items-center text-[14px] text-textGray gap-[4px]">
-                <IoLocationOutline />
-                <p>Lekki, Lagos</p>
+              
+                  </div>
+                     <p className="text-textGray">28/12/2025</p>
               </div>
-
             </div>
-          </div>
-        </div>
-
-        <div className="flex flex-col items-start lg:items-end gap-[12px]">
-          <button className="bg-[#AD46FF] rounded-[8px] px-[9px] py-[4px] text-[12px] font-medium text-white">
-            ON THE-WAY
-          </button>
-
-          <p className="text-[16px] font-semibold">
-            ₦<span>18000</span>
-          </p>
-        </div>
-
-      </div>
-    </div>
-
-  </div>
-)}
+          )}
 
         </div>
       </section>

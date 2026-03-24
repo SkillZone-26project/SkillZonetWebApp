@@ -3,8 +3,6 @@ import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { LuShieldCheck, LuSquareArrowLeft } from "react-icons/lu";
-import { IoCloseCircle } from "react-icons/io5";
-
 
 const maskEmail = (email) => {
   if (!email) return "";
@@ -15,8 +13,8 @@ const maskEmail = (email) => {
 
 const OTPVerification = () => {
   const navigate = useNavigate();
-  
 
+  // ✅ Correct key
   const email = localStorage.getItem("verifyEmail");
 
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -90,15 +88,13 @@ const OTPVerification = () => {
   };
 
   const handleResend = async () => {
-    if (timeLeft > 0) return;
-
     setError("");
     setResendMsg("");
     setResendLoading(true);
 
     try {
       const res = await axios.post(
-        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/resend-verification-otp",
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/resend-otp",
         { email }
       );
 
@@ -119,9 +115,8 @@ const OTPVerification = () => {
       <div>
         <div className="flex flex-col items-center justify-center">
           <img
-            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
-            alt="SkillZonet Logo"
-            className="w-[70px] h-[75px]"
+            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773612741/LOGO_3_r5us13.png"
+            alt=""
           />
 
           <p className="text-[30px] font-bold text-textColor">
@@ -129,14 +124,8 @@ const OTPVerification = () => {
           </p>
         </div>
 
-         <div className="relative ml-[20px] group">
-          <IoCloseCircle
-            onClick={() => navigate(-1)}
-            className="text-[25px] text-textGray hover:text-textColor"
-          />
-          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-            Close
-          </span>
+        <div className="ml-[20px] text-textGray hover:text-textColor transition-shadow">
+          <LuSquareArrowLeft onClick={() => navigate(-1)} />
         </div>
 
         <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg text-center">
@@ -153,6 +142,11 @@ const OTPVerification = () => {
           <p className="text-gray-800 text-sm font-medium mb-3">
             We have sent the verification code to your email address
           </p>
+
+          {/* Show masked email */}
+          {/* <p className="text-gray-500 text-sm mb-5">
+            {maskEmail(email)}
+          </p> */}
 
           <form onSubmit={handleVerify}>
             <div className="flex justify-center gap-4 mb-6">
@@ -196,8 +190,8 @@ const OTPVerification = () => {
                 <button
                   type="button"
                   onClick={handleResend}
-                  disabled={resendLoading || timeLeft > 0}
-                  className="text-[#FF0000] font-medium ml-1 hover:underline disabled:opacity-40"
+                  disabled={resendLoading}
+                  className="text-[#FF0000] font-medium ml-1 hover:underline"
                 >
                   {resendLoading ? "Resending..." : "Resend via Email"}
                 </button>

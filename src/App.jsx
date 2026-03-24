@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import Features from "./Components/Features/Features";
-import SignIn from "./Components/SignIn/SignIn";
+import SignIn from "./Components/Auth/SignIn";
 import JoinAs from "./Components/JoinAs/JoinAs";
 import DashboardLayout from "./Layouts/DashboardLayout";
 
@@ -18,6 +18,7 @@ import Profile from "./Components/Pages/dashboard/Profile";
 // User Dashboard Layout
 import UserDashboardLayout from "./UserLayout/UserDashboardLayout";
 import OTPVerification from "./Components/Auth/OTPVerification";
+import SelectYourRole from "./Components/Auth/SelectYourRole";
 
 // User Dashboard Pages
 import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
@@ -57,15 +58,15 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="features" element={<Features />} />
-      <Route path="signIn" element={<SignIn />} />
+      {/* <Route path="signIn" element={<SignIn />} /> */}
       <Route path="joinAs" element={<JoinAs />} />
 
       {/* Auth Routes (Emmanuel) */}
-      <Route element={<SignIn />}>
-        <Route path="login" element={<LoginForm />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="reset-password" element={<ResetPassword />} />
-      </Route>
+     <Route path="/login" element={<SignIn />}>
+  <Route index element={<LoginForm />} />
+  <Route path="forgot-password" element={<ForgotPassword />} />
+  <Route path="reset-password" element={<ResetPassword />} />
+</Route>
 
       {/* Artisan Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>
@@ -92,6 +93,7 @@ function App() {
       </Route>
       <Route path="/artisan-profile/:id" element={<ArtisanProfile />} />
       <Route path="/otpVerification" element={<OTPVerification />} />
+      <Route path="/selectYourRole" element={<SelectYourRole />} />
 
       {/* Artisan Onboarding */}
       <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>

@@ -45,16 +45,16 @@ const LoginForm = () => {
   return (
     <div className="w-full bg-white">
       {/* LOGO SECTION */}
-      <div className="flex items-center justify-center mb-10">
+      <div className="flex items-center justify-center mb-[10px]">
         <img
-          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770385830/LogoBlack_itldr3.png"
-          alt="SkillZonet Logo"
-          className="w-28 h-auto"
-        />
+            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+            alt="SkillZonet Logo"
+            className="w-[70px] h-[75px]"
+          />
       </div>
 
       {/* HEADER */}
-      <h1 className="font-inter font-bold text-2xl md:text-3xl text-center mb-10">
+      <h1 className="font-inter font-bold text-2xl md:text-3xl text-center mb-[10px]">
         Sign In
       </h1>
 
@@ -127,7 +127,7 @@ const LoginForm = () => {
 
         {/* FORGOT PASSWORD */}
         <Link 
-          to="/forgot-password"
+          to="forgot-password"
           className="font-bold text-[12px] text-black"
         >
           Forget password?
@@ -155,12 +155,12 @@ const LoginForm = () => {
         </p>
 
         {/* DIVIDER */}
-        <div className="relative py-4">
+        <div className="relative py-[10px]">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-[#F7F7F7] px-4 text-gray-400 font-medium">
+            <span className="bg-[#F7F7F7] px-[10px] text-gray-400 font-medium">
               Or
             </span>
           </div>
@@ -172,12 +172,7 @@ const LoginForm = () => {
           className="w-full h-[44px] flex items-center justify-center gap-2 rounded-lg bg-[#D1D5DB] text-[#111827] font-bold transition hover:bg-gray-300"
         >
          <span className="text-lg font-semibold tracking-tight">
-          <span className="text-[#3686F7]">G</span>
-          <span className="text-[#FF302F]">o</span>
-          <span className="text-[#FFBA40]">o</span>
-          <span className="text-[#3686F7]">g</span>
-          <span className="text-[#20B15A]">l</span>
-          <span className="text-[#FF302F]">e</span>
+          <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774199267/logos_google_1_cgezg7.png" alt="" />
         </span>
         </button>
       </form>

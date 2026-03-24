@@ -1,11 +1,24 @@
 
 import { Outlet } from "react-router-dom";
+import { IoCloseCircle } from "react-icons/io5";
+  import { useNavigate } from "react-router-dom";
+
 
 const SignIn = () => {
+
+  const navigate = useNavigate();
   return (
 
-    <div className="bg-white min-h-screen p-10">
-
+    <div className="bg-white min-h-screen p-[5px]">
+<div className="relative ml-[20px] group">
+          <IoCloseCircle
+            onClick={() => navigate(-1)}
+            className="text-[25px] text-textGray hover:text-textColor"
+          />
+          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
+            Close
+          </span>
+        </div>
   <div className="max-w-[1200px] mx-auto bg-white rounded-[16px] shadow-lg">
 
     <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] min-h-screen lg:gap-8 lg:min-h-[750px]">

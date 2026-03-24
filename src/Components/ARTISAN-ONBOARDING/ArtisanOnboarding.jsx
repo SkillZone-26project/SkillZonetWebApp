@@ -25,10 +25,10 @@ function ArtisanOnboarding() {
         <div className="text-center mb-6">
           <div className="flex items-center justify-center">
             <img
-              src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770385830/LogoBlack_itldr3.png"
-              alt="SkillZonet Logo"
-              className="w-32 h-auto"
-            />
+            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+            alt="SkillZonet Logo"
+            className="w-[70px] h-[75px]"
+          />
           </div>
           <h1 className="my-2 text-textColor font-inter font-bold text-[30px] leading-[36px] tracking-[0.4px] text-center">
             Join as an Artisan
