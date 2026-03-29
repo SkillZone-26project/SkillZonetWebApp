@@ -28,11 +28,11 @@ import UserDashboardLayout from "./UserLayout/UserDashboardLayout";
 // User Dashboard Pages
 import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
 import UserFindArtisans from "./Components/UserPages/Userdashboard/UserFindArtisans";
-import UserMyBookings from "./Components/UserPages/Userdashboard/UserMyBookings";
+import UserMyBookings from "./Components/UserPages/Userdashboard/UserBookings/UserMyBookings";
 import UserMessages from "./Components/UserPages/Userdashboard/UserMessages";
 import UserSavedArtisans from "./Components/UserPages/Userdashboard/UserSavedArtisans";
 import UserProfile from "./Components/UserPages/Userdashboard/UserProfile";
-import UserSettings from "./Components/UserPages/Userdashboard/UserSettings";
+import UserSettings from "./Components/UserPages/Userdashboard/UserSettings/UserSettings";
 import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile";
 
 // Artisan Onboarding

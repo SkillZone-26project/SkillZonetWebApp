@@ -326,4 +326,4 @@ const onSubmit = async (data) => {
     );
 }
 
-export default UserPersonalInformation
+export default UserPersonalInformation;
