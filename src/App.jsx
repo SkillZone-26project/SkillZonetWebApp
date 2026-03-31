@@ -1,48 +1,33 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import Home from "./Components/Home/Home";
 import Features from "./Components/Features/Features";
-<<<<<<< HEAD
 import SignIn from "./Components/Auth/SignIn";
-=======
->>>>>>> origin/emmanuel-branch
 import JoinAs from "./Components/JoinAs/JoinAs";
-
-// Auth
-import SignIn from "./Components/Auth/SignIn";
-import LoginForm from "./Components/Auth/LoginForm";
-import ForgotPassword from "./Components/Auth/ForgotPassword";
-import ResetPassword from "./Components/Auth/ResetPassword";
-import OTPVerification from "./Components/Auth/OTPVerification";
-
-// Artisan Dashboard
 import DashboardLayout from "./Layouts/DashboardLayout";
+
+// Artisan Dashboard Pages
 import Dashboard from "./Components/Pages/dashboard/Dashboard";
 import Settings from "./Components/Pages/dashboard/Settings";
 import JobRequests from "./Components/Pages/dashboard/JobRequests";
 import ActiveJobs from "./Components/Pages/dashboard/ActiveJobs";
 import Messages from "./Components/Pages/dashboard/Messages";
-import Wallet from "./Components/Pages/dashboard/Wallet/Wallet";
+import Wallet from "./Components/Pages/dashboard/Wallet";
 import Reviews from "./Components/Pages/dashboard/Reviews";
 import Profile from "./Components/Pages/dashboard/Profile";
 
-// User Dashboard
+// User Dashboard Layout
 import UserDashboardLayout from "./UserLayout/UserDashboardLayout";
-<<<<<<< HEAD
 import OTPVerification from "./Components/Auth/OTPVerification";
 import SelectYourRole from "./Components/Auth/SelectYourRole";
-=======
->>>>>>> origin/emmanuel-branch
 
 // User Dashboard Pages
 import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
 import UserFindArtisans from "./Components/UserPages/Userdashboard/UserFindArtisans";
-import UserMyBookings from "./Components/UserPages/Userdashboard/UserBookings/UserMyBookings";
+import UserMyBookings from "./Components/UserPages/Userdashboard/UserMyBookings";
 import UserMessages from "./Components/UserPages/Userdashboard/UserMessages";
 import UserSavedArtisans from "./Components/UserPages/Userdashboard/UserSavedArtisans";
 import UserProfile from "./Components/UserPages/Userdashboard/UserProfile";
-import UserSettings from "./Components/UserPages/Userdashboard/UserSettings/UserSettings";
-import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile";
+import UserSettings from "./Components/UserPages/Userdashboard/UserSettings";
 
 // Artisan Onboarding
 import ArtisanOnboarding from "./Components/ARTISAN-ONBOARDING/ArtisanOnboarding";
@@ -53,16 +38,25 @@ import DocumentVerification from "./Components/ARTISAN-ONBOARDING/DocumentVerifi
 import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 
 // User Onboarding
-import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
+// import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
+// import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
+import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding"; 
 
-function App() {
+// Auth (Emmanuel’s branch)
+import LoginForm from "./Components/Auth/LoginForm";
+import ForgotPassword from "./Components/Auth/ForgotPassword";
+import ResetPassword from "./Components/Auth/ResetPassword";
+
+import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile";
+
+function App() { 
   return (
     <Routes>
 
       {/* Public Routes */}
+      <Route path="/home" element={<Home />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
-<<<<<<< HEAD
       <Route path="features" element={<Features />} />
       {/* <Route path="signIn" element={<SignIn />} /> */}
       <Route path="joinAs" element={<JoinAs />} />
@@ -73,19 +67,6 @@ function App() {
   <Route path="forgot-password" element={<ForgotPassword />} />
   <Route path="reset-password" element={<ResetPassword />} />
 </Route>
-=======
-      <Route path="/home" element={<Home />} />
-      <Route path="/features" element={<Features />} />
-      <Route path="/joinAs" element={<JoinAs />} />
-
-      {/* Auth */}
-      <Route element={<SignIn />}>
-        <Route path="/login" element={<LoginForm />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/otpVerification" element={<OTPVerification />} />
-      </Route>
->>>>>>> origin/emmanuel-branch
 
       {/* Artisan Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>
@@ -110,14 +91,9 @@ function App() {
         <Route path="profile" element={<UserProfile />} />
         <Route path="settings" element={<UserSettings />} />
       </Route>
-
-      {/* Extra Routes */}
       <Route path="/artisan-profile/:id" element={<ArtisanProfile />} />
-<<<<<<< HEAD
       <Route path="/otpVerification" element={<OTPVerification />} />
       <Route path="/selectYourRole" element={<SelectYourRole />} />
-=======
->>>>>>> origin/emmanuel-branch
 
       {/* Artisan Onboarding */}
       <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>
@@ -133,6 +109,9 @@ function App() {
       <Route path="/user-onboarding" element={<UserOnboarding />}>
         <Route index element={<Navigate to="user-personal-info" replace />} />
         <Route path="user-personal-info" element={<UserPersonalInformation />} />
+        {/* You can uncomment these if needed */}
+        {/* <Route path="user-location" element={<UserLocation />} /> */}
+        {/* <Route path="user-service-preference" element={<UserServicePreference />} /> */}
       </Route>
 
     </Routes>
