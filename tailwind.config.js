@@ -28,7 +28,6 @@ export default {
         "active": "#155DFC",
         "bgActive": "#DBEAFE",
         "thisMonth": "#155DFC",
-        // "bgThisMonth": "#DBEAFE",
         "completed": "#00A63E",
         "bgCompleted": "#DCFCE7",
         "wallet": "#00A63E",

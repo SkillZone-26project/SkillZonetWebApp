@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Mail, Phone, Lock, User, ArrowLeft, ArrowRight } from "lucide-react";
+import { Mail, Phone, Lock, LockOpen, User, ArrowLeft, ArrowRight } from "lucide-react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 const UserPersonalInformation = () => {
   const navigate = useNavigate();
-
   const { formValues, setFormValues } = useOutletContext();
 
   const {
@@ -23,6 +22,8 @@ const UserPersonalInformation = () => {
   // ✅ ADDED STATES
   const [apiError, setApiError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   /* =========================
       REGISTER API
@@ -42,8 +43,6 @@ const UserPersonalInformation = () => {
       );
 
       const data = await response.json();
-
-      // ✅ DEBUG LOG
       console.log("📦 RAW BACKEND RESPONSE:", data);
 
       if (!response.ok) {
@@ -55,31 +54,6 @@ const UserPersonalInformation = () => {
       console.error("❌ FETCH ERROR:", err);
       throw err;
     }
-  };
-
-  /* =========================
-      VERIFY EMAIL API
-  ========================== */
-
-  const verifyEmail = async (payload) => {
-    const response = await fetch(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/verify-email",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      }
-    );
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      throw { response: { data, status: response.status } };
-    }
-
-    return { status: response.status, data };
   };
 
   /* =========================
@@ -102,7 +76,6 @@ const UserPersonalInformation = () => {
 
       console.log("📤 Payload being sent:", payload);
 
-      // save email FIRST (important)
       localStorage.setItem("verifyEmail", payload.email);
 
       const response = await registerUser(payload);
@@ -117,20 +90,12 @@ const UserPersonalInformation = () => {
       console.error("❌ FULL ERROR OBJECT:", error);
 
       if (error.response) {
-        console.error("❌ Backend error:", error.response.data);
-        console.error("❌ Status:", error.response.status);
-
         setApiError(
-          error.response.data?.message ||
-            "Backend error occurred. Check console."
+          error.response.data?.message || "Backend error occurred. Check console."
         );
       } else if (error.request) {
-        console.error("❌ No response from server:", error.request);
-
         setApiError("No response from server. Check your internet.");
       } else {
-        console.error("❌ Unknown error:", error.message);
-
         setApiError(error.message);
       }
     } finally {
@@ -166,7 +131,9 @@ const UserPersonalInformation = () => {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">First Name<span className="text-red-500">*</span></label>
+            <label className="text-sm font-semibold">
+              First Name<span className="text-red-500">*</span>
+            </label>
             <input
               {...register("firstName", {
                 required: "First name is required",
@@ -176,7 +143,6 @@ const UserPersonalInformation = () => {
                 errors.firstName ? "ring-1 ring-red-500" : ""
               }`}
             />
-
             {errors.firstName && (
               <p className="text-xs text-red-500 mt-1">
                 {errors.firstName.message}
@@ -185,7 +151,9 @@ const UserPersonalInformation = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Last Name<span className="text-red-500">*</span></label>
+            <label className="text-sm font-semibold">
+              Last Name<span className="text-red-500">*</span>
+            </label>
             <input
               {...register("lastName", {
                 required: "Last name is required",
@@ -195,7 +163,6 @@ const UserPersonalInformation = () => {
                 errors.lastName ? "ring-1 ring-red-500" : ""
               }`}
             />
-
             {errors.lastName && (
               <p className="text-xs text-red-500 mt-1">
                 {errors.lastName.message}
@@ -209,28 +176,21 @@ const UserPersonalInformation = () => {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Age<span className="text-red-500">*</span></label>
-
+            <label className="text-sm font-semibold">
+              Age<span className="text-red-500">*</span>
+            </label>
             <select
-              {...register("age", {
-                required: "Age is required",
-              })}
+              {...register("age", { required: "Age is required" })}
               className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.age ? "ring-1 ring-red-500" : ""
               }`}
               defaultValue=""
             >
-              <option value="" disabled>
-                Select age
-              </option>
-
+              <option value="" disabled>Select age</option>
               {[...Array(83)].map((_, i) => (
-                <option key={i} value={i + 18}>
-                  {i + 18}
-                </option>
+                <option key={i} value={i + 18}>{i + 18}</option>
               ))}
             </select>
-
             {errors.age && (
               <p className="text-xs text-red-500 mt-1">
                 {errors.age.message}
@@ -239,25 +199,20 @@ const UserPersonalInformation = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Gender<span className="text-red-500">*</span></label>
-
+            <label className="text-sm font-semibold">
+              Gender<span className="text-red-500">*</span>
+            </label>
             <select
-              {...register("gender", {
-                required: "Gender is required",
-              })}
+              {...register("gender", { required: "Gender is required" })}
               className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.gender ? "ring-1 ring-red-500" : ""
               }`}
               defaultValue=""
             >
-              <option value="" disabled>
-                Select gender
-              </option>
-
+              <option value="" disabled>Select gender</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
-
             {errors.gender && (
               <p className="text-xs text-red-500 mt-1">
                 {errors.gender.message}
@@ -269,11 +224,11 @@ const UserPersonalInformation = () => {
 
         {/* Email */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Email Address<span className="text-red-500">*</span></label>
-
+          <label className="text-sm font-semibold">
+            Email Address<span className="text-red-500">*</span>
+          </label>
           <div className="relative">
             <Mail className="absolute left-3 top-3 text-textGray" size={18} />
-
             <input
               {...register("email", {
                 required: "Email is required",
@@ -288,66 +243,58 @@ const UserPersonalInformation = () => {
                 errors.email ? "ring-1 ring-red-500" : ""
               }`}
             />
-
             {errors.email && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.email.message}
-              </p>
+              <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>
             )}
           </div>
         </div>
 
         {/* Phone */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Phone Number<span className="text-red-500">*</span></label>
-
+          <label className="text-sm font-semibold">
+            Phone Number<span className="text-red-500">*</span>
+          </label>
           <div className="relative">
             <Phone className="absolute left-3 top-3 text-textGray" size={18} />
-
             <input
-              {...register("phone", {
-                required: "Phone number is required",
-              })}
+              {...register("phone", { required: "Phone number is required" })}
               placeholder="+234 802 123 4567"
               className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.phone ? "ring-1 ring-red-500" : ""
               }`}
             />
-
             {errors.phone && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.phone.message}
-              </p>
+              <p className="text-xs text-red-500 mt-1">{errors.phone.message}</p>
             )}
           </div>
         </div>
 
         {/* Password */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Create Password<span className="text-red-500">*</span></label>
-
+          <label className="text-sm font-semibold">
+            Create Password<span className="text-red-500">*</span>
+          </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-3 text-textGray" size={18} />
-
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute left-3 top-3 text-textGray hover:text-black transition-colors"
+            >
+              {showPassword ? <LockOpen size={18} /> : <Lock size={18} />}
+            </button>
             <input
               {...register("password", {
                 required: "Password is required",
-                minLength: {
-                  value: 8,
-                  message: "Password must be at least 8 characters",
-                },
+                minLength: { value: 8, message: "Password must be at least 8 characters" },
               })}
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Min. 8 characters"
               className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.password ? "ring-1 ring-red-500" : ""
               }`}
             />
-
             {errors.password && (
-              <p className="text-xs text-red-500 mt-1">
-                {errors.password.message}
-              </p>
+              <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>
             )}
           </div>
         </div>
@@ -357,34 +304,33 @@ const UserPersonalInformation = () => {
           <label className="text-sm font-semibold">
             Confirm Password<span className="text-red-500">*</span>
           </label>
-
           <div className="relative">
-            <Lock className="absolute left-3 top-3 text-textGray" size={18} />
-
+            <button
+              type="button"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              className="absolute left-3 top-3 text-textGray hover:text-black transition-colors"
+            >
+              {showConfirmPassword ? <LockOpen size={18} /> : <Lock size={18} />}
+            </button>
             <input
               {...register("confirmPassword", {
                 required: "Please confirm your password",
-                validate: (value) =>
-                  value === password || "Passwords do not match",
+                validate: (value) => value === password || "Passwords do not match",
               })}
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Re-enter password"
               className={`w-full h-[36px] bg-bgGray rounded-[8px] pl-[36px] pr-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.confirmPassword ? "ring-1 ring-red-500" : ""
               }`}
             />
           </div>
-
           {errors.confirmPassword && (
-            <p className="text-xs text-red-500 mt-1">
-              {errors.confirmPassword.message}
-            </p>
+            <p className="text-xs text-red-500 mt-1">{errors.confirmPassword.message}</p>
           )}
         </div>
 
         {/* Buttons */}
         <div className="flex gap-3 justify-center mt-8">
-
           <button
             type="button"
             onClick={() => navigate(-1)}
@@ -402,7 +348,6 @@ const UserPersonalInformation = () => {
             {loading ? "Creating..." : "Create Account"}
             <ArrowRight size={16} />
           </button>
-
         </div>
 
       </form>

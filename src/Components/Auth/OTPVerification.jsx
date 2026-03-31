@@ -78,6 +78,24 @@ const OTPVerification = () => {
         }
       );
 
+      // const res = await axios.post(
+      //   "https://backend-skillzonet.onrender.com/api/auth/verify-email",
+      //   { email, otp: code }
+      // );
+
+      const token = localStorage.getItem("token");
+
+// await axios.post(
+//   "https://backend-skillzonet.onrender.com/api/auth/verify-email",
+//   { otp: code },
+//   {
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   }
+// );
+
+
       if (res.status === 200) {
         alert("Email verified successfully");
         navigate("/login");

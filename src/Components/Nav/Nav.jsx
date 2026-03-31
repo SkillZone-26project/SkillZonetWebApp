@@ -96,7 +96,7 @@ function Nav() {
         <li>
           {/* ✅ ONLY CHANGE HERE */}
           <Link
-            to="/"
+            to="/otpVerification"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >

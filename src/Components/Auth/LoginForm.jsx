@@ -1,4 +1,4 @@
-import { loginUser } from "../../api/authApi";
+import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { ArrowRight, Eye, EyeOff } from "lucide-react";
@@ -17,30 +17,42 @@ const LoginForm = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    try {
-      const payload={
-        email: data.email,
-        password: data.password,
-        device: navigator.platform,
-        ipAddress: "127.0.0.1",
-        userAgent: navigator.userAgent,
-      };
-      const response= await loginUser(payload);
-      if (response.status===200){
-        const{ token, refreshToken, sessionId }= response.data;
+  try {
+    const payload = {
+      email: data.email,
+      password: data.password,
+      device: navigator.platform,
+      userAgent: navigator.userAgent,
+    };
 
-        localStorage.setItem("token", token);
-        localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("sessionId", sessionId);
-
-        navigate("/dashboard");
+    const response = await axios.post(
+      `${import.meta.env.VITE_BASE_URL}/login`,
+      payload,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
+    );
 
-    } catch (error) {
-      console.error("Login failed:", error.response?.data || error.message);
-      alert("Login failed: " + (error.response?.data?.message || error.message));
+    if (response.status === 200) {
+      const { token, refreshToken, sessionId } = response.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("sessionId", sessionId);
+
+      navigate("/dashboard");
     }
-  };
+
+  } catch (error) {
+    console.error("Login failed:", error.response?.data || error.message);
+
+    alert(
+      error.response?.data?.message || "Login failed. Please try again."
+    );
+  }
+};
 
   return (
     <div className="w-full bg-white">
