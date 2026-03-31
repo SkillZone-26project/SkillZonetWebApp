@@ -43,7 +43,7 @@ const UserMessages = () => {
       online: true,
       messages: [
         { text: "Thank you for the great review!", sender: "them", time: "11:00 AM" },
-        { text: "Thank you, received.", sender: "me", time: "11:02 AM" },
+        { text: "Thank you for the great review!.", sender: "me", time: "11:02 AM" },
       ],
     },
     {
@@ -55,18 +55,18 @@ const UserMessages = () => {
       online: false,
       messages: [
         { text: "I can start the carpentry work next Monday.", sender: "them", time: "9:00 AM" },
-        { text: "Yes, I am available.", sender: "me", time: "9:05 AM" },
+        { text: "I can start the carpentry work next Monday..", sender: "me", time: "9:05 AM" },
       ],
     },
     {
-      name: "Kwame Asante",
+      name: "Abena Adjei",
       pic: "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771519219/Primitive.img_4_cq5klr.png",
       time: "Yesterday",
       peroid: "ago",
       online: false,
       messages: [
         { text: "Would you like to see some color samples?", sender: "them", time: "4:00 PM" },
-        { text: "Yes, I am available.", sender: "me", time: "4:10 PM" },
+        { text: "Would you like to see some color samples?.", sender: "me", time: "4:10 PM" },
       ],
     },
   ];

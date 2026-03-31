@@ -166,7 +166,7 @@ const UserPersonalInformation = () => {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">First Name *</label>
+            <label className="text-sm font-semibold">First Name<span className="text-red-500">*</span></label>
             <input
               {...register("firstName", {
                 required: "First name is required",
@@ -185,7 +185,7 @@ const UserPersonalInformation = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Last Name *</label>
+            <label className="text-sm font-semibold">Last Name<span className="text-red-500">*</span></label>
             <input
               {...register("lastName", {
                 required: "Last name is required",
@@ -209,7 +209,7 @@ const UserPersonalInformation = () => {
         <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-4">
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Age *</label>
+            <label className="text-sm font-semibold">Age<span className="text-red-500">*</span></label>
 
             <select
               {...register("age", {
@@ -239,7 +239,7 @@ const UserPersonalInformation = () => {
           </div>
 
           <div className="space-y-1">
-            <label className="text-sm font-semibold">Gender *</label>
+            <label className="text-sm font-semibold">Gender<span className="text-red-500">*</span></label>
 
             <select
               {...register("gender", {
@@ -269,7 +269,7 @@ const UserPersonalInformation = () => {
 
         {/* Email */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Email Address *</label>
+          <label className="text-sm font-semibold">Email Address<span className="text-red-500">*</span></label>
 
           <div className="relative">
             <Mail className="absolute left-3 top-3 text-textGray" size={18} />
@@ -299,7 +299,7 @@ const UserPersonalInformation = () => {
 
         {/* Phone */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Phone Number *</label>
+          <label className="text-sm font-semibold">Phone Number<span className="text-red-500">*</span></label>
 
           <div className="relative">
             <Phone className="absolute left-3 top-3 text-textGray" size={18} />
@@ -324,7 +324,7 @@ const UserPersonalInformation = () => {
 
         {/* Password */}
         <div className="space-y-1">
-          <label className="text-sm font-semibold">Create Password *</label>
+          <label className="text-sm font-semibold">Create Password<span className="text-red-500">*</span></label>
 
           <div className="relative">
             <Lock className="absolute left-3 top-3 text-textGray" size={18} />
@@ -355,7 +355,7 @@ const UserPersonalInformation = () => {
         {/* Confirm Password */}
         <div className="space-y-1">
           <label className="text-sm font-semibold">
-            Confirm Password *
+            Confirm Password<span className="text-red-500">*</span>
           </label>
 
           <div className="relative">

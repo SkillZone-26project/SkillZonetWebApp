@@ -50,9 +50,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       <div>
 
         <img
-          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670870/LogoDashboard_x6i5e2.png"
+          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
           alt="Dashboard Logo"
-          className="mb-8 mt-[2px] px-6"
+          className="mb-8 mt-[2px] ml-6 w-[70px] h-[75px]"
         />
 
         <hr className="w-full" />
