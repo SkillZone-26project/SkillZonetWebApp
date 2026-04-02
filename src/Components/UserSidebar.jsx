@@ -36,7 +36,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* PROFILE */}
           <div className="flex items-center gap-3 mb-8">
             <img
-              src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
+              src="https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
               alt="Profile Pic"
               className="w-[48px] h-[48px] rounded-full"
             />

@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+git fetch origin 
+git checkout chidimma-branch 
+git merge origin/emmanuel-branch

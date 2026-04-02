@@ -85,7 +85,7 @@ const UserDashboard = () => {
 
       {/* SECTION 2 */}
       <section>
-        <div className="w-full border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-between gap-4">
+        <div className="w-full bg-[linear-gradient(90deg,_#EFF6FF_0%,_#FAF5FF_100%)] border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between lg:justify-between gap-4">
           <div>
             <p className="text-[26px] sm:text-[30px] font-bold text-textColor">
               Need a service?

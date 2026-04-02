@@ -42,7 +42,7 @@ const LoginForm = () => {
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("sessionId", sessionId);
 
-      navigate("/dashboard");
+      navigate("/user");
     }
 
   } catch (error) {
@@ -153,7 +153,7 @@ const LoginForm = () => {
         >
           {isSubmitting ? "Logging in..." : "Log in"}
           {!isSubmitting && (
-            <ArrowRight className="w-[16px] h-[16px]" />
+          <ArrowRight className="w-[16px] h-[16px]" />
           )}
         </button>
 
