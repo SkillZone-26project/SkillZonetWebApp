@@ -16,8 +16,10 @@ const maskEmail = (email) => {
 const OTPVerification = () => {
   const navigate = useNavigate();
   
-
   const email = localStorage.getItem("verifyEmail");
+
+  // ✅ GET ROLE
+  const role = localStorage.getItem("userRole");
 
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [loading, setLoading] = useState(false);
@@ -78,27 +80,20 @@ const OTPVerification = () => {
         }
       );
 
-      // const res = await axios.post(
-      //   "https://backend-skillzonet.onrender.com/api/auth/verify-email",
-      //   { email, otp: code }
-      // );
-
-      const token = localStorage.getItem("token");
-
-// await axios.post(
-//   "https://backend-skillzonet.onrender.com/api/auth/verify-email",
-//   { otp: code },
-//   {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   }
-// );
-
-
       if (res.status === 200) {
         alert("Email verified successfully");
-        navigate("/login");
+
+        // ✅ ROLE-BASED NAVIGATION
+        if (role === "client") {
+          navigate("/login");
+        } else if (role === "artisan") {
+          navigate("/alogin");
+        } else {
+          navigate("/login");
+        }
+
+        // ✅ CLEAR ROLE AFTER USE
+        localStorage.removeItem("userRole");
       }
     } catch (err) {
       setError(err.response?.data?.message || "OTP verification failed");
@@ -107,6 +102,7 @@ const OTPVerification = () => {
     }
   };
 
+  // ✅ OUTSIDE handleVerify
   const handleResend = async () => {
     if (timeLeft > 0) return;
 

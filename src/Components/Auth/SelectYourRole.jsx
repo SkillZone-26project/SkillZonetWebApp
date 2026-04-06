@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-       import { IoCloseCircle } from "react-icons/io5";
+import { IoCloseCircle } from "react-icons/io5";
 import { LuShieldCheck, LuSquareArrowLeft } from "react-icons/lu";
 
 const maskEmail = (email) => {
@@ -17,7 +17,7 @@ const SelectYourRole = () => {
 
   const email = localStorage.getItem("verifyEmail");
 
-  const [selectedRole, setSelectedRole] = useState(""); // ✅ NEW
+  const [selectedRole, setSelectedRole] = useState("");
 
   const [otp, setOtp] = useState(Array(6).fill(""));
   const [loading, setLoading] = useState(false);
@@ -49,6 +49,9 @@ const SelectYourRole = () => {
       return;
     }
 
+    // ✅ SAVE ROLE HERE
+    localStorage.setItem("userRole", selectedRole);
+
     if (selectedRole === "client") {
       navigate("/user-onboarding");
     } else {
@@ -71,15 +74,16 @@ const SelectYourRole = () => {
           </p>
         </div>
 
-       <div className="relative ml-[20px] group">
-  <IoCloseCircle
-    onClick={() => navigate(-1)}
-    className="text-[25px] text-textGray hover:text-textColor"
-  />
-  <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-    Close
-  </span>
-</div>
+        <div className="relative ml-[20px] group">
+          <IoCloseCircle
+            onClick={() => navigate(-1)}
+            className="text-[25px] text-textGray hover:text-textColor"
+          />
+          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
+            Close
+          </span>
+        </div>
+
         <div className="w-full max-w-[900px] bg-white p-6 rounded-2xl shadow-lg text-center">
           <h1 className="text-[14px] sm:text-[24px] font-bold text-gray-900 mb-4">
             Choose your option and get started
@@ -95,7 +99,6 @@ const SelectYourRole = () => {
           <form>
             <div className="flex w-full border border-black rounded-[14px] overflow-hidden mb-[40px] text-[20px] font-normal">
 
-              {/* CLIENT BUTTON */}
               <button
                 type="button"
                 onClick={() => setSelectedRole("client")}
@@ -108,7 +111,6 @@ const SelectYourRole = () => {
                 I’m a Client
               </button>
 
-              {/* ARTISAN BUTTON */}
               <button
                 type="button"
                 onClick={() => setSelectedRole("artisan")}

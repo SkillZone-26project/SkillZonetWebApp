@@ -8,9 +8,106 @@ import {
   LuCircleX,
   LuEye,
 } from "react-icons/lu";
+import CompleteInformation from "./CompleteInformation";
 
 const JobRequests = () => {
   const [requestTab, setRequestTab] = useState("new");
+  const [selectedJob, setSelectedJob] = useState(null); // <-- modal state
+
+  /* =========================
+     DATABASE (2 ARRAYS)
+  ========================== */
+
+  const newRequests = [
+    {
+      id: 1,
+      name: "David Brown",
+      role: "Client",
+      image:
+        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png",
+      title: "Plumbing - Bathroom Renovation",
+      date: "Thursday, January 15 2026",
+      // longDate: "Thursday, January 15, 2026",
+      location: "Ikeja, Lagos",
+      requestedTime: "05:45 PM",
+      scheduleTime: "09:00pm",
+      price: 45000,
+    },
+    {
+      id: 2,
+      name: "Michael Okonkwo",
+      role: "Client",
+      image:
+        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png",
+      title: "Plumbing - Water Heater Installation",
+      description:
+        "Need to install a new water heater in the bathroom. The old one stopped working.",
+      date: "Friday, January 16 2026",
+      // longDate: "Friday January 16",
+      location: "Ikoyi, Lagos",
+      requestedTime: "09:30PM",
+      scheduleTime: "11:00pm",
+      price: 35000,
+    },
+    {
+      id: 3,
+      name: "Fatima Bello",
+      role: "Client",
+      image:
+        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png",
+      title: "Plumbing - Leak Repair",
+      description:
+        "Leaking pipe under the kitchen sink needs urgent repair.",
+      date: "Wednesday, January 14 2026",
+      // longDate: "Wednesday, January 14",
+      location: "Surulere, Lagos",
+      requestedTime: "11:15AM",
+      scheduleTime: "15:00",
+      price: 15000,
+    },
+  ];
+
+  const respondedRequests = [
+    {
+      id: 1,
+      name: "David Brown",
+      role: "Client",
+      image:
+        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png",
+      title: "Plumbing - Bathroom Renovation",
+      date: "Thursday, January 15 2026", 
+      // longDate: "Thursday, January 15",
+      location: "Ikeja, Lagos",
+      requestedTime: "05:45PM",
+      scheduleTime: "09:00pm",
+      price: 45000,
+      status: "accepted",
+    },
+    {
+      id: 2,
+      name: "Michael Okonkwo",
+      role: "Client",
+      image:
+        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png",
+      title: "Plumbing - Water Heater Installation",
+      description:
+        "Need to install a new water heater in the bathroom. The old one stopped working.",
+      date: "Friday, January 16 2026",
+      // longDate: "Friday, January 16",
+      location: "Ikoyi, Lagos",
+      requestedTime: "09:30PM",
+      scheduleTime: "11:00pm",
+      price: 35000,
+      status: "declined",
+    },
+  ];
+
+  const currentData =
+    requestTab === "new" ? newRequests : respondedRequests;
+
+  const handleView = (job) => {
+    setSelectedJob(job);
+  };
 
   return (
     <main className="pt-[85px]">
@@ -33,7 +130,7 @@ const JobRequests = () => {
           >
             <span>New Requests</span>
             <span className="w-[25px] h-[22px] bg-black text-white rounded-[8px] flex items-center justify-center text-[12px]">
-              1
+              {newRequests.length}
             </span>
           </button>
 
@@ -49,453 +146,153 @@ const JobRequests = () => {
           </button>
         </div>
 
-        {/* Conditional Content */}
+        {/* Cards */}
         <div className="mt-4">
-          {requestTab === "new" && (
-            <div>
-              {/* Card 1 */}
-              <div className="border p-4 rounded-lg">
-                <div>
-                  <div className="flex justify-between">
-                    <div className="profile flex gap-[16px]">
-                      <div className="">
-                        <img
-                          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png"
-                          alt="Profile Pic"
-                          className="w-[48px] h-[48px] rounded-[24px]"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-[18px] font-semibold text-textColor">
-                          David Brown
-                        </p>
-                        <p className="text-[14px] font-normal text-textGray">
-                          Client
-                        </p>
-                      </div>
-                    </div>
-                    {/* Botton */}
-                    <button className="w-[94px] h-[22px] bg-[#F0B100] text-white text-[12px] font-medium rounded-[8px] items-center justify-center">
-                      New Request
-                    </button>
+          {currentData.map((job) => (
+            <div key={job.id} className="border p-4 rounded-lg mt-[16px]">
+              
+              {/* Header */}
+              <div className="flex justify-between">
+                <div className="profile flex gap-[16px]">
+                  <img
+                    src={job.image}
+                    alt=""
+                    className="w-[48px] h-[48px] rounded-[24px]"
+                  />
+                  <div>
+                    <p className="text-[18px] font-semibold text-textColor">
+                      {job.name}
+                    </p>
+                    <p className="text-[14px] text-textGray">
+                      {job.role}
+                    </p>
                   </div>
                 </div>
-                {/* step 2 */}
-                <p className="mt-[41px]">Plumbing - Bathroom Renovation</p>
-                <div className="flex">
-                  <div className="left mt-[12px] w-[519px] gap-[10px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuCalendar
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">Thu, Jan 15</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuMapPin
-                        className="text-textGray
-"
-                      />
 
-                      <p className="text-textColor">Ikeja, Lagos</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Requested 05:45 PM</p>
-                    </div>
-                  </div>
-                  <div className="right w-[519px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">09:00pm</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuDollarSign
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">
-                        ₦<span>45,000</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="buttons mt-[25px] flex gap-[10px]">
-                  <button className="bg-black text-white text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleCheckBig />
-                    <span>Accept Job</span>
+                {/* Status */}
+                {requestTab === "new" ? (
+                  <button className="w-[94px] h-[22px] bg-[#F0B100] text-white text-[12px] rounded-[8px]">
+                    New Request
                   </button>
-                  <button className="border  text-textColor text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleX />
-                    <span>Decline</span>
+                ) : (
+                  <button
+                    className={`w-[94px] h-[22px] text-white text-[12px] rounded-[8px] ${
+                      job.status === "accepted"
+                        ? "bg-[#00C950]"
+                        : "bg-[#FB2C36]"
+                    }`}
+                  >
+                    {job.status === "accepted"
+                      ? "Accepted"
+                      : "Declined"}
                   </button>
-                  <button className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border  text-textColor text-[14px] font-medium ">
-                    <LuEye />
-                  </button>
-                </div>
+                )}
               </div>
-              {/* Card 2 */}
-              <div className="border p-4 rounded-lg mt-[16px]">
-                <div>
-                  <div className="flex justify-between">
-                    <div className="profile flex gap-[16px]">
-                      <div className="">
-                        <img
-                          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png"
-                          alt="Profile Pic"
-                          className="w-[48px] h-[48px] rounded-[24px]"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-[18px] font-semibold text-textColor">
-                          Michael Okonkwo
-                        </p>
-                        <p className="text-[14px] font-normal text-textGray">
-                          Client
-                        </p>
-                      </div>
-                    </div>
-                    {/* Botton */}
-                    <button className="w-[94px] h-[22px] bg-[#F0B100] text-white text-[12px] font-medium rounded-[8px] items-center justify-center">
-                      New Request
-                    </button>
+
+              {/* Title */}
+              <p className="mt-[41px]">{job.title}</p>
+              {job.description && (
+                <p className="text-[14px] text-textGray">
+                  {job.description}
+                </p>
+              )}
+
+              {/* Details */}
+              <div className="flex">
+                <div className="left mt-[12px] w-[519px]">
+                  <div className="flex items-center gap-[10px] text-[14px]">
+                    <LuCalendar />
+                    <p>
+  {(() => {
+    const [dayPart, rest] = job.date.split(", ");
+    const [month, date] = rest.split(" "); // removes year automatically
+
+    return `${dayPart.slice(0, 3)}, ${month.slice(0, 3)} ${date}`;
+  })()}
+</p>
+                  </div>
+
+                  <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
+                    <LuMapPin />
+                    <p>{job.location}</p>
+                  </div>
+
+                  <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
+                    <LuClock4 />
+                    <p>
+                      {requestTab === "new"
+                        ? "Requested"
+                        : job.status === "accepted"
+                        ? "Accepted"
+                        : "Requested"}{" "}
+                      {job.requestedTime}
+                    </p>
                   </div>
                 </div>
-                {/* step 2 */}
-                <p className="mt-[41px]">Plumbing - Water Heater Installation</p>
-                <p className="text-[14px] text-textGray font-normal">Need to install a new water heater in the bathroom. The old one stopped working.</p>
-                <div className="flex">
-                  <div className="left mt-[12px] w-[519px] gap-[10px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuCalendar
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">Fri, Jan 16</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuMapPin
-                        className="text-textGray
-"
-                      />
 
-                      <p className="text-textColor">Ikoyi, Lagos</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Requested <span>09:30</span>PM</p>
-                    </div>
+                <div className="right w-[519px]">
+                  <div className="flex items-center gap-[10px] text-[14px]">
+                    <LuClock4 />
+                    <p>{job.scheduleTime}</p>
                   </div>
-                  <div className="right w-[519px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">11:00pm</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuDollarSign
-                        className="text-textGray
-"
-                      />
 
-                      <p className="text-textColor">
-                        ₦<span>35,000</span>
-                      </p>
-                    </div>
+                  <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
+                    <LuDollarSign />
+                    <p>₦{job.price}</p>
                   </div>
-                </div>
-                <div className="buttons mt-[25px] flex gap-[10px]">
-                  <button className="bg-black text-white text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleCheckBig />
-                    <span>Accept Job</span>
-                  </button>
-                  <button className="border  text-textColor text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleX />
-                    <span>Decline</span>
-                  </button>
-                  <button className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border  text-textColor text-[14px] font-medium ">
-                    <LuEye />
-                  </button>
-                </div>
-              </div>
-              {/* Card 3 */}
-              <div className="border p-4 rounded-lg mt-[16px]">
-                <div>
-                  <div className="flex justify-between">
-                    <div className="profile flex gap-[16px]">
-                      <div className="">
-                        <img
-                          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png"
-                          alt="Profile Pic"
-                          className="w-[48px] h-[48px] rounded-[24px]"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-[18px] font-semibold text-textColor">
-                          Fatima Bello
-                        </p>
-                        <p className="text-[14px] font-normal text-textGray">
-                          Client
-                        </p>
-                      </div>
-                    </div>
-                    {/* Botton */}
-                    <button className="w-[94px] h-[22px] bg-[#F0B100] text-white text-[12px] font-medium rounded-[8px] items-center justify-center">
-                      New Request
-                    </button>
-                  </div>
-                </div>
-                {/* step 2 */}
-                <p className="mt-[41px]">Plumbing - Leak Repair</p>
-                <p className="text-[14px] text-textGray font-normal">Leaking pipe under the kitchen sink needs urgent repair.</p>
-                <div className="flex">
-                  <div className="left mt-[12px] w-[519px] gap-[10px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuCalendar
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">Wed, Jan 14</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuMapPin
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Surulere, Lagos</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Requested <span>11:15</span>AM</p>
-                    </div>
-                  </div>
-                  <div className="right w-[519px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">15:00</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuDollarSign
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">
-                        ₦<span>15,000</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="buttons mt-[25px] flex gap-[10px]">
-                  <button className="bg-black text-white text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleCheckBig />
-                    <span>Accept Job</span>
-                  </button>
-                  <button className="border  text-textColor text-[14px] font-medium w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
-                    <LuCircleX />
-                    <span>Decline</span>
-                  </button>
-                  <button className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border  text-textColor text-[14px] font-medium ">
-                    <LuEye />
-                  </button>
                 </div>
               </div>
 
-              {/* <div className="border p-4 rounded-lg">
-              This is the New Requests content
-            </div> */}
-            </div>
-          )}
+              {/* Actions */}
+              {requestTab === "new" ? (
+                <div className="buttons mt-[25px] flex gap-[10px]">
+                  <button className="bg-black text-white w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
+                    <LuCircleCheckBig />
+                    <span>Accept Job</span>
+                  </button>
 
-          {requestTab === "responded" && (
-            <div>
-              {/* Card 1 */}
-              <div className="border p-4 rounded-lg">
-                <div>
-                  <div className="flex justify-between">
-                    <div className="profile flex gap-[16px]">
-                      <div className="">
-                        <img
-                          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png"
-                          alt="Profile Pic"
-                          className="w-[48px] h-[48px] rounded-[24px]"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-[18px] font-semibold text-textColor">
-                          David Brown
-                        </p>
-                        <p className="text-[14px] font-normal text-textGray">
-                          Client
-                        </p>
-                      </div>
-                    </div>
-                    {/* Botton */}
-                    <button className="w-[94px] h-[22px] bg-[#00C950] text-white text-[12px] font-medium rounded-[8px] items-center justify-center">
-                      Accepted
-                    </button>
-                  </div>
+                  <button className="border w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]">
+                    <LuCircleX />
+                    <span>Decline</span>
+                  </button>
+
+                  {/* Eye Button to open modal */}
+                  <button
+                    onClick={() => handleView(job)}
+                    className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border"
+                  >
+                    <LuEye />
+                  </button>
                 </div>
-                {/* step 2 */}
-                <p className="mt-[41px]">Plumbing - Bathroom Renovation</p>
-                <div className="flex">
-                  <div className="left mt-[12px] w-[519px] gap-[10px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuCalendar
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">Thu, Jan 15</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuMapPin
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Ikeja, Lagos</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Accepted <span>05:45</span>PM</p>
-                    </div>
-                  </div>
-                  <div className="right w-[519px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">09:00pm</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuDollarSign
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">
-                        ₦<span>45,000</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="buttons mt-[25px] flex items-center pl-[18px] bg-[#F0FDF4] rounded-[10px] text-[#016630] text-[14px] font-normal gap-[10px] w-full h-[54px] border border-[#B9F8CF]">
+              ) : job.status === "accepted" ? (
+                <div className="mt-[25px] flex items-center pl-[18px] bg-[#F0FDF4] rounded-[10px] text-[#016630] gap-[10px] h-[54px] border border-[#B9F8CF]">
                   <LuCircleCheckBig />
-                  <p>You've accepted this job. The client has been notified and this job is now in your Active Jobs.</p>
+                  <p>
+                    You've accepted this job. The client has been
+                    notified.
+                  </p>
                 </div>
-              </div> 
-              {/* Card 2 */}
-              <div className="border p-4 rounded-lg mt-[16px]">
-                <div>
-                  <div className="flex justify-between">
-                    <div className="profile flex gap-[16px]">
-                      <div className="">
-                        <img
-                          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352175/Primitive.img_1_hblo6a.png"
-                          alt="Profile Pic"
-                          className="w-[48px] h-[48px] rounded-[24px]"
-                        />
-                      </div>
-                      <div>
-                        <p className="text-[18px] font-semibold text-textColor">
-                          Michael Okonkwo
-                        </p>
-                        <p className="text-[14px] font-normal text-textGray">
-                          Client
-                        </p>
-                      </div>
-                    </div>
-                    {/* Botton */}
-                    <button className="w-[94px] h-[22px] bg-[#FB2C36] text-white text-[12px] font-medium rounded-[8px] items-center justify-center">
-                      Declined 
-                    </button>
-                  </div>
-                </div>
-                {/* step 2 */}
-                <p className="mt-[41px]">Plumbing - Water Heater Installation</p>
-                <p className="text-[14px] text-textGray font-normal">Need to install a new water heater in the bathroom. The old one stopped working.</p>
-                <div className="flex">
-                  <div className="left mt-[12px] w-[519px] gap-[10px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuCalendar
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">Fri, Jan 16</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuMapPin
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Ikoyi, Lagos</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">Requested <span>09:30</span>PM</p>
-                    </div>
-                  </div>
-                  <div className="right w-[519px]">
-                    <div className="flex items-center gap-[10px] text-[14px]">
-                      <LuClock4
-                        className="text-textGray
-"
-                      />
-                      <p className="text-textColor">11:00pm</p>
-                    </div>
-                    <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-                      <LuDollarSign
-                        className="text-textGray
-"
-                      />
-
-                      <p className="text-textColor">
-                        ₦<span>35,000</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                 <div className="buttons mt-[25px] flex items-center pl-[18px] bg-[#FEF2F2] rounded-[10px] text-[#9F0712] text-[14px] font-normal gap-[10px] w-full h-[54px] border border-[#FFC9C9]">
+              ) : (
+                <div className="mt-[25px] flex items-center pl-[18px] bg-[#FEF2F2] rounded-[10px] text-[#9F0712] gap-[10px] h-[54px] border border-[#FFC9C9]">
                   <LuCircleX />
-                  <p>You've declined this job. The client has been notified.</p>
+                  <p>
+                    You've declined this job. The client has been
+                    notified.
+                  </p>
                 </div>
-              </div>
+              )}
             </div>
-          )}
+          ))}
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedJob && (
+        <CompleteInformation
+          job={selectedJob}
+          onClose={() => setSelectedJob(null)}
+        />
+      )}
     </main>
   );
 };
