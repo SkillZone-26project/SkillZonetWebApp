@@ -14,7 +14,7 @@ import OTPVerification from "./Components/Auth/OTPVerification";
 // Artisan Dashboard
 import DashboardLayout from "./Layouts/DashboardLayout";
 import Dashboard from "./Components/Pages/dashboard/Dashboard";
-import Settings from "./Components/Pages/dashboard/Settings";
+import Settings from "./Components/Pages/dashboard/ArtisanSettings/Settings";
 import JobRequests from "./Components/Pages/dashboard/JobRequests";
 import ActiveJobs from "./Components/Pages/dashboard/ActiveJobs";
 import Messages from "./Components/Pages/dashboard/Messages";
