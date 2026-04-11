@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 
-const ForgotPassword = () => {
+const UserForgotPassword = () => {
 
   const {
     register,
@@ -127,4 +127,4 @@ const ForgotPassword = () => {
   );
 };
 
-export default ForgotPassword;
+export default UserForgotPassword;

@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Eye, EyeOff } from "lucide-react";
+import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const UserLoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -152,14 +152,17 @@ const LoginForm = () => {
           className="w-full h-[44px] flex justify-center items-center gap-2 rounded-lg bg-[#030213] text-white font-bold transition hover:bg-[#111827] disabled:opacity-70"
         >
           {isSubmitting ? "Logging in..." : "Log in"}
+          {!isSubmitting && (
+            <ArrowRight className="w-[16px] h-[16px]" />
+          )}
         </button>
 
         {/* POLICY TEXT */}
         <p className="text-center text-xs text-gray-500">
           I agree to abide by SkillZonet{" "}
-          <a href="#" className="text-[#FDBA74]">
+          <a href="#" className="text-[#FF850B]">
             Terms of Service
-          </a>
+          </a>{" "}
           and its Privacy Policy
         </p>
 
@@ -175,7 +178,7 @@ const LoginForm = () => {
           </div>
         </div>
 
-        {/* GOOGLE BUTTON */}
+       {/* GOOGLE BUTTON */}
         <button 
         type="submit"
         className="w-full h-[44px] flex items-center gap-12 px-3 py-2 bg-[#CECECE] text-black font-bold rounded-lg ">
@@ -189,16 +192,15 @@ const LoginForm = () => {
   <span className="text-sm">CONTINUE WITH GOOGLE</span>
 </button>
 
- <p className="font-bold text-[16px] leading-[16px] tracking-[0.004em] text-[#FF9429] text-center">DON’T HAVE A SKILLZONET ACCOUNT?</p>
+        <p className="font-bold text-[16px] leading-[16px] tracking-[0.004em] text-[#FF9429] text-center">DON’T HAVE A SKILLZONET ACCOUNT?</p>
         <Link
-          to="/artisan-onboarding/personal-info"
+          to="/user-onboarding/user-personal-info"
           className="w-full h-[44px] flex items-center justify-center rounded-lg bg-textColor text-white font-semibold transition hover:bg-[#111827]">
           SIGN UP
           </Link>
-
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default UserLoginForm;

@@ -1,7 +1,7 @@
 
 import { Outlet } from "react-router-dom";
 
-const SignIn = () => {
+const UserSignIn = () => {
   return (
 
     <div className="bg-white min-h-screen p-10">
@@ -25,9 +25,10 @@ const SignIn = () => {
       {/* RIGHT */}
       <div className="hidden lg:block ">
 
-        <img src="https://res.cloudinary.com/dipdvqnin/image/upload/q_auto,f_auto/v1775818930/12c20cb0fa94fa3578b59538d911107564aee7a5_j1zwyc.png" alt="login" className="w-full h-full object-cover object-center rounded-r-[16px]" />
+        <img src="https://res.cloudinary.com/dipdvqnin/image/upload/q_auto,f_auto/v1775861214/ffa819df0065d68f68973a80ce39438603c76be9_tccy8q.png" alt="login" className="w-full h-full object-cover object-center rounded-r-[16px]" />
 
       </div>
+
     </div>
 
   </div>
@@ -37,4 +38,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default UserSignIn;

@@ -46,6 +46,11 @@ import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 // User Onboarding
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
+import UserOtpVerification from "./Components/UserAuth/UserOtpVerification";
+import UserResetPassword from "./Components/UserAuth/UserResetPassword";
+import UserForgotPassword from "./Components/UserAuth/UserForgotPassword";
+import UserLoginForm from "./Components/UserAuth/UserLogInForm";
+import UserSignIn from "./Components/UserAuth/UserSignIn";
 
 function App() {
   return (
@@ -64,6 +69,14 @@ function App() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/otpVerification" element={<OTPVerification />} />
       </Route>
+
+      {/* User Auth */}
+      <Route element={<UserSignIn />}>
+        <Route path="/user-login" element={<UserLoginForm />} />
+        <Route path="/user-forgot-password" element={<UserForgotPassword />} />
+        <Route path="/user-reset-password" element={<UserResetPassword />} />
+      </Route>
+       <Route path="/user-otpVerification" element={<UserOtpVerification />} />
 
       {/* Artisan Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>

@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 
-const ResetPassword = () => {
+const UserResetPassword = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
@@ -124,7 +124,7 @@ const ResetPassword = () => {
     <div className="w-full bg-white">
       {/* LOGO */}
       <div className="flex justify-center items-center mb-8">
-        <img
+         <img
           src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
           alt="SkillZonet Logo"
           className="w-[70px] h-[75px]"
@@ -301,4 +301,4 @@ const ResetPassword = () => {
   );
 };
 
-export default ResetPassword;
+export default UserResetPassword;

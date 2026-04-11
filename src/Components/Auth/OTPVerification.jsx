@@ -129,7 +129,9 @@ await axios.post(
     <section className="min-h-screen flex items-center justify-center bg-gray-50 font-secondary px-4">
       <div>
         <div className="flex flex-col items-center justify-center"> 
- <div><img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773612741/LOGO_3_r5us13.png" alt="" /></div> 
+ <div>
+  <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1773612741/LOGO_3_r5us13.png" alt="" />
+  </div> 
         <div className="text-[30px] font-bold text-textColor">
           <p>OTP Verification</p>
         </div>

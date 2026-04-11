@@ -1,0 +1,248 @@
+import React, { useState, useEffect } from "react";
+import { FaArrowRight } from "react-icons/fa6";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { LuShieldCheck, LuSquareArrowLeft } from "react-icons/lu";
+import { IoCloseCircle } from "react-icons/io5";
+
+
+const maskEmail = (email) => {
+  if (!email) return "";
+  const [name, domain] = email.split("@");
+  if (name.length <= 4) return email;
+  return `${name.slice(0, 4)}****${name.slice(-2)}@${domain}`;
+};
+
+const UserOtpVerification = () => {
+  const navigate = useNavigate();
+  
+  const email = localStorage.getItem("verifyEmail");
+
+  // ✅ GET ROLE
+  const role = localStorage.getItem("userRole");
+
+  const [otp, setOtp] = useState(Array(6).fill(""));
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [resendLoading, setResendLoading] = useState(false);
+  const [resendMsg, setResendMsg] = useState("");
+
+  const [timeLeft, setTimeLeft] = useState(300);
+
+  useEffect(() => {
+    if (timeLeft <= 0) return;
+
+    const timer = setInterval(() => {
+      setTimeLeft((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [timeLeft]);
+
+  const formatTime = (seconds) => {
+    const min = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const sec = String(seconds % 60).padStart(2, "0");
+    return `00:${min}:${sec}`;
+  };
+
+  const handleChange = (value, index) => {
+    if (/^[0-9]?$/.test(value)) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+
+      if (value && index < 5) {
+        const next = document.getElementById(`otp-input-${index + 1}`);
+        if (next) next.focus();
+      }
+    }
+  };
+
+  const handleVerify = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      const code = otp.join("");
+
+      if (!code || code.length < 6) {
+        setError("Please enter the 6-digit OTP");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/verify-email",
+        {
+          email,
+          otp: code,
+        }
+      );
+
+      if (res.status === 200) {
+        alert("Email verified successfully");
+
+        // ✅ ROLE-BASED NAVIGATION
+        if (role === "client") {
+          navigate("/login");
+        } else if (role === "artisan") {
+          navigate("/alogin");
+        } else {
+          navigate("/login");
+        }
+
+        // ✅ CLEAR ROLE AFTER USE
+        localStorage.removeItem("userRole");
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "OTP verification failed");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // ✅ OUTSIDE handleVerify
+  const handleResend = async () => {
+    if (timeLeft > 0) return;
+
+    setError("");
+    setResendMsg("");
+    setResendLoading(true);
+
+    try {
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/resend-verification-otp",
+        { email }
+      );
+
+      if (res.status === 200) {
+        setResendMsg("A new OTP has been sent to your email.");
+        setOtp(Array(6).fill(""));
+        setTimeLeft(300);
+      }
+    } catch (err) {
+      setError(err.response?.data?.message || "Resend failed, please try again.");
+    } finally {
+      setResendLoading(false);
+    }
+  };
+
+  return (
+    <section className="min-h-screen flex items-center justify-center bg-gray-50 font-secondary px-4">
+        
+      <div>
+        
+        <div className="flex flex-col items-center justify-center">
+    
+        <img
+          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+          alt="SkillZonet Logo"
+          className="w-[70px] h-[75px]"
+        />
+      
+          
+
+          <p className="text-[30px] font-bold text-textColor">
+            OTP Verification
+          </p>
+        </div>
+
+         <div className="relative ml-[20px] group">
+          <IoCloseCircle
+            onClick={() => navigate(-1)}
+            className="text-[25px] text-textGray hover:text-textColor"
+          />
+          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
+            Close
+          </span>
+        </div>
+
+        <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg text-center">
+          <div className="flex flex-col items-center justify-center px-12 mb-4 ">
+            <div className="bg-bgActive w-[56px] h-[56px] rounded-[28px] text-active text-[30px] flex items-center justify-center">
+              <LuShieldCheck />
+            </div>
+            <h1 className="text-[14px] sm:text-[22px] font-semibold text-textColor mb-2">
+            Verification Code
+          </h1>
+
+          <p className="text-textGray text-sm mb-4">
+            We have sent the verification code to your email address
+          </p>
+          </div>
+          
+
+
+          <form onSubmit={handleVerify}>
+            <div className="flex justify-center gap-4 mb-6">
+              {otp.map((digit, i) => (
+                <div
+                  key={i}
+                  className="w-8 sm:w-10 md:w-12 flex flex-col items-center"
+                >
+                  <input
+                    id={`otp-input-${i}`}
+                    type="text"
+                    maxLength="1"
+                    value={digit}
+                    onChange={(e) => handleChange(e.target.value, i)}
+                    className="w-full h-[56px] text-center text-lg sm:text-xl bg-transparent focus:outline-none border border-black rounded-[8px]"
+                  />
+                </div>
+              ))}
+            </div>
+
+            {error && (
+              <p className="text-red-500 text-sm mb-3">{error}</p>
+            )}
+
+            {resendMsg && (
+              <p className="text-green-600 text-sm mb-3">{resendMsg}</p>
+            )}
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full flex items-center justify-center gap-2 bg-black text-white font-medium text-sm py-3 px-4 rounded-lg mb-4 disabled:opacity-50"
+            >
+              <span>{loading ? "Submitting..." : "Submit"}</span>
+              <FaArrowRight />
+            </button>
+
+            <div className="text-xs">
+              <p className="text-textGray">
+                Didn’t receive the code ?
+                <button
+                  type="button"
+                  onClick={handleResend}
+                  disabled={resendLoading || timeLeft > 0}
+                  className="text-[#FF0000] font-medium ml-1 hover:underline disabled:opacity-40"
+                >
+                  {resendLoading ? "Resending..." : "Resend via Email"}
+                </button>
+              </p>
+            </div>
+
+            <div className="mt-3 text-xs">
+              {timeLeft > 0 ? (
+                <p className="text-textGray">
+                  Code will expire in{" "}
+                  <span className="font-semibold text-[#FF0000]">
+                    {formatTime(timeLeft)}
+                  </span>
+                </p>
+              ) : (
+                <p className="text-[#FF0000] font-medium">
+                  OTP expired. Please resend.
+                </p>
+              )}
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default UserOtpVerification;

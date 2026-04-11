@@ -42,7 +42,7 @@ const onSubmit = async (data) => {
       payload
     );
 
-    if (response.status === 201) {
+    if (response.status === 200 || response.status === 201) {
       const { token, refreshToken } = response.data;
 
       localStorage.setItem("token", token);
