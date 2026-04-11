@@ -11,9 +11,45 @@ import {
 } from "react-icons/lu";
 
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
+
+  // ✅ STATE
+  const [user, setUser] = useState(null);
+
+  // ✅ FETCH USER DATA
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await axios.get(
+          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("USER DATA:", res.data);
+
+        // ✅ FIXED HERE
+        setUser(res.data);
+
+      } catch (err) {
+        console.log(
+          "❌ Failed to fetch user:",
+          err.response?.data || err.message
+        );
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   return (
     <aside
@@ -36,14 +72,21 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
           {/* PROFILE */}
           <div className="flex items-center gap-3 mb-8">
             <img
-              src="https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
+              src={
+                user?.profilePic ||
+                "https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
+              }
               alt="Profile Pic"
               className="w-[48px] h-[48px] rounded-full"
             />
 
             <div className="text-[16px] font-medium">
-              <p className="text-textColor">Sarah Johnson</p>
-              <p className="text-xs text-textGray">User</p>
+              <p className="text-textColor">
+                {user?.fullName || "Loading..."}
+              </p>
+              <p className="text-[14px] text-textGray">
+                {user?.role || ""}
+              </p>
             </div>
           </div>
 
@@ -110,7 +153,10 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* LOGOUT */}
       <div className="border-t border-textGay px-6 py-4">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/");
+          }}
           className="flex items-center gap-3 text-textRed text-sm hover:bg-red-50 px-3 py-2 rounded w-full"
         >
           <LuLogOut />

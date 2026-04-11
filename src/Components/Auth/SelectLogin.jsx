@@ -12,7 +12,7 @@ const maskEmail = (email) => {
   return `${name.slice(0, 4)}****${name.slice(-2)}@${domain}`;
 };
 
-const SelectYourRole = () => {
+const SelectLogin = () => {
   const navigate = useNavigate();
 
   const email = localStorage.getItem("verifyEmail");
@@ -86,7 +86,7 @@ const SelectYourRole = () => {
 
         <div className="w-full max-w-[900px] bg-white p-6 rounded-2xl shadow-lg text-center">
           <h1 className="text-[14px] sm:text-[24px] font-bold text-gray-900 mb-4">
-            Choose your option and get started
+            Choose your option and get login
           </h1>
 
           <div className="text-gray-800 flex flex-col items-center text-[24px] font-semibold w-full mx-auto mt-[50px] mb-[50px]">
@@ -141,39 +141,39 @@ const SelectYourRole = () => {
   );
 };
 
-export default SelectYourRole;
+export default SelectLogin;
 
-const handleVerify = async (e) => {
-  e.preventDefault();
-  const code = otp.join("");
-  const token = localStorage.getItem("token");
+// const handleVerify = async (e) => {
+//   e.preventDefault();
+//   const code = otp.join("");
+//   const token = localStorage.getItem("token");
 
-  try {
+//   try {
     // We only send 'otp' in the body because the controller 
     // gets the email from your middleware's 'req.authUser'
-    const res = await axios.post(
-      "https://backend-skillzonet.onrender.com/api/userAuth/verify-email",
-      { otp: code }, 
-      {
-        headers: { Authorization: `Bearer ${token}` }
-      }
-    );
+//     const res = await axios.post(
+//       "https://backend-skillzonet.onrender.com/api/userAuth/verify-email",
+//       { otp: code }, 
+//       {
+//         headers: { Authorization: `Bearer ${token}` }
+//       }
+//     );
 
-   if (res.data.success) {
-        alert("Email verified successfully");
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("verifyEmail");
+//    if (res.data.success) {
+//         alert("Email verified successfully");
+//         localStorage.removeItem("userRole");
+//         localStorage.removeItem("verifyEmail");
 
-        if (role === "user") navigate("/login");
-        else if (role === "artisan") navigate("/alogin");
-        else navigate("/login");
-      } else {
-        setError(res.data.message || "Verification failed");
-      }
-    } catch (err) {
-      if (err.response?.status === 401) setError("Invalid or expired OTP");
-      else setError(err.response?.data?.message || "OTP verification failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+//         if (role === "user") navigate("/login");
+//         else if (role === "artisan") navigate("/alogin");
+//         else navigate("/login");
+//       } else {
+//         setError(res.data.message || "Verification failed");
+//       }
+//     } catch (err) {
+//       if (err.response?.status === 401) setError("Invalid or expired OTP");
+//       else setError(err.response?.data?.message || "OTP verification failed");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };

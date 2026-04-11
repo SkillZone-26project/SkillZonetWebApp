@@ -19,15 +19,10 @@ const UserPersonalInformation = () => {
 
   const password = watch("password");
 
-  // ✅ ADDED STATES
   const [apiError, setApiError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  /* =========================
-      REGISTER API
-  ========================== */
 
   const registerUser = async (payload) => {
     try {
@@ -56,10 +51,6 @@ const UserPersonalInformation = () => {
     }
   };
 
-  /* =========================
-      FORM SUBMIT
-  ========================== */
-
   const onSubmit = async (data) => {
     setApiError("");
     setLoading(true);
@@ -76,14 +67,20 @@ const UserPersonalInformation = () => {
 
       console.log("📤 Payload being sent:", payload);
 
-      localStorage.setItem("verifyEmail", payload.email);
-
       const response = await registerUser(payload);
 
       console.log("✅ SUCCESS RESPONSE:", response);
 
       if (response.status === 201) {
-        console.log("🎉 Account created, OTP should be sent");
+        console.log("🎉 Account created, OTP should be sent", response.data);
+
+        // ✅ Save token
+        if (response.data?.token) {
+          localStorage.setItem("token", response.data.token);
+        }
+ if (response.data?.user?.role) {
+  localStorage.setItem("userRole", response.data.user.role);
+}
         navigate("/otpVerification");
       }
     } catch (error) {
@@ -105,7 +102,6 @@ const UserPersonalInformation = () => {
 
   return (
     <div>
-      {/* Icon & Header */}
       <div className="flex justify-center mb-4">
         <div className="bg-bgActive p-3 rounded-full text-thisMonth">
           <User className="w-[32px] h-[32px]" />
@@ -122,7 +118,6 @@ const UserPersonalInformation = () => {
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 text-left">
 
-        {/* ✅ ERROR DISPLAY */}
         {apiError && (
           <p className="text-red-500 text-sm">{apiError}</p>
         )}
@@ -135,9 +130,7 @@ const UserPersonalInformation = () => {
               First Name<span className="text-red-500">*</span>
             </label>
             <input
-              {...register("firstName", {
-                required: "First name is required",
-              })}
+              {...register("firstName", { required: "First name is required" })}
               placeholder="John"
               className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.firstName ? "ring-1 ring-red-500" : ""
@@ -155,9 +148,7 @@ const UserPersonalInformation = () => {
               Last Name<span className="text-red-500">*</span>
             </label>
             <input
-              {...register("lastName", {
-                required: "Last name is required",
-              })}
+              {...register("lastName", { required: "Last name is required" })}
               placeholder="Mensah"
               className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
                 errors.lastName ? "ring-1 ring-red-500" : ""

@@ -56,7 +56,7 @@ function ProfessionalDetails() {
           {/* Primary Skill */}
           <div>
             <label className="text-sm font-medium">
-              Primary Skill Category *
+              Primary Skill Category<span className="text-red-500">*</span>
             </label>
             <select
               {...register("primarySkill", {
@@ -95,7 +95,7 @@ function ProfessionalDetails() {
 
           {/* Years of Experience */}
           <div>
-            <label className="text-sm font-medium">Years of Experience *</label>
+            <label className="text-sm font-medium">Years of Experience <span className="text-red-500">*</span></label>
             <select
               {...register("yearsOfExperience", {
                 required: "Years of experience is required",
@@ -118,7 +118,7 @@ function ProfessionalDetails() {
 
           {/* Professional Bio */}
           <div>
-            <label className="text-sm font-medium">Professional Bio *</label>
+            <label className="text-sm font-medium">Professional Bio <span className="text-red-500">*</span></label>
             <textarea
               {...register("professionalBio", {
                 required: "Professional bio is required",
@@ -142,7 +142,7 @@ function ProfessionalDetails() {
 
           {/* Hourly Rate */}
           <div>
-            <label className="text-sm font-medium">Hourly Rate (₦) *</label>
+            <label className="text-sm font-medium">Hourly Rate (₦) <span className="text-red-500">*</span></label>
             <input
               {...register("hourlyRate", {
                 required: "Hourly rate is required",

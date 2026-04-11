@@ -1,10 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
 import { LuBell, LuMenu } from "react-icons/lu";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 const UserHeader = ({ setSidebarOpen }) => {
   const location = useLocation();
 
+  // Page titles mapping
   const pageTitles = {
     "/user/dashboard": "Client Dashboard",
     "/user/find-artisans": "Search",
@@ -17,7 +19,11 @@ const UserHeader = ({ setSidebarOpen }) => {
 
   const title = pageTitles[location.pathname] || "Dashboard";
 
-  /* DEMO NOTIFICATIONS */
+  // ✅ State for user and loading
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Demo notifications
   const [notifications] = useState([
     { id: 1, message: "Your booking with John Artisan was confirmed." },
     { id: 2, message: "A new artisan is available near you." },
@@ -25,26 +31,56 @@ const UserHeader = ({ setSidebarOpen }) => {
   ]);
 
   const notificationCount = notifications.length;
-
   const [openDropdown, setOpenDropdown] = useState(false);
   const dropdownRef = useRef(null);
 
-  /* CLOSE DROPDOWN WHEN CLICKING OUTSIDE */
+  // ✅ Fetch user from API (FIXED)
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.warn("No token found");
+          return;
+        }
+
+        const res = await axios.get(
+          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        console.log("HEADER RESPONSE:", res.data);
+
+        // ✅ FIX: handle both possible response formats
+        const userData = res.data?.user || res.data;
+
+        setUser(userData);
+      } catch (err) {
+        console.error(
+          "❌ Failed to fetch user:",
+          err.response?.data || err.message
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
-      ) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setOpenDropdown(false);
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -61,13 +97,17 @@ const UserHeader = ({ setSidebarOpen }) => {
         </button>
 
         <div>
-          <h3 className="font-semibold text-textColor text-[18px] md:text-[20px] lg:text-[24px]">           
-             {title}
+          <h3 className="font-semibold text-textColor text-[18px] md:text-[20px] lg:text-[24px]">
+            {title}
           </h3>
 
-          <p className="text-[14px] text-textGray">
-            Welcome back, <span>Sarah</span>!
-          </p>
+         <p className="text-[14px] text-textGray">
+  Welcome back,{" "}
+  <span>
+    {user?.fullName ? user.fullName.split(" ")[0] : "User"}
+  </span>
+  !
+</p>
         </div>
 
       </div>
@@ -75,9 +115,7 @@ const UserHeader = ({ setSidebarOpen }) => {
       {/* NOTIFICATION */}
       <button
         ref={dropdownRef}
-        onClick={() =>
-          notificationCount > 0 && setOpenDropdown(!openDropdown)
-        }
+        onClick={() => notificationCount > 0 && setOpenDropdown(!openDropdown)}
         className="relative flex items-center text-textColor text-[24px]"
       >
         <LuBell />

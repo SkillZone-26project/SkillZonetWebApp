@@ -41,7 +41,7 @@ const BankDetails = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         {/* Bank Name */}
         <div>
-          <label className="text-sm font-medium">Bank Name *</label>
+          <label className="text-sm font-medium">Bank Name <span className="text-red-500">*</span></label>
           <select
             {...register("bank", { required: "Bank is required" })}
             className={`w-full h-[40px] bg-bgGray rounded-[8px] px-3 text-sm outline-none focus:ring-1 focus:ring-black ${
@@ -61,7 +61,7 @@ const BankDetails = () => {
 
         {/* Account Number */}
         <div>
-          <label className="text-sm font-medium">Account Number *</label>
+          <label className="text-sm font-medium">Account Number <span className="text-red-500">*</span></label>
           <input
             {...register("accountNumber", {
               pattern: {
@@ -83,7 +83,7 @@ const BankDetails = () => {
 
         {/* Account Name */}
         <div>
-          <label className="text-sm font-medium">Account Name *</label>
+          <label className="text-sm font-medium">Account Name <span className="text-red-500">*</span></label>
           <input
             {...register("accountName", {
               required: "Account name is required",

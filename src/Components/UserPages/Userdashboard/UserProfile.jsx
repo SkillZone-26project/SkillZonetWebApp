@@ -33,7 +33,7 @@ const UserProfile = () => {
         </p>
       
         <p className='text-[14px] font-normal text-textGray mt-[5px]'>Client</p>
-        <p className='text-[14px] font-normal text-textGray mt-[5px]' >Account</p>
+        <p className='text-[14px] font-normal text-textGray mt-[5px]'>Account</p>
         <div className='flex items-center gap-[10px] text-[14px] font-normal mt-[10px]'>
           
 <HiOutlineEnvelope className='text-textGray'/>

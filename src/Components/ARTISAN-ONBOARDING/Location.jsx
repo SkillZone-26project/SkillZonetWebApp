@@ -51,7 +51,7 @@ function Location() {
           {/* State */}
           <div>
             <label className="text-sm font-medium">
-              State *
+              State <span className="text-red-500">*</span>
             </label>
             <select
               {...register("state", {
@@ -77,7 +77,7 @@ function Location() {
           {/* City/Area */}
           <div>
             <label className="text-sm font-medium">
-              City/Area *
+              City/Area <span className="text-red-500">*</span>
             </label>
             <input
               {...register("cityArea", {
@@ -99,7 +99,7 @@ function Location() {
 
           {/* Street Address */}
           <div>
-            <label className="text-sm font-medium">Street Address *</label>
+            <label className="text-sm font-medium">Street Address <span className="text-red-500">*</span></label>
             <input
               {...register("streetAddress", {
                 required:"Street Address is required"
@@ -113,7 +113,7 @@ function Location() {
           {/* State */}
           <div>
             <label className="text-sm font-medium">
-              Service Coverage Radius *
+              Service Coverage Radius <span className="text-red-500">*</span>
             </label>
             <select
               {...register("serviceCoverageRadius", {
