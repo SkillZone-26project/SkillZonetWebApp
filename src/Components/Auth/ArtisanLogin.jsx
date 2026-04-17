@@ -1,11 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ArrowRight, Eye, EyeOff } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom"; 
-import { IoCloseCircle } from "react-icons/io5";
+import { Eye, EyeOff } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+const ArtisanLogin = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ const LoginForm = () => {
     };
 
     const response = await axios.post(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/login",
+      `${import.meta.env.VITE_BASE_URL}/login`,
       payload,
       {
         headers: {
@@ -39,12 +38,10 @@ const LoginForm = () => {
     if (response.status === 200) {
       const { token, refreshToken, sessionId } = response.data;
 
-      // ✅ SAVE ONLY TOKENS
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("sessionId", sessionId);
 
-      // ✅ GO TO DASHBOARD
       navigate("/dashboard");
     }
 
@@ -59,18 +56,6 @@ const LoginForm = () => {
 
   return (
     <div className="w-full bg-white">
-      {/* leftSide */}
-
-       {/* CLOSE BUTTON */}
-                  <div className="absolute top-6 left-[30px] lg:left-[85px] group cursor-pointer">
-                    <IoCloseCircle
-                      onClick={() => navigate(-1)}
-                      className="text-[28px] text-textGray hover:text-textColor transition"
-                    />
-                    <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-                      Close
-                    </span>
-                  </div>
       {/* LOGO SECTION */}
       <div className="flex items-center justify-center mb-10">
         <img
@@ -167,17 +152,14 @@ const LoginForm = () => {
           className="w-full h-[44px] flex justify-center items-center gap-2 rounded-lg bg-[#030213] text-white font-bold transition hover:bg-[#111827] disabled:opacity-70"
         >
           {isSubmitting ? "Logging in..." : "Log in"}
-          {!isSubmitting && (
-            <ArrowRight className="w-[16px] h-[16px]" />
-          )}
         </button>
 
         {/* POLICY TEXT */}
         <p className="text-center text-xs text-gray-500">
           I agree to abide by SkillZonet{" "}
-          <a href="#" className="text-[#FF850B]">
+          <a href="#" className="text-[#FDBA74]">
             Terms of Service
-          </a>{" "}
+          </a>
           and its Privacy Policy
         </p>
 
@@ -193,24 +175,30 @@ const LoginForm = () => {
           </div>
         </div>
 
-          {/* GOOGLE BUTTON */}
+        {/* GOOGLE BUTTON */}
         <button 
         type="submit"
-        className="w-full h-[44px] flex items-center justify-center gap-[10px] lg:gap-[30px] px-3 py-2 bg-[#CECECE] text-black font-bold rounded-lg ">
+        className="w-full h-[44px] flex items-center gap-12 px-3 py-2 bg-[#CECECE] text-black font-bold rounded-lg ">
    {/* Google "G" Logo SVG  */}
-  <img src="https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1776284079/devicon_google_ojgeln.png" alt="" />
+  <svg className="w-5 h-5 " viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+  </svg>
   <span className="text-sm">CONTINUE WITH GOOGLE</span>
 </button>
 
-        <p className="font-bold text-[16px] leading-[16px] tracking-[0.004em] text-[#FF9429] text-center">DON’T HAVE A SKILLZONET ACCOUNT?</p>
+ <p className="font-bold text-[16px] leading-[16px] tracking-[0.004em] text-[#FF9429] text-center">DON’T HAVE A SKILLZONET ACCOUNT?</p>
         <Link
-          to="/user-onboarding/user-personal-info"
+          to="/artisan-onboarding/personal-info"
           className="w-full h-[44px] flex items-center justify-center rounded-lg bg-textColor text-white font-semibold transition hover:bg-[#111827]">
           SIGN UP
           </Link>
+
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default ArtisanLogin;

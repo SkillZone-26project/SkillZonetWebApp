@@ -33,7 +33,7 @@ function Nav() {
           </li>
           <li>
             {/* ✅ ONLY CHANGE HERE */}
-            <Link to="/login" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/selectLogin" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Sign In
             </Link>
             {/* signIn */}
@@ -77,7 +77,7 @@ function Nav() {
       >
         <li>
           <Link
-            to="/features"
+            to="/dashboard"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -86,7 +86,7 @@ function Nav() {
         </li>
         <li>
           <Link
-            to="/how-it-works"
+            to="/user"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -96,7 +96,7 @@ function Nav() {
         <li>
           {/* ✅ ONLY CHANGE HERE */}
           <Link
-            to="/otpVerification"
+            to="/selectLogin"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -105,7 +105,7 @@ function Nav() {
         </li>
         <li>
           <Link
-            to="/joinAs"
+            to="/selectYourRole"
             className="block bg-black text-white px-6 py-2 rounded-lg hover:bg-primary-dark transition-colors"
             onClick={() => setIsOpen(false)}
           >

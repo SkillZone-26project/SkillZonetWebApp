@@ -9,8 +9,8 @@ const SignIn = () => {
   const navigate = useNavigate();
   return (
 
-    <div className="bg-white min-h-screen p-[5px]">
-<div className="relative ml-[20px] group">
+    <div className="bg-white min-h-screen flex items-center justify-center p-4 lg:p-[55px]">
+{/* <div className="relative ml-[20px] group">
           <IoCloseCircle
             onClick={() => navigate(-1)}
             className="text-[25px] text-textGray hover:text-textColor"
@@ -18,7 +18,7 @@ const SignIn = () => {
           <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
             Close
           </span>
-        </div>
+        </div> */}
   <div className="max-w-[1200px] mx-auto bg-white rounded-[16px] shadow-lg">
 
     <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] min-h-screen lg:gap-8 lg:min-h-[750px]">
@@ -36,12 +36,11 @@ const SignIn = () => {
 
 
       {/* RIGHT */}
-      <div className="hidden lg:flex justify-center ">
+      <div className="hidden lg:block ">
 
-        <img src="https://res.cloudinary.com/dipdvqnin/image/upload/q_auto,f_auto/v1771995255/931f3a0f14c1defe284e2cdaadc35b27bbcc45f2_qsz0s4.jpg" alt="login" className="w-full h-full object-cover object-center rounded-r-[16px]" />
+        <img src="https://res.cloudinary.com/dipdvqnin/image/upload/q_auto,f_auto/v1775818930/12c20cb0fa94fa3578b59538d911107564aee7a5_j1zwyc.png" alt="login" className="w-full h-full object-cover object-center rounded-r-[16px]" />
 
       </div>
-
     </div>
 
   </div>

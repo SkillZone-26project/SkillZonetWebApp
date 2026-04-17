@@ -53,9 +53,9 @@ const SelectLogin = () => {
     localStorage.setItem("userRole", selectedRole);
 
     if (selectedRole === "user") {
-      navigate("/user-onboarding");
+      navigate("/user-login");
     } else {
-      navigate("/artisan-onboarding");
+      navigate("/login");
     }
   };
 
@@ -70,7 +70,7 @@ const SelectLogin = () => {
           />
 
           <p className="text-[20px] font-bold text-textColor">
-            Select Your Role
+            Select Your Role 
           </p>
         </div>
 
@@ -91,9 +91,9 @@ const SelectLogin = () => {
 
           <div className="text-gray-800 flex flex-col items-center text-[24px] font-semibold w-full mx-auto mt-[50px] mb-[50px]">
             <p>Find Artisan,</p>
-            <p>Work As Artisan,</p>
-            <p>collaborate and</p>
-            <p>get paid.</p>
+            <p>Connect with Client,</p>
+            <p>Collaborate and</p>
+            <p>Get Paid.</p>
           </div>
 
           <form>

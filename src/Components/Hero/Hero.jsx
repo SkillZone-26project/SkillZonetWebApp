@@ -37,85 +37,85 @@ const Hero = () => {
             <span className="flex">Near You</span>
           </h1>
 
-          {/* SEARCH AREA */}
-          <div className="flex flex-col md:flex-row items-stretch  mt-6 w-full relative">
+{/* SEARCH AREA */}
+<div className="flex flex-col md:flex-row items-stretch mt-6 w-full relative">
 
-            {/* SELECT SERVICE FIELD */}
-            <div className="relative w-[90px] md:w-[128px]">
+  {/* SELECT SERVICE FIELD */}
+  <div className="relative w-full md:w-[128px]">
+    <div
+      onClick={() => setOpenDropdown(!openDropdown)}
+      className="flex items-center justify-between border border-black md:rounded-l-[8px] rounded-t-[8px] md:rounded-t-none px-4 py-2 cursor-pointer bg-white"
+    >
+      <span className="text-sm text-black">
+        {selectedService || "Skill"}
+      </span>
+      <IoChevronDown className="text-black" />
+    </div>
+
+    {/* SIDE DROPDOWN */}
+    {openDropdown && (
+      <div className="absolute top-full left-0 mt-2 flex bg-white shadow-lg z-50 w-full md:w-auto">
+
+        {/* LEFT SIDE - SKILLS */}
+        <div className="w-1/2 md:w-40 border-r border-gray-200">
+          {Object.keys(services).map((skill) => (
+            <div
+              key={skill}
+              onMouseEnter={() => setActiveSkill(skill)}
+              className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
+                activeSkill === skill ? "bg-gray-100 font-semibold" : ""
+              }`}
+            >
+              {skill}
+            </div>
+          ))}
+        </div>
+
+        {/* RIGHT SIDE - SUBCATEGORIES */}
+        <div className="w-1/2 md:w-56">
+          {activeSkill &&
+            services[activeSkill].map((sub, index) => (
               <div
-                onClick={() => setOpenDropdown(!openDropdown)}
-                className="flex items-center justify-between border border-black rounded-l-[8px] px-4 py-2 cursor-pointer bg-white"
+                key={index}
+                onClick={() => {
+                  setSelectedService(sub);
+                  setOpenDropdown(false);
+                }}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
               >
-                <span className="text-sm text-black">
-                  {selectedService || "Skill"}
-                </span>
-                <IoChevronDown className="text-black" />
+                {sub}
               </div>
+            ))}
+        </div>
 
-              {/* SIDE DROPDOWN */}
-              {openDropdown && (
-                <div className="absolute top-full left-0 mt-2 flex bg-white  shadow-lg z-50">
+      </div>
+    )}
+  </div>
 
-                  {/* LEFT SIDE - SKILLS */}
-                  <div className="w-40 border-r border-gray-200">
-                    {Object.keys(services).map((skill) => (
-                      <div
-                        key={skill}
-                        onMouseEnter={() => setActiveSkill(skill)}
-                        className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
-                          activeSkill === skill ? "bg-gray-100 font-semibold" : ""
-                        }`}
-                      >
-                        {skill}
-                      </div>
-                    ))}
-                  </div>
+  {/* LOCATION INPUT */}
+  <div className="w-full flex items-center flex-1 border border-black px-4 py-2">
+    <CiSearch className="text-lg text-black mr-2" />
+    <input
+      type="text"
+      value={location}
+      onChange={(e) => setLocation(e.target.value)}
+      placeholder="Search location"
+      className="outline-none text-sm bg-transparent w-full"
+    />
+  </div>
 
-                  {/* RIGHT SIDE - SUBCATEGORIES */}
-                  <div className="w-56">
-                    {activeSkill &&
-                      services[activeSkill].map((sub, index) => (
-                        <div
-                          key={index}
-                          onClick={() => {
-                            setSelectedService(sub);
-                            setOpenDropdown(false);
-                          }}
-                          className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
-                        >
-                          {sub}
-                        </div>
-                      ))}
-                  </div>
+  {/* AIM BUTTON */}
+  <button className="border border-black px-4 flex items-center justify-center h-[44px] md:h-auto">
+    <AiOutlineAim />
+  </button>
 
-                </div>
-              )}
-            </div>
+  {/* SEARCH BUTTON */}
+  <button className="flex items-center justify-center bg-black text-white px-6 py-2 md:rounded-r-[8px] rounded-b-[8px] md:rounded-b-none hover:bg-gray-800 transition-colors text-[14px] w-full md:w-auto">
+    <span>Search Artisans</span>
+    <IoArrowForwardOutline className="ml-2 text-lg" />
+  </button>
 
-            {/* LOCATION INPUT */}
-            <div className=" w-[311px] flex items-center flex-1 border border-black  px-4 py-2">
-              <CiSearch className="text-lg text-black mr-2" />
-              <input
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-                placeholder="Search location"
-                className=" outline-none text-sm bg-transparent"
-              />
-            </div>
-
-            {/* AIM BUTTON */}
-            <button className="border border-black w-[36] px-4 flex items-center justify-center">
-              <AiOutlineAim />
-            </button>
-
-            {/* SEARCH BUTTON */}
-            <button className="flex items-center justify-center bg-black text-white px-6 py-2 rounded-r-[8px] hover:bg-gray-800 transition-colors text-[14px]">
-              <span>Search Artisans</span>
-              <IoArrowForwardOutline className="ml-2 text-lg" />
-            </button>
-
-          </div>
+</div>
 
           {/* FEATURES */}
           <div className="flex flex-col md:flex-row items-start md:items-center gap-6 text-[14px] mt-4">

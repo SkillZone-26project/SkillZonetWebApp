@@ -12,16 +12,19 @@ import {
 } from "react-icons/lu";
 
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const navigate = useNavigate();
   const sidebarRef = useRef();
 
+  // ✅ STATE
+  const [user, setUser] = useState(null);
+
   /* CLOSE WHEN CLICKING OUTSIDE */
   useEffect(() => {
-
     const handleClickOutside = (event) => {
       if (
         sidebarRef.current &&
@@ -36,8 +39,52 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-
   }, []);
+
+  // ✅ FETCH ARTISAN DATA (same pattern as user sidebar)
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) return;
+
+        const res = await axios.get(
+          "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("ARTISAN DATA:", res.data);
+
+        // ✅ handle response format like user sidebar
+        const userData =
+          res.data?.user ||
+          res.data?.data ||
+          res.data;
+
+        setUser(userData);
+
+      } catch (err) {
+        console.error(
+          "❌ Failed to fetch user:",
+          err.response?.data || err.message
+        );
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // ✅ FIRST NAME (same logic as user sidebar but improved)
+  const firstName =
+    user?.fullName?.split(" ")[0] ||
+    user?.name?.split(" ")[0] ||
+    user?.firstName ||
+    "Loading...";
 
   return (
     <aside
@@ -61,14 +108,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
           <div className="flex items-center gap-3 mb-8">
             <img
-              src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
+              src={
+                user?.profilePic ||
+                "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
+              }
               alt="Profile Pic"
               className="w-[48px] h-[48px] rounded-full"
             />
 
             <div className="text-[16px] font-medium">
-              <p className="text-textColor">John</p>
-              <p className="text-xs text-textGray">Artisan</p>
+              {/* ✅ FIRST NAME */}
+              <p className="text-textColor">{firstName}</p>
+
+              {/* ✅ ROLE */}
+              <p className="text-xs text-textGray">
+                {user?.role || "Artisan"}
+              </p>
             </div>
           </div>
 
@@ -106,7 +161,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       {/* LOGOUT */}
       <div className="border-t border-textGay px-6 py-4">
         <button
-          onClick={() => navigate("/")}
+          onClick={() => {
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+            navigate("/");
+          }}
           className="flex items-center gap-3 text-textRed text-sm hover:bg-red-50 px-3 py-2 rounded w-full"
         >
           <LuLogOut />

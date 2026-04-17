@@ -320,26 +320,28 @@ const UserPersonalInformation = () => {
           )}
         </div>
 
-        {/* Buttons */}
-        <div className="flex gap-3 justify-center mt-8">
-          <button
-            type="button"
-            onClick={() => navigate(-1)}
-            className="w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2"
-          >
-            <ArrowLeft size={16} />
-            Back
-          </button>
+       {/* Buttons */}
+<div className="flex flex-col md:flex-row gap-3 justify-center mt-8 w-full">
 
-          <button
-            type="submit"
-            disabled={!isValid || loading}
-            className="w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white"
-          >
-            {loading ? "Creating..." : "Create Account"}
-            <ArrowRight size={16} />
-          </button>
-        </div>
+  <button
+    type="button"
+    onClick={() => navigate(-1)}
+    className="w-full md:w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2"
+  >
+    <ArrowLeft size={16} />
+    Back
+  </button>
+
+  <button
+    type="submit"
+    disabled={!isValid || loading}
+    className="w-full md:w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white"
+  >
+    {loading ? "Creating..." : "Create Account"}
+    <ArrowRight size={16} />
+  </button>
+
+</div>
 
       </form>
     </div>

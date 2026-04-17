@@ -5,7 +5,7 @@ import { ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom"; 
 import { IoCloseCircle } from "react-icons/io5";
 
-const LoginForm = () => {
+const UserLoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const LoginForm = () => {
     };
 
     const response = await axios.post(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/login",
+      "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/login",
       payload,
       {
         headers: {
@@ -39,13 +39,11 @@ const LoginForm = () => {
     if (response.status === 200) {
       const { token, refreshToken, sessionId } = response.data;
 
-      // ✅ SAVE ONLY TOKENS
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("sessionId", sessionId);
 
-      // ✅ GO TO DASHBOARD
-      navigate("/dashboard");
+      navigate("/user"); // ✅ keep this
     }
 
   } catch (error) {
@@ -59,19 +57,18 @@ const LoginForm = () => {
 
   return (
     <div className="w-full bg-white">
-      {/* leftSide */}
-
-       {/* CLOSE BUTTON */}
-                  <div className="absolute top-6 left-[30px] lg:left-[85px] group cursor-pointer">
-                    <IoCloseCircle
-                      onClick={() => navigate(-1)}
-                      className="text-[28px] text-textGray hover:text-textColor transition"
-                    />
-                    <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-                      Close
-                    </span>
-                  </div>
       {/* LOGO SECTION */}
+
+      {/* CLOSE BUTTON */}
+            <div className="absolute top-6 left-[30px] lg:left-[85px] group cursor-pointer">
+              <IoCloseCircle
+                onClick={() => navigate(-1)}
+                className="text-[28px] text-textGray hover:text-textColor transition"
+              />
+              <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
+                Close
+              </span>
+            </div>
       <div className="flex items-center justify-center mb-10">
         <img
           src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
@@ -154,7 +151,7 @@ const LoginForm = () => {
 
         {/* FORGOT PASSWORD */}
         <Link 
-          to="/forgot-password"
+          to="/user-forgot-password"
           className="font-bold text-[12px] text-black"
         >
           Forgot password?
@@ -193,7 +190,7 @@ const LoginForm = () => {
           </div>
         </div>
 
-          {/* GOOGLE BUTTON */}
+       {/* GOOGLE BUTTON */}
         <button 
         type="submit"
         className="w-full h-[44px] flex items-center justify-center gap-[10px] lg:gap-[30px] px-3 py-2 bg-[#CECECE] text-black font-bold rounded-lg ">
@@ -204,7 +201,7 @@ const LoginForm = () => {
 
         <p className="font-bold text-[16px] leading-[16px] tracking-[0.004em] text-[#FF9429] text-center">DON’T HAVE A SKILLZONET ACCOUNT?</p>
         <Link
-          to="/user-onboarding/user-personal-info"
+          to="/user-onboarding"
           className="w-full h-[44px] flex items-center justify-center rounded-lg bg-textColor text-white font-semibold transition hover:bg-[#111827]">
           SIGN UP
           </Link>
@@ -213,4 +210,4 @@ const LoginForm = () => {
   );
 };
 
-export default LoginForm;
+export default UserLoginForm;

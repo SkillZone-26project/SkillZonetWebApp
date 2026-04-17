@@ -30,7 +30,7 @@ function ArtisanOnboarding() {
             className="w-[70px] h-[75px]"
           />
           </div>
-          <h1 className="my-2 text-textColor font-inter font-bold text-[30px] leading-[36px] tracking-[0.4px] text-center">
+          <h1 className="my-2 text-textColor font-inter font-bold text-[22px] lg:text-[30px] leading-[36px] tracking-[0.4px] text-center">
             Join as an Artisan
           </h1>
           <p className="font-inter font-normal text-base leading-6 tracking-[-0.31px] text-center text-textGray my-2">
@@ -39,7 +39,7 @@ function ArtisanOnboarding() {
         </div>
 
         {/* Progress */}
-        <div className="mb-5">
+        <div className="mb-5 ml-[10px]">
           <div className="flex justify-between my-2 font-inter font-normal text-sm leading-5 tracking-[-0.15px]">
             <p>
               Step {step} of {TOTAL_STEPS}

@@ -46,8 +46,14 @@ import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 
 // Auth (Emmanuel’s branch)
 import LoginForm from "./Components/Auth/LoginForm";
+import ArtisanLogin from "./Components/Auth/ArtisanLogin";
 import ForgotPassword from "./Components/Auth/ForgotPassword";
-import ResetPassword from "./Components/Auth/ResetPassword";
+import ResetPassword from "./Components/Auth/ResetPassword"; 
+import UserLoginForm from "./Components/UserAuth/UserLogInForm";
+import UserSignIn from "./Components/UserAuth/UserSignIn"
+import UserForgotPassword from "./Components/UserAuth/UserForgotPassword" 
+import UserResetPassword from "./Components/UserAuth/UserResetPassword" 
+import UserOtpVerification from "./Components/UserAuth/UserOtpVerification"
 
 import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile";
 
@@ -60,14 +66,26 @@ function App() {
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="features" element={<Features />} />
       {/* <Route path="signIn" element={<SignIn />} /> */}
-      <Route path="joinAs" element={<JoinAs />} />
+      <Route path="joinAs" element={<JoinAs />} /> 
+       <Route path="artisanLogin" element={<ArtisanLogin />} />
+       <Route path="userLoginForm" element={<UserLoginForm />} />
+       <Route path="userSignIn" element={<UserSignIn />} />
 
       {/* Auth Routes (Emmanuel) */}
      <Route path="/login" element={<SignIn />}>
   <Route index element={<LoginForm />} />
   <Route path="forgot-password" element={<ForgotPassword />} />
+ 
   <Route path="reset-password" element={<ResetPassword />} />
 </Route>
+
+   {/* User Auth */}
+      <Route element={<UserSignIn />}>
+        <Route path="/user-login" element={<UserLoginForm />} />
+        <Route path="/user-forgot-password" element={<UserForgotPassword />} />
+        <Route path="/user-reset-password" element={<UserResetPassword />} />
+      </Route>
+       <Route path="/user-otpVerification" element={<UserOtpVerification />} />
 
       {/* Artisan Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>

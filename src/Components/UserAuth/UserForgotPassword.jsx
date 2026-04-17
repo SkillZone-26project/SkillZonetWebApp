@@ -2,9 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-
-
-const ForgotPassword = () => {
+const UserForgotPassword = () => {
 
   const {
     register,
@@ -15,46 +13,43 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-  try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/forgot-password`,
-      {
-        email: data.email,
+    try {
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/forgot-password", // ✅ DIRECT API
+        {
+          email: data.email,
+        }
+      );
+
+      console.log("FORGOT RESPONSE:", res.data);
+
+      if (res.status === 200) {
+        localStorage.setItem("resetEmail", data.email);
+
+        alert("OTP sent to your email");
+
+        navigate(`/user-reset-password`);
       }
-    );
 
-    if (res.status === 200) {
-      // ✅ Save email for OTP step
-      localStorage.setItem("resetEmail", data.email);
+    } catch (err) {
+      console.error(err);
 
-      // ✅ Optional: small feedback
-      alert("OTP sent to your email");
-
-      // ✅ Navigate to OTP page (reset flow)
-      navigate(`/reset-otp?email=${data.email}`);
+      alert(
+        err.response?.data?.message ||
+        "Failed to send OTP"
+      );
     }
-
-  } catch (err) {
-    console.error(err);
-
-    alert(
-      err.response?.data?.message ||
-      "Failed to send OTP"
-    );
-  }
-};
+  };
 
   return (
     <div className="w-full bg-white">
       {/* LOGO SECTION */}
       <div className="flex items-center justify-center mb-10">
         <img
-
-            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
-            alt="SkillZonet Logo"
-            className="w-[70px] h-[75px]"
-          />
-
+          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+          alt="SkillZonet Logo"
+          className="w-[70px] h-[75px]"
+        />
       </div>
 
       {/* HEADER */}
@@ -62,8 +57,8 @@ const ForgotPassword = () => {
         Forgot Password
       </h1>
       <p className="font-inter font-medium text-[12px] leading-[20px] tracking-[-0.15px] text-center text-black mb-8">
-      Please enter your registered email to proceed
-    </p>
+        Please enter your registered email to proceed
+      </p>
 
       {/* FORM */}
       <form
@@ -94,16 +89,14 @@ const ForgotPassword = () => {
           )}
         </div>
 
-
         {/* SUBMIT BUTTON */}
         <button
-  type="submit"
-  disabled={isSubmitting}
-  className="w-full h-[44px] rounded-lg bg-[#0B0F1A] text-white font-semibold uppercase transition hover:bg-[#111827]"
->
-  {isSubmitting ? "Submitting..." : "Submit"}
-</button>
-
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-[44px] rounded-lg bg-[#0B0F1A] text-white font-semibold uppercase transition hover:bg-[#111827]"
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </button>
 
         {/* DIVIDER */}
         <div className="relative py-4">
@@ -119,14 +112,14 @@ const ForgotPassword = () => {
 
         {/* BACK TO LOGIN */}
         <Link
-  to="/login"
-  className="w-full h-[44px] flex items-center justify-center rounded-lg bg-[#0B0F1A] text-white font-semibold transition hover:bg-[#111827]"
->
-  Back To Log In
-</Link>
+          to="/login"
+          className="w-full h-[44px] flex items-center justify-center rounded-lg bg-[#0B0F1A] text-white font-semibold transition hover:bg-[#111827]"
+        >
+          Back To Log In
+        </Link>
       </form>
     </div>
   );
 };
 
-export default ForgotPassword;
+export default UserForgotPassword;
