@@ -1,0 +1,221 @@
+import { ArrowLeft, ArrowRight, Briefcase } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { useNavigate, useOutletContext } from "react-router-dom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+function ProfessionalDetails() {
+  const navigate = useNavigate();
+  const { formValues, setFormValues } = useOutletContext();
+
+  const [skillsList, setSkillsList] = useState([]);
+  const [subSkillsList, setSubSkillsList] = useState([]);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors, isValid },
+  } = useForm({
+    defaultValues: formValues,
+    mode: "onChange",
+  });
+
+  const selectedSkill = watch("skillId");
+
+  // ✅ FETCH SKILLS (FIXED)
+  useEffect(() => {
+    axios
+      .get("https://skillzonet-backend-auth-v1.onrender.com/api/skills/get-all")
+      .then((res) => {
+        console.log("SKILLS:", res.data);
+
+        // ✅ FIX: extract the real array
+        setSkillsList(res.data.skills || []);
+      })
+      .catch((err) => {
+        console.log("SKILLS ERROR:", err);
+        setSkillsList([]); // prevent crash
+      });
+  }, []);
+
+  // ✅ FETCH SUBSKILLS (FIXED)
+  useEffect(() => {
+    if (!selectedSkill) return;
+
+    axios
+      .get(
+        `https://skillzonet-backend-auth-v1.onrender.com/api/subSkills/get-all`
+      )
+      .then((res) => {
+        console.log("SUBSKILLS:", res.data);
+
+        // ✅ extract array
+        const allSubSkills = res.data.subSkills || [];
+
+        // ✅ filter by selected skill
+        const filtered = allSubSkills.filter(
+          (item) => item.skillId === selectedSkill
+        );
+
+        setSubSkillsList(filtered);
+      })
+      .catch((err) => {
+        console.log("SUBSKILLS ERROR:", err);
+        setSubSkillsList([]);
+      });
+  }, [selectedSkill]);
+
+  const onSubmit = (data) => {
+    const formattedSkills = (data.subSkills || []).map((id) => ({
+      subSkillId: id,
+    }));
+
+    setFormValues((prev) => ({
+      ...prev,
+      businessName: data.businessName,
+      yearsExperience: Number(data.yearsExperience),
+      skills: formattedSkills,
+    }));
+
+    navigate("/artisan-onboarding/location");
+  };
+
+  return (
+    <div>
+      {/* Icon */}
+      <div className="flex justify-center mb-4">
+        <div className="bg-bgSaved p-3 rounded-full">
+          <Briefcase className="text-saved w-6 h-6" />
+        </div>
+      </div>
+
+      {/* Title */}
+      <h2 className="text-textColor font-semibold text-[24px] leading-[32px] tracking-[0.07px] text-center">
+        Professional Details
+      </h2>
+
+      <p className="text-textGray mb-8 text-center">
+        Tell us about your expertise
+      </p>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-4">
+
+          {/* Business Name */}
+          <div>
+            <label className="text-sm font-medium">
+              Business Name (Optional)
+            </label>
+            <input
+              {...register("businessName")}
+              type="text"
+              placeholder="Mensah Plumbing Services"
+              className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm"
+            />
+          </div>
+
+          {/* Skills */}
+          <div>
+            <label className="text-sm font-medium">
+              Skills<span className="text-red-500">*</span>
+            </label>
+
+            <select
+              {...register("skillId", {
+                required: "Skill is required",
+              })}
+              className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm"
+            >
+              <option value="">Select Skill</option>
+
+              {/* ✅ SAFE MAP */}
+              {Array.isArray(skillsList) &&
+                skillsList.map((skill) => (
+                  <option key={skill.id} value={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+            </select>
+
+            {errors.skillId && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.skillId.message}
+              </p>
+            )}
+          </div>
+
+          {/* Sub Skills */}
+          <div>
+            <label className="text-sm font-medium">
+              Sub-Skills <span className="text-red-500">*</span>
+            </label>
+
+            <select
+              multiple
+              {...register("subSkills", {
+                required: "Select at least one sub-skill",
+              })}
+              className="w-full h-[80px] bg-bgGray rounded-[8px] px-[12px] text-sm"
+            >
+              {Array.isArray(subSkillsList) &&
+                subSkillsList.map((sub) => (
+                  <option key={sub.id} value={sub.id}>
+                    {sub.name}
+                  </option>
+                ))}
+            </select>
+
+            {errors.subSkills && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.subSkills.message}
+              </p>
+            )}
+          </div>
+
+          {/* Years */}
+          <div>
+            <label className="text-sm font-medium">
+              Years of Experience <span className="text-red-500">*</span>
+            </label>
+            <select
+              {...register("yearsExperience", {
+                required: "Years of experience is required",
+              })}
+              className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px]"
+            >
+              <option value="">Select experience level</option>
+              <option value="1">1-2 Years</option>
+              <option value="3">3-5 Years</option>
+              <option value="5">5+ Years</option>
+            </select>
+          </div>
+
+          {/* Bio */}
+          <textarea
+            {...register("professionalBio", {
+              required: "Professional bio is required",
+            })}
+            placeholder="Describe your experience..."
+            className="w-full bg-bgGray rounded-[8px] px-[12px]"
+          />
+
+        </div>
+
+        {/* Buttons */}
+        <div className="flex justify-center gap-3 mt-8">
+          <button type="button" onClick={() => navigate(-1)}>
+            Back
+          </button>
+
+          <button type="submit" disabled={!isValid}>
+            Continue
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
+export default ProfessionalDetails;

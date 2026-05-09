@@ -34,6 +34,7 @@ import UserSettings from "./Components/UserPages/Userdashboard/UserSettings";
 import ArtisanOnboarding from "./Components/ARTISAN-ONBOARDING/ArtisanOnboarding";
 import PersonalInformation from "./Components/ARTISAN-ONBOARDING/PersonalInformation";
 import ProfessionalDetails from "./Components/ARTISAN-ONBOARDING/ProfessionalDetails";
+import LocationSearch from "./Components/ARTISAN-ONBOARDING/LocationSearch";
 import Location from "./Components/ARTISAN-ONBOARDING/Location";
 import DocumentVerification from "./Components/ARTISAN-ONBOARDING/DocumentVerification";
 import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
@@ -120,6 +121,7 @@ function App() {
         <Route index element={<Navigate to="personal-info" replace />} />
         <Route path="personal-info" element={<PersonalInformation />} />
         <Route path="professional-details" element={<ProfessionalDetails />} />
+          <Route path="locationSearch" element={<LocationSearch />} />
         <Route path="location" element={<Location />} />
         <Route path="document-verification" element={<DocumentVerification />} />
         <Route path="bank-details" element={<BankDetails />} />

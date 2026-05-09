@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import { ArrowLeft, CreditCard, CheckCircle } from "lucide-react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 
 const BankDetails = () => {
@@ -16,10 +17,50 @@ const BankDetails = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    setFormValues((prev) => ({ ...prev, ...data }));
-    navigate("/artisan-onboarding/confirmation");
-  };
+
+
+const onSubmit = async (data) => {
+  try {
+    const payload = {
+      ...formValues,
+
+      // REQUIRED FIELDS ENSURED
+      email: formValues.email,
+      password: formValues.password,
+      fullName: formValues.fullName,
+      phone: formValues.phone,
+
+      sex: formValues.sex,
+      age: Number(formValues.age),
+
+      city: formValues.city,
+      state: formValues.state,
+      latitude: Number(formValues.latitude),
+      longitude: Number(formValues.longitude),
+      address: formValues.address,
+
+      businessName: formValues.businessName,
+      yearsExperience: Number(formValues.yearsExperience),
+
+      skills: formValues.skills,
+    };
+
+    const res = await axios.post(
+      "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/register",
+      payload
+    );
+
+    console.log("SUCCESS:", res.data);
+
+    localStorage.setItem("token", res.data.token);
+
+    navigate("/otpVerification");
+
+  } catch (err) {
+    console.error(err.response?.data || err.message);
+    alert(err.response?.data?.message || "Registration failed");
+  }
+};
 
   return (
     <div>

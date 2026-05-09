@@ -67,7 +67,7 @@ const OTPVerification = () => {
     }
 
     const res = await axios.post(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/verify-email",
+      "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/verify-email",
       { otp: code },
       { headers: { Authorization: `Bearer ${token}` } }
     );

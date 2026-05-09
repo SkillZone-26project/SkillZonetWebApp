@@ -9,13 +9,13 @@ function ArtisanOnboarding() {
   const stepMap = {
     "/artisan-onboarding/personal-info": 1,
     "/artisan-onboarding/professional-details": 2,
-    "/artisan-onboarding/location": 3,
-    "/artisan-onboarding/document-verification": 4,
-    "/artisan-onboarding/bank-details": 5,
+    "/artisan-onboarding/LocationSearch": 3,
+    "/artisan-onboarding/location": 4,
+   
   };
 
   const step = stepMap[location.pathname] || 1;
-  const TOTAL_STEPS = 5;
+  const TOTAL_STEPS = 4;
   const percent = Math.round((step / TOTAL_STEPS) * 100);
 
   return (

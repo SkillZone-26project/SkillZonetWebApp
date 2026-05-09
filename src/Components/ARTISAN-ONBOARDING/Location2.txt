@@ -22,18 +22,21 @@ function Location() {
   // 🔥 Location states
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
-  const [sessionToken, setSessionToken] = useState(null);
+  const [sessionToken, setSessionToken] = useState("");
 
-  // 🔥 Generate session token when typing starts
+  // ✅ Generate session token once user starts typing
   useEffect(() => {
-    if (query.length === 1) {
+    if (query && !sessionToken) {
       setSessionToken(uuidv4());
     }
   }, [query]);
 
   // 🔥 Debounced search
   useEffect(() => {
-    if (query.length < 3) return;
+    if (query.length < 3 || !sessionToken) {
+      setSuggestions([]);
+      return;
+    }
 
     const delay = setTimeout(async () => {
       try {
@@ -45,9 +48,11 @@ function Location() {
           }
         );
 
-        setSuggestions(res.data.suggestions || []);
+        console.log("SEARCH RESPONSE:", res.data);
+
+        setSuggestions(res.data?.suggestions || []);
       } catch (err) {
-        console.log(err);
+        console.log("Search error:", err.response?.data || err.message);
       }
     }, 400);
 
@@ -65,35 +70,37 @@ function Location() {
         }
       );
 
+      console.log("SELECT RESPONSE:", res.data);
+
       const data = res.data;
 
       // Autofill form
-      setValue("state", data.state);
-      setValue("cityArea", data.city);
-      setValue("streetAddress", data.formattedAddress);
+      setValue("state", data?.state || "");
+      setValue("cityArea", data?.city || "");
+      setValue("streetAddress", data?.formattedAddress || "");
 
       // Save globally
-     setFormValues((prev) => ({
-  ...prev,
-  city: data.city,
-  state: data.state,
-  address: data.formattedAddress,
-  latitude: data.lat,
-  longitude: data.lng,
-}));
+      setFormValues((prev) => ({
+        ...prev,
+        state: data?.state,
+        cityArea: data?.city,
+        streetAddress: data?.formattedAddress,
+        lat: data?.lat,
+        lng: data?.lng,
+      }));
 
       // Update UI
-      setQuery(data.formattedAddress);
+      setQuery(data?.formattedAddress || "");
       setSuggestions([]);
-      setSessionToken(null);
+      setSessionToken(""); // ✅ reset after selection
     } catch (err) {
-      console.log(err);
+      console.log("Select error:", err.response?.data || err.message);
     }
   };
 
   const onSubmit = (data) => {
     setFormValues((prev) => ({ ...prev, ...data }));
-    navigate("/artisan-onboarding/bank-details");
+    navigate("/artisan-onboarding/document-verification");
   };
 
   return (
@@ -117,7 +124,7 @@ function Location() {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-4">
 
-          {/* 🔥 NEW: Location Search */}
+          {/* 🔥 Location Search */}
           <div>
             <label className="text-sm font-medium">
               Search Location <span className="text-red-500">*</span>
@@ -178,7 +185,7 @@ function Location() {
               City/Area <span className="text-red-500">*</span>
             </label>
             <input
-              {...register("city", {
+              {...register("cityArea", {
                 required: "City/Area is required",
               })}
               className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm ${
@@ -193,7 +200,7 @@ function Location() {
               Street Address <span className="text-red-500">*</span>
             </label>
             <input
-              {...register("address", {
+              {...register("streetAddress", {
                 required: "Street Address is required",
               })}
               className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm"
@@ -222,11 +229,11 @@ function Location() {
           </div>
 
           {/* Buttons */}
-          <div className="flex justify-center gap-3 mt-8">
+          <div className="flex justify-center gap-3 mt-8 flex-col sm:flex-row">
             <button
               type="button"
               onClick={() => navigate(-1)}
-              className="w-[297px] h-[36px] bg-white border rounded-[8px] flex items-center justify-center gap-2"
+              className="w-full sm:w-[297px] h-[36px] bg-white border rounded-[8px] flex items-center justify-center gap-2"
             >
               <ArrowLeft size={16} />
               Back
@@ -235,7 +242,7 @@ function Location() {
             <button
               type="submit"
               disabled={!isValid}
-              className={`w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white ${
+              className={`w-full sm:w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white ${
                 !isValid && "cursor-not-allowed"
               }`}
             >
