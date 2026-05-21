@@ -94,7 +94,7 @@ const bottomFeature = heroRightFeatures[2];
           />
 
           {/* GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-[1fr_160px] gap-6 items-start mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_120px] lg:grid-cols-[1fr_160px] gap-4 lg:gap-6 items-start mt-4">
 
             {/* LEFT STACK */}
             <div className="flex flex-col gap-8">
@@ -110,7 +110,7 @@ const bottomFeature = heroRightFeatures[2];
                     <h4 className="text-base font-semibold leading-5">
                       {item.title}
                     </h4>
-                    <p className="text-sm text-gray-400 leading-4 max-w-[200px]">
+                    <p className="text-sm text-gray-400 leading-5 max-w-[220px]">
                       {item.desc}
                     </p>
                   </div>
