@@ -52,9 +52,9 @@ const Footer = () => {
 
         </div>
       </div>
-
+<hr />
       {/* BOTTOM FOOTER */}
-      <div className="border-t border-textGray ml-[55px]">
+      <div className=" ml-[55px]">
         <p className="text-center text-textGray text-[13px] py-4 px-4">
           © {new Date().getFullYear()} SkillZonet. All rights reserved. | Proudly Nigerian 🇳🇬
         </p>

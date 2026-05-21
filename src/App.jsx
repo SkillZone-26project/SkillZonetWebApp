@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./Components/Home/Home";
 import Features from "./Components/Features/Features";
 import JoinAs from "./Components/JoinAs/JoinAs";
+import Support from "./Components/Support/Support";
 
 // Auth
 import SignIn from "./Components/Auth/SignIn";
@@ -51,6 +52,9 @@ import UserResetPassword from "./Components/UserAuth/UserResetPassword";
 import UserForgotPassword from "./Components/UserAuth/UserForgotPassword";
 import UserLoginForm from "./Components/UserAuth/UserLogInForm";
 import UserSignIn from "./Components/UserAuth/UserSignIn";
+import GettingStarted from "./Components/help/GettingStarted";
+import Billing from "./Components/help/Billing";
+import Tracking from "./Components/help/Tracking";
 
 function App() {
   return (
@@ -61,6 +65,13 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/features" element={<Features />} />
       <Route path="/joinAs" element={<JoinAs />} />
+      <Route path="/support" element={<Support />} />
+
+      {/* Help Pages */}
+      <Route path="/help/getting-started" element={<GettingStarted />} />
+      <Route path="/help/billing" element={<Billing />} />
+      <Route path="/help/tracking" element={<Tracking />} />
+      
 
       {/* Auth */}
       <Route element={<SignIn />}>
