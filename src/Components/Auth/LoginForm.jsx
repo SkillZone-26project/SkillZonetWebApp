@@ -82,7 +82,7 @@ const LoginForm = () => {
 
       {/* HEADER */}
       <h1 className="font-inter font-bold text-2xl md:text-3xl text-center mb-10">
-        Sign In
+       Artisan Sign In
       </h1>
 
       {/* FORM */}
@@ -154,7 +154,7 @@ const LoginForm = () => {
 
         {/* FORGOT PASSWORD */}
         <Link 
-          to="/forgot-password"
+          to="/login/forgot-password"
           className="font-bold text-[12px] text-black"
         >
           Forgot password?

@@ -5,6 +5,7 @@ import React, {
 
 import { SlLocationPin } from "react-icons/sl";
 import { MdOutlineMyLocation } from "react-icons/md";
+ import { IoMdArrowRoundForward } from "react-icons/io";
 
 import {
   ArrowLeft,
@@ -24,7 +25,7 @@ const LocationSearch = () => {
 
   const navigate = useNavigate();
 
-  const {
+  const { 
     formValues,
     setFormValues,
   } = useOutletContext();
@@ -237,7 +238,7 @@ const LocationSearch = () => {
         <div className="flex justify-center">
 
           <p className="text-[16px] text-textGray">
-            Enter Your Street, Nearest Bustop or Address
+            Enter Your Address, Street or Nearest Bustop
           </p>
 
         </div>
@@ -250,13 +251,16 @@ const LocationSearch = () => {
           <div className="parent mt-[38px] flex relative">
 
             {/* LEFT */}
-            <div className="flex gap-[10px] items-center border-2 border-black w-full max-w-[244px] px-[8px] py-[10px] rounded-tl-[8px] rounded-bl-[8px]">
+            <div className="flex flex-col gap-[2px] sm:flex-row sm:gap-[10px] items-center border-2 border-black w-full max-w-[244px] px-[8px] py-[10px] rounded-tl-[8px] rounded-bl-[8px]">
 
-              <SlLocationPin className="text-[24px]" />
+              <SlLocationPin className="text-[14px] sm:text-[24px]" />
 
-              <p className="text-[14px] font-bold">
-                Enter Street or Address
+              <p className="text-[12px] sm:text-[14px] font-bold">
+                Enter Address or Street
               </p>
+
+             
+<IoMdArrowRoundForward className="text-[14px] sm:text-[18px]"/>
 
             </div>
 
@@ -266,7 +270,7 @@ const LocationSearch = () => {
               <input
                 type="text"
                 placeholder="Lekki Phase 1"
-                className="outline-none w-full"
+                className="outline-none w-full flex items-center"
                 {...register("location", {
                   required: true,
                 })}

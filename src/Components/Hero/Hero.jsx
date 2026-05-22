@@ -21,7 +21,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="pt-12 sm:pt-16 lg:pt-20 mt-12 sm:mt-16 lg:mt-[108px] overflow-x-hidden">
+    <section className="pt-12 sm:pt-16 lg:pt-20 mt-[60px] sm:mt-[60px] lg:mt-[108px] overflow-x-hidden">
       <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-start px-4 md:px-6 gap-6">
         
         {/* LEFT CONTENT */}

@@ -5,7 +5,7 @@ const Footer = () => {
     <footer className="bg-white text-textColor mb-[25px]">
       
       {/* TOP FOOTER */}
-      <div className="max-w-7xl mx-auto px-4 md:px-6 py-12">
+      <div className="max-w-7xl mx-auto px-4 md:px-[90px] py-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
           
           {/* LOGO + DESCRIPTION */}
@@ -54,7 +54,7 @@ const Footer = () => {
       </div>
 
       {/* BOTTOM FOOTER */}
-      <div className="border-t border-textGray ml-[55px]">
+      <div className="border-t border-textGray lg:ml-[55px]">
         <p className="text-center text-textGray text-[13px] py-4 px-4">
           © {new Date().getFullYear()} SkillZonet. All rights reserved. | Proudly Nigerian 🇳🇬
         </p>

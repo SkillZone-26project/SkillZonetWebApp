@@ -4,6 +4,7 @@ import Features from "./Components/Features/Features";
 import SignIn from "./Components/Auth/SignIn";
 import JoinAs from "./Components/JoinAs/JoinAs";
 import DashboardLayout from "./Layouts/DashboardLayout";
+import SuccessfulPage from "./Components/SuccessfulPage/SuccessfulPage"
 
 // Artisan Dashboard Pages
 import Dashboard from "./Components/Pages/dashboard/Dashboard";
@@ -66,6 +67,7 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="features" element={<Features />} />
+      <Route path="successfulPage" element={<SuccessfulPage />} />
       {/* <Route path="signIn" element={<SignIn />} /> */}
       <Route path="joinAs" element={<JoinAs />} /> 
        <Route path="artisanLogin" element={<ArtisanLogin />} />

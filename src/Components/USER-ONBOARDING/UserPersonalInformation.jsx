@@ -5,7 +5,9 @@ import { useNavigate, useOutletContext } from "react-router-dom";
 
 const UserPersonalInformation = () => {
   const navigate = useNavigate();
-  const { formValues, setFormValues } = useOutletContext();
+
+  // ❌ removed setFormValues (unused)
+  const { formValues } = useOutletContext();
 
   const {
     register,
@@ -78,10 +80,17 @@ const UserPersonalInformation = () => {
         if (response.data?.token) {
           localStorage.setItem("token", response.data.token);
         }
- if (response.data?.user?.role) {
-  localStorage.setItem("userRole", response.data.user.role);
-}
-        navigate("/otpVerification");
+
+        // ✅ Save email for OTP page (IMPORTANT FIX)
+        localStorage.setItem("verifyEmail", data.email);
+
+        // ✅ Save role
+        if (response.data?.user?.role) {
+          localStorage.setItem("userRole", response.data.user.role);
+        }
+
+        // ✅ Navigate to OTP page
+        navigate("/user-otpVerification");
       }
     } catch (error) {
       console.error("❌ FULL ERROR OBJECT:", error);
@@ -320,28 +329,28 @@ const UserPersonalInformation = () => {
           )}
         </div>
 
-       {/* Buttons */}
-<div className="flex flex-col md:flex-row gap-3 justify-center mt-8 w-full">
+        {/* Buttons */}
+        <div className="flex flex-col md:flex-row gap-3 justify-center mt-8 w-full">
 
-  <button
-    type="button"
-    onClick={() => navigate(-1)}
-    className="w-full md:w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2"
-  >
-    <ArrowLeft size={16} />
-    Back
-  </button>
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
+            className="w-full md:w-[297px] h-[36px] bg-white border border-bgGray rounded-[8px] flex items-center justify-center gap-2"
+          >
+            <ArrowLeft size={16} />
+            Back
+          </button>
 
-  <button
-    type="submit"
-    disabled={!isValid || loading}
-    className="w-full md:w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white"
-  >
-    {loading ? "Creating..." : "Create Account"}
-    <ArrowRight size={16} />
-  </button>
+          <button
+            type="submit"
+            disabled={!isValid || loading}
+            className="w-full md:w-[297px] h-[36px] rounded-[8px] flex items-center justify-center gap-2 bg-black text-white"
+          >
+            {loading ? "Creating..." : "Create Account"}
+            <ArrowRight size={16} />
+          </button>
 
-</div>
+        </div>
 
       </form>
     </div>

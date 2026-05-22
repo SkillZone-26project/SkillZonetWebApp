@@ -22,10 +22,11 @@ function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-textColor font-medium">
           <li>
-            <Link to="/dashboard" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/successfulPage" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Features
             </Link>
           </li>
+          {/* dashboard */}
           <li>
             <Link to="/user" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               How It Works

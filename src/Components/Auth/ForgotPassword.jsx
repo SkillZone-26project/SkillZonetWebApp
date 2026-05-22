@@ -1,8 +1,7 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-
-
+import { IoCloseCircle } from "react-icons/io5";
 
 const ForgotPassword = () => {
 
@@ -15,61 +14,94 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-  try {
-    const res = await axios.post(
-      `${import.meta.env.VITE_BASE_URL}/forgot-password`,
-      {
-        email: data.email,
+
+    try {
+
+      console.log("=================================");
+      console.log("🚀 FORGOT PASSWORD REQUEST");
+      console.log("=================================");
+      console.log("EMAIL:", data.email);
+
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/forgot-password",
+        {
+          email: data.email,
+        }
+      );
+
+      console.log("=================================");
+      console.log("✅ FORGOT PASSWORD SUCCESS");
+      console.log("=================================");
+      console.log("FULL RESPONSE:", res);
+      console.log("RESPONSE DATA:", res.data);
+
+      if (res.status === 200) {
+
+        localStorage.setItem("resetEmail", data.email);
+
+        alert("OTP sent to your email");
+
+        navigate("/user-reset-password");
       }
-    );
 
-    if (res.status === 200) {
-      // ✅ Save email for OTP step
-      localStorage.setItem("resetEmail", data.email);
+    } catch (err) {
 
-      // ✅ Optional: small feedback
-      alert("OTP sent to your email");
+      console.log("=================================");
+      console.log("❌ FORGOT PASSWORD ERROR");
+      console.log("=================================");
 
-      // ✅ Navigate to OTP page (reset flow)
-      navigate(`/reset-otp?email=${data.email}`);
+      console.log("FULL ERROR:", err);
+
+      console.log("ERROR MESSAGE:", err.message);
+
+      console.log("ERROR RESPONSE:", err.response);
+
+      console.log("ERROR STATUS:", err.response?.status);
+
+      console.log("ERROR DATA:", err.response?.data);
+
+      alert(
+        err.response?.data?.message ||
+        "Failed to send OTP"
+      );
     }
-
-  } catch (err) {
-    console.error(err);
-
-    alert(
-      err.response?.data?.message ||
-      "Failed to send OTP"
-    );
-  }
-};
+  };
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white relative">
+
+      {/* CLOSE BUTTON */}
+      <div className="absolute  left-0">
+        <IoCloseCircle
+          onClick={() => navigate(-1)}
+          className="text-[28px] text-textGray hover:text-black cursor-pointer"
+        />
+      </div>
+
       {/* LOGO SECTION */}
       <div className="flex items-center justify-center mb-10">
         <img
-
-            src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
-            alt="SkillZonet Logo"
-            className="w-[70px] h-[75px]"
-          />
-
+          src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
+          alt="SkillZonet Logo"
+          className="w-[70px] h-[75px]"
+        />
       </div>
 
       {/* HEADER */}
       <h1 className="font-inter font-bold text-2xl md:text-3xl text-center">
         Forgot Password
       </h1>
+
       <p className="font-inter font-medium text-[12px] leading-[20px] tracking-[-0.15px] text-center text-black mb-8">
-      Please enter your registered email to proceed
-    </p>
+        Please enter your registered email to proceed
+      </p>
 
       {/* FORM */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="space-y-6 pb-8"
       >
+
         {/* EMAIL */}
         <div>
           <input
@@ -94,22 +126,21 @@ const ForgotPassword = () => {
           )}
         </div>
 
-
         {/* SUBMIT BUTTON */}
         <button
-  type="submit"
-  disabled={isSubmitting}
-  className="w-full h-[44px] rounded-lg bg-[#0B0F1A] text-white font-semibold uppercase transition hover:bg-[#111827]"
->
-  {isSubmitting ? "Submitting..." : "Submit"}
-</button>
-
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full h-[44px] rounded-lg bg-[#0B0F1A] text-white font-semibold uppercase transition hover:bg-[#111827]"
+        >
+          {isSubmitting ? "Submitting..." : "Submit"}
+        </button>
 
         {/* DIVIDER */}
         <div className="relative py-4">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
+
           <div className="relative flex justify-center text-xs uppercase">
             <span className="bg-[#F7F7F7] px-4 text-gray-400 font-medium">
               Or
@@ -119,11 +150,12 @@ const ForgotPassword = () => {
 
         {/* BACK TO LOGIN */}
         <Link
-  to="/login"
-  className="w-full h-[44px] flex items-center justify-center rounded-lg bg-[#0B0F1A] text-white font-semibold transition hover:bg-[#111827]"
->
-  Back To Log In
-</Link>
+          to="/user-login"
+          className="w-full h-[44px] flex items-center justify-center rounded-lg bg-[#0B0F1A] text-white font-semibold transition hover:bg-[#111827]"
+        >
+          Back To Log In
+        </Link>
+
       </form>
     </div>
   );

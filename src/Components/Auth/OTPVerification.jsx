@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { FaArrowRight } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { LuShieldCheck, LuSquareArrowLeft } from "react-icons/lu";
+import { LuShieldCheck } from "react-icons/lu";
 import { IoCloseCircle } from "react-icons/io5";
 
 const maskEmail = (email) => {
@@ -16,7 +16,7 @@ const OTPVerification = () => {
   const navigate = useNavigate();
 
   const email = localStorage.getItem("verifyEmail");
-  const token = localStorage.getItem("token"); // ✅ added token
+  const token = localStorage.getItem("token");
   const role = localStorage.getItem("userRole");
 
   const [otp, setOtp] = useState(Array(6).fill(""));
@@ -26,7 +26,6 @@ const OTPVerification = () => {
   const [resendMsg, setResendMsg] = useState("");
   const [timeLeft, setTimeLeft] = useState(300);
 
-  // ✅ Countdown timer
   useEffect(() => {
     if (timeLeft <= 0) return;
     const timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
@@ -53,50 +52,51 @@ const OTPVerification = () => {
   };
 
   const handleVerify = async (e) => {
-  e.preventDefault();
-  setError("");
-  setLoading(true);
+    e.preventDefault();
+    setError("");
+    setLoading(true);
 
-  try {
-    const code = otp.join("");
+    try {
+      const code = otp.join("");
 
-    if (!code || code.length < 6) {
-      setError("Please enter the 6-digit OTP");
+      if (!code || code.length < 6) {
+        setError("Please enter the 6-digit OTP");
+        setLoading(false);
+        return;
+      }
+
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/verify-email",
+        { otp: code },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (res.status === 200) {
+        console.log("Email verified successfully");
+
+        // IMPORTANT: keep role before clearing storage
+        const savedRole = role;
+
+        localStorage.removeItem("verifyEmail");
+        localStorage.removeItem("userRole");
+
+        // 👉 send role to success page (IMPORTANT FIX)
+        navigate("/successfulPage", {
+          state: { role: savedRole },
+        });
+      } else {
+        setError(res.data.message || "Verification failed");
+      }
+    } catch (err) {
+      if (err.response?.status === 401) {
+        setError("Invalid or expired OTP");
+      } else {
+        setError(err.response?.data?.message || "OTP verification failed");
+      }
+    } finally {
       setLoading(false);
-      return;
     }
-
-    const res = await axios.post(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/verify-email",
-      { otp: code },
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-
-    console.log("VERIFY RESPONSE:", res.data);
-
-    // ✅ FIXED CONDITION
-    if (res.status === 200) {
-      console.log("Email verified successfully");
-
-      const savedRole = localStorage.getItem("userRole");
-      console.log("ROLE:", savedRole);
-
-      if (savedRole === "user") navigate("/user-login");
-      else if (savedRole === "artisan") navigate("/login");
-      else navigate("/");
-
-      localStorage.removeItem("userRole");
-      localStorage.removeItem("verifyEmail");
-    } else {
-      setError(res.data.message || "Verification failed");
-    }
-  } catch (err) {
-    if (err.response?.status === 401) setError("Invalid or expired OTP");
-    else setError(err.response?.data?.message || "OTP verification failed");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   const handleResend = async () => {
     if (timeLeft > 0) return;
@@ -107,9 +107,9 @@ const OTPVerification = () => {
 
     try {
       const res = await axios.post(
-        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/resend-verification-otp", 
+        "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/resend-verification-otp",
         {},
-        { headers: { Authorization: `Bearer ${token}` } } // ✅ token header
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (res.status === 200) {
@@ -118,7 +118,9 @@ const OTPVerification = () => {
         setTimeLeft(300);
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Resend failed, please try again.");
+      setError(
+        err.response?.data?.message || "Resend failed, please try again."
+      );
     } finally {
       setResendLoading(false);
     }
@@ -133,7 +135,9 @@ const OTPVerification = () => {
             alt="SkillZonet Logo"
             className="w-[70px] h-[75px]"
           />
-          <p className="text-[30px] font-bold text-textColor">OTP Verification</p>
+          <p className="text-[30px] font-bold text-textColor">
+            OTP Verification
+          </p>
         </div>
 
         <div className="relative ml-[20px] group">
@@ -141,9 +145,6 @@ const OTPVerification = () => {
             onClick={() => navigate(-1)}
             className="text-[25px] text-textGray hover:text-textColor"
           />
-          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-            Close
-          </span>
         </div>
 
         <div className="w-full max-w-md bg-white p-6 rounded-2xl shadow-lg text-center">
@@ -156,9 +157,12 @@ const OTPVerification = () => {
           <h1 className="text-[14px] sm:text-[22px] font-semibold text-gray-900 mb-4">
             Verification Code
           </h1>
+
           <p className="text-gray-800 text-sm font-medium mb-3">
             We have sent the verification code to your email address
           </p>
+
+          <p className="text-xs text-gray-500 mb-4">{maskEmail(email)}</p>
 
           <form onSubmit={handleVerify}>
             <div className="flex justify-center gap-4 mb-6">
@@ -170,21 +174,23 @@ const OTPVerification = () => {
                     maxLength="1"
                     value={digit}
                     onChange={(e) => handleChange(e.target.value, i)}
-                    className="w-full h-[56px] text-center text-lg sm:text-xl bg-transparent focus:outline-none border border-black rounded-[8px]"
+                    className="w-full h-[56px] text-center text-lg sm:text-xl border border-black rounded-[8px]"
                   />
                 </div>
               ))}
             </div>
 
             {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-            {resendMsg && <p className="text-green-600 text-sm mb-3">{resendMsg}</p>}
+            {resendMsg && (
+              <p className="text-green-600 text-sm mb-3">{resendMsg}</p>
+            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full flex items-center justify-center gap-2 bg-black text-white font-medium text-sm py-3 px-4 rounded-lg mb-4 disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg mb-4"
             >
-              <span>{loading ? "Submitting..." : "Submit"}</span>
+              {loading ? "Submitting..." : "Submit"}
               <FaArrowRight />
             </button>
 
@@ -195,7 +201,7 @@ const OTPVerification = () => {
                   type="button"
                   onClick={handleResend}
                   disabled={resendLoading || timeLeft > 0}
-                  className="text-[#FF0000] font-medium ml-1 hover:underline disabled:opacity-40 hover:text-500-red"
+                  className="text-[#FF0000] font-medium ml-1"
                 >
                   {resendLoading ? "Resending..." : "Resend via Email"}
                 </button>
@@ -206,10 +212,14 @@ const OTPVerification = () => {
               {timeLeft > 0 ? (
                 <p className="text-textGray">
                   Code will expire in{" "}
-                  <span className="font-semibold text-[#FF0000]">{formatTime(timeLeft)}</span>
+                  <span className="font-semibold text-[#FF0000]">
+                    {formatTime(timeLeft)}
+                  </span>
                 </p>
               ) : (
-                <p className="text-[#FF0000] font-medium">OTP expired. Please resend.</p>
+                <p className="text-[#FF0000] font-medium">
+                  OTP expired. Please resend.
+                </p>
               )}
             </div>
           </form>

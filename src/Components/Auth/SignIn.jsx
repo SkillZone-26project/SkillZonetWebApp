@@ -10,23 +10,14 @@ const SignIn = () => {
   return (
 
     <div className="bg-white min-h-screen flex items-center justify-center p-4 lg:p-[55px]">
-{/* <div className="relative ml-[20px] group">
-          <IoCloseCircle
-            onClick={() => navigate(-1)}
-            className="text-[25px] text-textGray hover:text-textColor"
-          />
-          <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-black text-white text-xs px-2 py-1 rounded">
-            Close
-          </span>
-        </div> */}
-  <div className="max-w-[1200px] mx-auto bg-white rounded-[16px] shadow-lg">
+ <div className="w-full max-w-[1100px] bg-white rounded-[16px] shadow-lg">
 
-    <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] min-h-screen lg:gap-8 lg:min-h-[750px]">
+     <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] min-h-[600px] lg:min-h-[750px]">
 
       {/* LEFT */}
-      <div className="bg-[#ffffff] flex justify-center items-center mx-auto px-8 ">
+       <div className="bg-[#ffffff] flex justify-center items-center px-6 lg:px-8 py-8">
 
-        <div className="w-full max-w-[420px] px-6 ">
+       <div className="w-full max-w-[420px]">
 
           <Outlet />
 

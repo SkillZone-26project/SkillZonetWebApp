@@ -9,7 +9,7 @@ function ArtisanOnboarding() {
   const stepMap = {
     "/artisan-onboarding/personal-info": 1,
     "/artisan-onboarding/professional-details": 2,
-    "/artisan-onboarding/LocationSearch": 3,
+    "/artisan-onboarding/locationSearch": 3,
     "/artisan-onboarding/location": 4,
    
   };

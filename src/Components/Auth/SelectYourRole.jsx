@@ -89,7 +89,7 @@ const SelectYourRole = () => {
             Choose your option and get started
           </h1>
 
-          <div className="text-gray-800 flex flex-col items-center text-[24px] font-semibold w-full mx-auto mt-[50px] mb-[50px]">
+          <div className="text-gray-800 flex flex-col items-center text-[18px] lg:text-[24px] font-semibold w-full mx-auto mt-[30px] lg:mt-[50px] mb-[50px]">
             <p>Find Artisan,</p>
             <p>Work As Artisan,</p>
             <p>collaborate and</p>
@@ -97,12 +97,12 @@ const SelectYourRole = () => {
           </div>
 
           <form>
-            <div className="flex w-full border border-black rounded-[14px] overflow-hidden mb-[40px] text-[20px] font-normal">
+            <div className="flex w-full border border-black rounded-[14px] overflow-hidden mb-[40px] text-[15px] sm:text-[18px] lg:text-[20px] font-semibold">
 
               <button
                 type="button"
                 onClick={() => setSelectedRole("user")}
-                className={`flex-1 h-[50px] flex items-center text-[18px] justify-center ${
+                className={`flex-1 h-[50px] flex items-center justify-center ${
                   selectedRole === "user"
                     ? "bg-black text-white"
                     : "hover:bg-black hover:text-white"
@@ -114,13 +114,13 @@ const SelectYourRole = () => {
               <button
                 type="button"
                 onClick={() => setSelectedRole("artisan")}
-                className={`flex-1 h-[50px] flex items-center text-[18px] justify-center border-l border-black ${
+                className={`flex-1 h-[50px] flex items-center justify-center border-l border-black ${
                   selectedRole === "artisan"
                     ? "bg-black text-white"
                     : "hover:bg-black hover:text-white"
                 }`}
               >
-                I’m a Artisan
+                I’m an Artisan
               </button>
 
             </div>

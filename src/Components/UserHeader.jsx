@@ -46,7 +46,7 @@ const UserHeader = ({ setSidebarOpen }) => {
         }
 
         const res = await axios.get(
-          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
+          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/get-profile",
           {
             headers: { Authorization: `Bearer ${token}` },
           }

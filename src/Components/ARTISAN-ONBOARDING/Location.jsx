@@ -24,7 +24,8 @@ function Location() {
   // ✅ SUBMIT TO BACKEND
   const onSubmit = async (data) => {
 
-    // ✅ FINAL FORM DATA
+    // ✅ IMPORTANT
+    // Merge ALL previous pages correctly
     const finalData = {
       ...formValues,
       ...data,
@@ -82,39 +83,78 @@ function Location() {
 
     console.log("=================================");
 
+    // ✅ CHECK MISSING FIELDS
+    if (
+      !finalData.email ||
+      !finalData.password ||
+      !finalData.fullName ||
+      !finalData.phone ||
+      !finalData.sex ||
+      !finalData.age
+    ) {
+
+      console.log("❌ SOME REQUIRED FIELDS ARE MISSING");
+
+      console.log({
+        email: finalData.email,
+        password: finalData.password,
+        fullName: finalData.fullName,
+        phone: finalData.phone,
+        sex: finalData.sex,
+        age: finalData.age,
+      });
+
+      alert(
+        "Some required fields are missing. Please go back and complete Personal Information page."
+      );
+
+      return;
+    }
+
     try {
+
+      // ✅ PAYLOAD
+      const payload = {
+        email: finalData.email,
+        password: finalData.password,
+        fullName: finalData.fullName,
+
+        // ✅ BACKEND ENUM
+        sex: String(
+          finalData.sex
+        ).toUpperCase(),
+
+        age: Number(finalData.age),
+
+        phone: finalData.phone,
+
+        city: finalData.city,
+        state: finalData.state,
+
+        latitude: Number(finalData.latitude),
+        longitude: Number(finalData.longitude),
+
+        address: finalData.address,
+
+        skills: finalData.skills || [],
+
+        businessName:
+          finalData.businessName || "",
+
+        yearsExperience: Number(
+          finalData.yearsExperience
+        ),
+      };
+
+      console.log("=================================");
+      console.log("✅ CLEAN PAYLOAD");
+      console.log(payload);
+      console.log("=================================");
 
       // ✅ BACKEND REQUEST
       const res = await axios.post(
         "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/register",
-        {
-          email: finalData.email,
-          password: finalData.password,
-          fullName: finalData.fullName,
-
-          // ✅ MUST MATCH BACKEND ENUM
-          sex: finalData.sex?.toUpperCase(),
-
-          age: Number(finalData.age),
-
-          phone: finalData.phone,
-
-          city: finalData.city,
-          state: finalData.state,
-
-          latitude: Number(finalData.latitude),
-          longitude: Number(finalData.longitude),
-
-          address: finalData.address,
-
-          skills: finalData.skills || [],
-
-          businessName: finalData.businessName,
-
-          yearsExperience: Number(
-            finalData.yearsExperience
-          ),
-        }
+        payload
       );
 
       console.log("=================================");

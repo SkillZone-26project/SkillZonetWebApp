@@ -21,42 +21,94 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [user, setUser] = useState(null);
 
   // ✅ FETCH USER DATA
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
+ // ✅ FETCH USER DATA
+useEffect(() => {
+  const fetchUser = async () => {
+    try {
+      console.log("=================================");
+      console.log("🚀 FETCHING USER PROFILE...");
+      console.log("=================================");
 
-        const res = await axios.get(
-          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+      const token = localStorage.getItem("token");
 
-        console.log("USER DATA:", res.data);
+      const device = navigator.platform || "Web Browser";
+      const userAgent = navigator.userAgent || "Unknown User Agent";
 
-        // ✅ FIXED HERE
-        setUser(res.data);
+      console.log("✅ TOKEN:", token);
 
-      } catch (err) {
-        console.log(
-          "❌ Failed to fetch user:",
-          err.response?.data || err.message
-        );
-      }
-    };
+      console.log("✅ DEVICE:", device);
 
-    fetchUser();
-  }, []);
+      console.log("✅ USER AGENT:", userAgent);
+
+      console.log("=================================");
+
+      const res = await axios.get(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/get-profile",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "x-device": device,
+            "x-user-agent": userAgent,
+          },
+        }
+      );
+
+      console.log("=================================");
+      console.log("✅ USER PROFILE FETCHED");
+      console.log("=================================");
+      console.log("STATUS:", res.status);
+      console.log("FULL RESPONSE:", res);
+      console.log("RESPONSE DATA:", res.data);
+
+      // ✅ SUPPORT DIFFERENT RESPONSE STRUCTURES
+      const userData =
+        res.data?.data ||
+        res.data?.user ||
+        res.data;
+
+      console.log("✅ FINAL USER DATA:", userData);
+
+      setUser(userData);
+
+    } catch (err) {
+
+      console.log("=================================");
+      console.log("❌ USER PROFILE FETCH FAILED");
+      console.log("=================================");
+
+      console.log("❌ FULL ERROR:", err);
+
+      console.log("❌ ERROR MESSAGE:", err.message);
+
+      console.log("❌ ERROR RESPONSE:", err.response);
+
+      console.log("❌ ERROR STATUS:", err.response?.status);
+
+      console.log("❌ ERROR DATA:", err.response?.data);
+
+      console.log("❌ ERROR HEADERS:", err.response?.headers);
+
+      console.log("❌ BACKEND MESSAGE:",
+        err.response?.data?.message
+      );
+
+      console.log("❌ BACKEND DETAILS:",
+        err.response?.data?.details
+      );
+
+      console.log("=================================");
+    }
+  };
+
+  fetchUser();
+}, []);
 
   return (
     <aside
       className={`fixed lg:static z-50 top-0 left-0 h-screen w-[288px] bg-white text-textColor flex flex-col justify-between border-r-2 border-textGay transform transition-transform duration-300
       ${sidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
     >
-      
+
       {/* LOGO */}
       <div className="">
         <img
@@ -77,13 +129,14 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 "https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
               }
               alt="Profile Pic"
-              className="w-[48px] h-[48px] rounded-full"
+              className="w-[48px] h-[48px] rounded-full object-cover"
             />
 
             <div className="text-[16px] font-medium">
               <p className="text-textColor">
-                {user?.fullName || "Loading..."}
+               {user?.fullName || "User"}
               </p>
+
               <p className="text-[14px] text-textGray">
                 {user?.role || ""}
               </p>
@@ -169,7 +222,13 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
 
 /* REUSABLE NAV LINK */
-const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
+const SidebarLink = ({
+  to,
+  icon,
+  label,
+  end,
+  setSidebarOpen,
+}) => {
   return (
     <NavLink
       to={to}

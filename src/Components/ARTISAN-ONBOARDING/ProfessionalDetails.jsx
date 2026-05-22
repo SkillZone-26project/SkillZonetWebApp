@@ -1,53 +1,97 @@
-import { ArrowLeft, ArrowRight, Briefcase } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Briefcase,
+} from "lucide-react";
+
 import { useForm } from "react-hook-form";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { useEffect, useState } from "react";
+
+import {
+  useNavigate,
+  useOutletContext,
+} from "react-router-dom";
+
+import {
+  useEffect,
+  useState,
+} from "react";
+
 import axios from "axios";
 
 function ProfessionalDetails() {
-  const navigate = useNavigate();
-  const { formValues, setFormValues } = useOutletContext();
 
-  const [skillsList, setSkillsList] = useState([]);
-  const [subSkillsList, setSubSkillsList] = useState([]);
+  const navigate = useNavigate();
+
+  const {
+    formValues,
+    setFormValues,
+  } = useOutletContext();
+
+  const [skillsList, setSkillsList] =
+    useState([]);
+
+  const [subSkillsList, setSubSkillsList] =
+    useState([]);
 
   // ✅ Dropdown state
-  const [showSubSkillDropdown, setShowSubSkillDropdown] =
-    useState(false);
+  const [
+    showSubSkillDropdown,
+    setShowSubSkillDropdown,
+  ] = useState(false);
 
   // ✅ Selected subskills
-  const [selectedSubSkills, setSelectedSubSkills] = useState([]);
+  const [
+    selectedSubSkills,
+    setSelectedSubSkills,
+  ] = useState([]);
 
   const {
     register,
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isValid },
+    formState: {
+      errors,
+      isValid,
+    },
   } = useForm({
     defaultValues: formValues,
     mode: "onChange",
   });
 
-  const selectedSkill = watch("skillId");
+  const selectedSkill =
+    watch("skillId");
 
   // ✅ FETCH SKILLS
   useEffect(() => {
+
     axios
       .get(
         "https://skillzonet-backend-auth-v1.onrender.com/api/skills/get-all"
       )
       .then((res) => {
-        setSkillsList(res.data.skills || []);
+
+        setSkillsList(
+          res.data.skills || []
+        );
+
       })
       .catch((err) => {
-        console.log("SKILLS ERROR:", err);
+
+        console.log(
+          "SKILLS ERROR:",
+          err
+        );
+
         setSkillsList([]);
+
       });
+
   }, []);
 
   // ✅ FETCH SUBSKILLS
   useEffect(() => {
+
     if (!selectedSkill) return;
 
     axios
@@ -55,42 +99,77 @@ function ProfessionalDetails() {
         "https://skillzonet-backend-auth-v1.onrender.com/api/subSkills/get-all"
       )
       .then((res) => {
-        const allSubSkills = res.data.subSkills || [];
+
+        const allSubSkills =
+          res.data.subSkills || [];
 
         // ✅ FILTER USING skillId
-        const filtered = allSubSkills.filter(
-          (item) => item.skillId === selectedSkill
-        );
+        const filtered =
+          allSubSkills.filter(
+            (item) =>
+              item.skillId ===
+              selectedSkill
+          );
 
         setSubSkillsList(filtered);
 
         // ✅ RESET WHEN SKILL CHANGES
         setSelectedSubSkills([]);
-        setValue("subSkills", []);
-        setValue("subSkillsDisplay", "");
+
+        setValue(
+          "subSkills",
+          []
+        );
+
+        setValue(
+          "subSkillsDisplay",
+          ""
+        );
+
       })
       .catch((err) => {
-        console.log("SUBSKILLS ERROR:", err);
+
+        console.log(
+          "SUBSKILLS ERROR:",
+          err
+        );
+
         setSubSkillsList([]);
+
       });
+
   }, [selectedSkill, setValue]);
 
   // ✅ HANDLE SINGLE CHECKBOX
-  const handleSubSkillChange = (sub) => {
+  const handleSubSkillChange = (
+    sub
+  ) => {
+
     let updated = [];
 
-    const alreadyExists = selectedSubSkills.find(
-      (item) => item.id === sub.id
-    );
+    const alreadyExists =
+      selectedSubSkills.find(
+        (item) =>
+          item.id === sub.id
+      );
 
     if (alreadyExists) {
-      // remove
-      updated = selectedSubSkills.filter(
-        (item) => item.id !== sub.id
-      );
+
+      // REMOVE
+      updated =
+        selectedSubSkills.filter(
+          (item) =>
+            item.id !== sub.id
+        );
+
     } else {
-      // add
-      updated = [...selectedSubSkills, sub];
+
+      // ADD
+      updated = [
+        ...selectedSubSkills,
+        sub,
+      ];
+
     }
 
     setSelectedSubSkills(updated);
@@ -98,15 +177,25 @@ function ProfessionalDetails() {
     // ✅ STORE IDS FOR BACKEND
     setValue(
       "subSkills",
-      updated.map((item) => item.id),
-      { shouldValidate: true }
+      updated.map(
+        (item) => item.id
+      ),
+      {
+        shouldValidate: true,
+      }
     );
 
     // ✅ DISPLAY NAMES
     setValue(
       "subSkillsDisplay",
-      updated.map((item) => item.name).join(", "),
-      { shouldValidate: true }
+      updated
+        .map(
+          (item) => item.name
+        )
+        .join(", "),
+      {
+        shouldValidate: true,
+      }
     );
 
     // ✅ CLOSE DROPDOWN
@@ -118,34 +207,56 @@ function ProfessionalDetails() {
 
     // UNSELECT ALL
     if (
-      selectedSubSkills.length === subSkillsList.length
+      selectedSubSkills.length ===
+      subSkillsList.length
     ) {
+
       setSelectedSubSkills([]);
 
-      setValue("subSkills", [], {
-        shouldValidate: true,
-      });
+      setValue(
+        "subSkills",
+        [],
+        {
+          shouldValidate: true,
+        }
+      );
 
-      setValue("subSkillsDisplay", "", {
-        shouldValidate: true,
-      });
+      setValue(
+        "subSkillsDisplay",
+        "",
+        {
+          shouldValidate: true,
+        }
+      );
 
       return;
     }
 
     // SELECT ALL
-    setSelectedSubSkills(subSkillsList);
+    setSelectedSubSkills(
+      subSkillsList
+    );
 
     setValue(
       "subSkills",
-      subSkillsList.map((item) => item.id),
-      { shouldValidate: true }
+      subSkillsList.map(
+        (item) => item.id
+      ),
+      {
+        shouldValidate: true,
+      }
     );
 
     setValue(
       "subSkillsDisplay",
-      subSkillsList.map((item) => item.name).join(", "),
-      { shouldValidate: true }
+      subSkillsList
+        .map(
+          (item) => item.name
+        )
+        .join(", "),
+      {
+        shouldValidate: true,
+      }
     );
 
     // CLOSE DROPDOWN
@@ -156,27 +267,46 @@ function ProfessionalDetails() {
   const onSubmit = (data) => {
 
     // ✅ FORMAT FOR BACKEND
-    const formattedSkills = (data.subSkills || []).map(
-      (id) => ({
-        subSkillId: id,
-      })
-    );
+    const formattedSkills =
+      (data.subSkills || []).map(
+        (id) => ({
+          subSkillId: id,
+        })
+      );
 
-    setFormValues((prev) => ({
-      ...prev,
+    const professionalData = {
 
-      businessName: data.businessName,
+      businessName:
+        data.businessName,
 
       // ✅ NUMBER
-      yearsExperience: Number(
-        data.yearsExperience
-      ),
+      yearsExperience:
+        Number(
+          data.yearsExperience
+        ),
 
       // ✅ BACKEND FORMAT
-      skills: formattedSkills,
+      skills:
+        formattedSkills,
+    };
+
+    // ✅ FIXED
+    setFormValues((prev) => ({
+      ...prev,
+      ...professionalData,
     }));
 
-    navigate("/artisan-onboarding/locationSearch");
+    // ✅ DEBUG
+    console.log("=================================");
+    console.log(
+      "✅ PROFESSIONAL DETAILS SAVED"
+    );
+    console.log(professionalData);
+    console.log("=================================");
+
+    navigate(
+      "/artisan-onboarding/locationSearch"
+    );
   };
 
   return (
@@ -184,9 +314,13 @@ function ProfessionalDetails() {
 
       {/* Icon */}
       <div className="flex justify-center mb-4">
+
         <div className="bg-bgSaved p-3 rounded-full">
+
           <Briefcase className="text-saved w-6 h-6" />
+
         </div>
+
       </div>
 
       {/* Title */}
@@ -199,56 +333,83 @@ function ProfessionalDetails() {
       </p>
 
       {/* Form */}
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+      >
 
         <div className="space-y-4">
 
           {/* Business Name */}
           <div>
+
             <label className="text-sm font-medium">
               Business Name (Optional)
             </label>
 
             <input
-              {...register("businessName")}
+              {...register(
+                "businessName"
+              )}
               placeholder="Mensah Plumbing Services"
               className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px]"
             />
+
           </div>
 
           {/* Skills */}
           <div>
+
             <label className="text-sm font-medium">
               Skills
-              <span className="text-red-500">*</span>
+              <span className="text-red-500">
+                *
+              </span>
             </label>
 
             <select
-              {...register("skillId", {
-                required: "Skill is required",
-              })}
+              {...register(
+                "skillId",
+                {
+                  required:
+                    "Skill is required",
+                }
+              )}
               className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px]"
             >
+
               <option value="">
                 Select Skill
               </option>
 
-              {Array.isArray(skillsList) &&
-                skillsList.map((skill) => (
-                  <option
-                    key={skill.id}
-                    value={skill.id}
-                  >
-                    {skill.name}
-                  </option>
-                ))}
+              {Array.isArray(
+                skillsList
+              ) &&
+                skillsList.map(
+                  (skill) => (
+                    <option
+                      key={skill.id}
+                      value={
+                        skill.id
+                      }
+                    >
+                      {skill.name}
+                    </option>
+                  )
+                )}
+
             </select>
 
             {errors.skillId && (
+
               <p className="text-red-500 text-xs">
-                {errors.skillId.message}
+                {
+                  errors.skillId
+                    .message
+                }
               </p>
+
             )}
+
           </div>
 
           {/* SUBSKILLS */}
@@ -256,7 +417,9 @@ function ProfessionalDetails() {
 
             <label className="text-sm font-medium">
               Sub-Skills
-              <span className="text-red-500">*</span>
+              <span className="text-red-500">
+                *
+              </span>
             </label>
 
             {/* Dropdown Header */}
@@ -268,6 +431,7 @@ function ProfessionalDetails() {
               }
               className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] flex items-center justify-between cursor-pointer"
             >
+
               <p className="text-sm text-gray-500">
                 Select All Subskills You Can Offer
               </p>
@@ -280,10 +444,12 @@ function ProfessionalDetails() {
                     : ""
                 }`}
               />
+
             </div>
 
             {/* Dropdown List */}
             {showSubSkillDropdown && (
+
               <div className="max-h-[120px] overflow-y-auto border rounded p-2 mt-1 bg-white">
 
                 {/* SELECT ALL */}
@@ -292,47 +458,65 @@ function ProfessionalDetails() {
                   <input
                     type="checkbox"
                     checked={
-                      subSkillsList.length > 0 &&
+                      subSkillsList.length >
+                        0 &&
                       selectedSubSkills.length ===
                         subSkillsList.length
                     }
-                    onChange={handleSelectAll}
+                    onChange={
+                      handleSelectAll
+                    }
                   />
 
                   All
+
                 </label>
 
                 {/* SUBSKILLS */}
-                {subSkillsList.map((sub) => (
-                  <label
-                    key={sub.id}
-                    className="flex items-center gap-2 text-sm py-1"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={
-                        !!selectedSubSkills.find(
-                          (item) =>
-                            item.id === sub.id
-                        )
-                      }
-                      onChange={() =>
-                        handleSubSkillChange(sub)
-                      }
-                    />
+                {subSkillsList.map(
+                  (sub) => (
+                    <label
+                      key={sub.id}
+                      className="flex items-center gap-2 text-sm py-1"
+                    >
 
-                    {sub.name}
-                  </label>
-                ))}
+                      <input
+                        type="checkbox"
+                        checked={
+                          !!selectedSubSkills.find(
+                            (
+                              item
+                            ) =>
+                              item.id ===
+                              sub.id
+                          )
+                        }
+                        onChange={() =>
+                          handleSubSkillChange(
+                            sub
+                          )
+                        }
+                      />
+
+                      {sub.name}
+
+                    </label>
+                  )
+                )}
+
               </div>
+
             )}
 
             {/* DISPLAY */}
             <input
-              {...register("subSkillsDisplay", {
-                required:
-                  "Select at least one sub-skill",
-              })}
+              {...register(
+                "subSkillsDisplay",
+                {
+                  required:
+                    "Select at least one sub-skill",
+                }
+              )}
               readOnly
               placeholder="Selected sub-skills"
               className="w-full mt-2 h-[36px] bg-bgGray rounded-[8px] px-[12px]"
@@ -341,16 +525,26 @@ function ProfessionalDetails() {
             {/* HIDDEN VALUES */}
             <input
               type="hidden"
-              {...register("subSkills", {
-                required: true,
-              })}
+              {...register(
+                "subSkills",
+                {
+                  required: true,
+                }
+              )}
             />
 
             {errors.subSkillsDisplay && (
+
               <p className="text-red-500 text-xs">
-                {errors.subSkillsDisplay.message}
+                {
+                  errors
+                    .subSkillsDisplay
+                    .message
+                }
               </p>
+
             )}
+
           </div>
 
           {/* Years */}
@@ -358,16 +552,22 @@ function ProfessionalDetails() {
 
             <label className="text-sm font-medium">
               Years of Experience
-              <span className="text-red-500">*</span>
+              <span className="text-red-500">
+                *
+              </span>
             </label>
 
             <select
-              {...register("yearsExperience", {
-                required:
-                  "Years of experience is required",
-              })}
+              {...register(
+                "yearsExperience",
+                {
+                  required:
+                    "Years of experience is required",
+                }
+              )}
               className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px]"
             >
+
               <option value="">
                 Select experience level
               </option>
@@ -383,13 +583,21 @@ function ProfessionalDetails() {
               <option value="5">
                 5+ Years
               </option>
+
             </select>
 
             {errors.yearsExperience && (
+
               <p className="text-red-500 text-xs">
-                {errors.yearsExperience.message}
+                {
+                  errors
+                    .yearsExperience
+                    .message
+                }
               </p>
+
             )}
+
           </div>
 
         </div>
@@ -399,11 +607,16 @@ function ProfessionalDetails() {
 
           <button
             type="button"
-            onClick={() => navigate(-1)}
+            onClick={() =>
+              navigate(-1)
+            }
             className="w-[297px] h-[36px] bg-white border rounded-[8px] flex items-center justify-center gap-2"
           >
+
             <ArrowLeft size={16} />
+
             Back
+
           </button>
 
           <button
@@ -414,13 +627,17 @@ function ProfessionalDetails() {
               "cursor-not-allowed"
             }`}
           >
+
             Continue
+
             <ArrowRight size={16} />
+
           </button>
 
         </div>
 
       </form>
+
     </div>
   );
 }
