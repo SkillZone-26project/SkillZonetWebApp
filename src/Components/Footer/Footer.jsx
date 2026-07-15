@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -22,36 +23,122 @@ const Footer = () => {
 
           {/* FOR CLIENTS */}
           <div>
-            <h4 className="font-semibold text-[16px] mb-4">For Clients</h4>
+            <h4 className="font-semibold text-[16px] mb-4">
+              For Clients
+            </h4>
+
             <ul className="space-y-2 text-textGray text-[14px]">
-              <li className="hover:text-textColor cursor-pointer">Find Artisans</li>
-              <li className="hover:text-textColor cursor-pointer">How It Works</li>
-              <li className="hover:text-textColor cursor-pointer">Safety</li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Find Artisans
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  How It Works
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Safety
+                </Link>
+              </li>
+
             </ul>
           </div>
 
           {/* FOR ARTISANS */}
           <div>
-            <h4 className="font-semibold text-[16px] mb-4">For Artisans</h4>
+            <h4 className="font-semibold text-[16px] mb-4">
+              For Artisans
+            </h4>
+
             <ul className="space-y-2 text-textGray text-[14px]">
-              <li className="hover:text-textColor cursor-pointer">Join SkillZonet</li>
-              <li className="hover:text-textColor cursor-pointer">Pricing</li>
-              <li className="hover:text-textColor cursor-pointer">Success Stories</li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Join SkillZonet
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Pricing
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Success Stories
+                </Link>
+              </li>
+
             </ul>
           </div>
 
           {/* COMPANY */}
           <div>
-            <h4 className="font-semibold text-[16px] mb-4">Company</h4>
+            <h4 className="font-semibold text-[16px] mb-4">
+              Company
+            </h4>
+
             <ul className="space-y-2 text-textGray text-[14px]">
-              <li className="hover:text-textColor cursor-pointer">About Us</li>
-              <li className="hover:text-textColor cursor-pointer">Contact</li>
-              <li className="hover:text-textColor cursor-pointer">Privacy Policy</li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  About Us
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/support"
+                  className="hover:text-textColor"
+                >
+                  Contact
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  to="/"
+                  className="hover:text-textColor"
+                >
+                  Privacy Policy
+                </Link>
+              </li>
+
             </ul>
           </div>
 
         </div>
       </div>
+
+      <hr />
 
       {/* BOTTOM FOOTER */}
       <div className="border-t border-textGray lg:ml-[55px]">

@@ -168,39 +168,27 @@ function PersonalInformation() {
         {/* Age & Sex */}
         <div className="grid grid-cols-2 gap-4">
 
-          <div>
-
+           <div className="space-y-1">
             <label className="text-sm font-semibold">
               Age *
             </label>
-
-            <input
-              type="number"
-              {...register(
-                "age",
-                {
-                  required:
-                    "Age is required",
-
-                  min: {
-                    value: 18,
-                    message:
-                      "Minimum age is 18",
-                  },
-                }
-              )}
-              placeholder="28"
-              className="w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none"
-            />
-
+            <select
+              {...register("age", { required: "Age is required" })}
+              className={`w-full h-[36px] bg-bgGray rounded-[8px] px-[12px] text-sm outline-none focus:ring-1 focus:ring-black ${
+                errors.age ? "ring-1 ring-red-500" : ""
+              }`}
+              defaultValue=""
+            >
+              <option value="" disabled>Select age</option>
+              {[...Array(83)].map((_, i) => (
+                <option key={i} value={i + 18}>{i + 18}</option>
+              ))}
+            </select>
             {errors.age && (
-
-              <p className="text-xs text-red-500">
+              <p className="text-xs text-red-500 mt-1">
                 {errors.age.message}
               </p>
-
             )}
-
           </div>
 
           <div>

@@ -17,91 +17,46 @@ import axios from "axios";
 const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
 
-  // ✅ STATE
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // ✅ FETCH USER DATA
- // ✅ FETCH USER DATA
-useEffect(() => {
-  const fetchUser = async () => {
-    try {
-      console.log("=================================");
-      console.log("🚀 FETCHING USER PROFILE...");
-      console.log("=================================");
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        setLoading(true);
 
-      const token = localStorage.getItem("token");
-
-      const device = navigator.platform || "Web Browser";
-      const userAgent = navigator.userAgent || "Unknown User Agent";
-
-      console.log("✅ TOKEN:", token);
-
-      console.log("✅ DEVICE:", device);
-
-      console.log("✅ USER AGENT:", userAgent);
-
-      console.log("=================================");
-
-      const res = await axios.get(
-        "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/get-profile",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "x-device": device,
-            "x-user-agent": userAgent,
-          },
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setUser(null);
+          return;
         }
-      );
 
-      console.log("=================================");
-      console.log("✅ USER PROFILE FETCHED");
-      console.log("=================================");
-      console.log("STATUS:", res.status);
-      console.log("FULL RESPONSE:", res);
-      console.log("RESPONSE DATA:", res.data);
+        const res = await axios.get(
+          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/get-profile",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
-      // ✅ SUPPORT DIFFERENT RESPONSE STRUCTURES
-      const userData =
-        res.data?.data ||
-        res.data?.user ||
-        res.data;
+        const userData =
+          res.data?.data ||
+          res.data?.user ||
+          res.data;
 
-      console.log("✅ FINAL USER DATA:", userData);
+        setUser(userData);
 
-      setUser(userData);
+      } catch (err) {
+        console.log("User fetch failed");
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    } catch (err) {
-
-      console.log("=================================");
-      console.log("❌ USER PROFILE FETCH FAILED");
-      console.log("=================================");
-
-      console.log("❌ FULL ERROR:", err);
-
-      console.log("❌ ERROR MESSAGE:", err.message);
-
-      console.log("❌ ERROR RESPONSE:", err.response);
-
-      console.log("❌ ERROR STATUS:", err.response?.status);
-
-      console.log("❌ ERROR DATA:", err.response?.data);
-
-      console.log("❌ ERROR HEADERS:", err.response?.headers);
-
-      console.log("❌ BACKEND MESSAGE:",
-        err.response?.data?.message
-      );
-
-      console.log("❌ BACKEND DETAILS:",
-        err.response?.data?.details
-      );
-
-      console.log("=================================");
-    }
-  };
-
-  fetchUser();
-}, []);
+    fetchUser();
+  }, []);
 
   return (
     <aside
@@ -110,7 +65,7 @@ useEffect(() => {
     >
 
       {/* LOGO */}
-      <div className="">
+      <div>
         <img
           src="https://res.cloudinary.com/dqtyrjpeh/image/upload/v1774017217/SkillZonet_Logo_2_erxxta.png"
           alt="Dashboard Logo"
@@ -123,18 +78,24 @@ useEffect(() => {
 
           {/* PROFILE */}
           <div className="flex items-center gap-3 mb-8">
-            <img
-              src={
-                user?.profilePic ||
-                "https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
-              }
-              alt="Profile Pic"
-              className="w-[48px] h-[48px] rounded-full object-cover"
-            />
+
+            {/* IMAGE FIX (NO FLASH) */}
+            {loading ? (
+              <div className="w-[48px] h-[48px] rounded-full bg-gray-200 animate-pulse" />
+            ) : (
+              <img
+                src={
+                  user?.profilePic ||
+                  "https://res.cloudinary.com/dqtyrjpeh/image/upload/q_auto/f_auto/v1774203306/Primitive.span_2_bssqdu.png"
+                }
+                alt="Profile Pic"
+                className="w-[48px] h-[48px] rounded-full object-cover"
+              />
+            )}
 
             <div className="text-[16px] font-medium">
               <p className="text-textColor">
-               {user?.fullName || "User"}
+                {user?.fullName || "User"}
               </p>
 
               <p className="text-[14px] text-textGray">
@@ -150,55 +111,13 @@ useEffect(() => {
         {/* NAV LINKS */}
         <nav className="space-y-2 text-[16px] mt-[16px] font-medium px-6">
 
-          <SidebarLink
-            to="/user/dashboard"
-            icon={<LuHouse />}
-            label="Dashboard"
-            end
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/find-artisans"
-            icon={<LuSearch />}
-            label="Find Artisans"
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/bookings"
-            icon={<LuCalendar />}
-            label="My Bookings"
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/messages"
-            icon={<LuMessageCircle />}
-            label="Messages"
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/saved-artisans"
-            icon={<LuBookmark />}
-            label="Saved Artisans"
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/profile"
-            icon={<LuUser />}
-            label="Profile"
-            setSidebarOpen={setSidebarOpen}
-          />
-
-          <SidebarLink
-            to="/user/settings"
-            icon={<LuSettings />}
-            label="Settings"
-            setSidebarOpen={setSidebarOpen}
-          />
+          <SidebarLink to="/user/dashboard" icon={<LuHouse />} label="Dashboard" end setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/find-artisans" icon={<LuSearch />} label="Find Artisans" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/bookings" icon={<LuCalendar />} label="My Bookings" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/messages" icon={<LuMessageCircle />} label="Messages" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/saved-artisans" icon={<LuBookmark />} label="Saved Artisans" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/profile" icon={<LuUser />} label="Profile" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink to="/user/settings" icon={<LuSettings />} label="Settings" setSidebarOpen={setSidebarOpen} />
 
         </nav>
       </div>
@@ -220,15 +139,7 @@ useEffect(() => {
   );
 };
 
-
-/* REUSABLE NAV LINK */
-const SidebarLink = ({
-  to,
-  icon,
-  label,
-  end,
-  setSidebarOpen,
-}) => {
+const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
   return (
     <NavLink
       to={to}

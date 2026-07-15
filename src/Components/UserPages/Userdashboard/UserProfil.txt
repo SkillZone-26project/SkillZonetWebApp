@@ -27,15 +27,8 @@ const UserProfile = () => {
   };
 
   const [user, setUser] = useState(null);
-const [loading, setLoading] = useState(true);
-
-const [showEditModal, setShowEditModal] = useState(false);
-
-const [editForm, setEditForm] = useState({
-  phone: "",
-});
-
-const fileInputRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -132,49 +125,13 @@ const fileInputRef = useRef(null);
     }
   };
 
-  // ===================== UPDATE PROFILE =====================
-const handleUpdate = async () => {
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await axios.put(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
-      {
-        phone: editForm.phone,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    console.log("PROFILE UPDATED:", res.data);
-
-    // Update UI immediately
-    setUser((prev) => ({
-      ...prev,
-      phone: editForm.phone,
-    }));
-
-    setShowEditModal(false);
-
-  } catch (err) {
-    console.log(
-      "PROFILE UPDATE ERROR:",
-      err.response?.data || err.message
-    );
-  }
-};
-
-
   return (
     <div className="h-[calc(100vh-85px)] bg-white mt-[85px] px-4 rounded-[20px] p-[24px] ml-[100px]">
 
       {/* TOP SECTION */}
       <div className='left and middle border h-[361px] p-[24px] rounded-[14px] w-[855px]'>
 
-        <div className="topBox flex gap-[20px] h-[210px] border-b">
+        <div className="topBox flex gap-[50px] h-[210px] border-b">
 
           <div className='left flex gap-[15px]'>
 
@@ -222,15 +179,26 @@ const handleUpdate = async () => {
                 <p>{user?.email}</p>
               </div>
 
+              {/* <div className='flex items-center gap-[10px] mt-[10px]'>
+                <CiLocationOn />
+                <p>{user?.city}, {user?.state}, {user?.country}</p>
+              </div>
+                 */}
+            </div>
 
-   <div className="flex gap-[20px]">
-                  <div className='flex items-center gap-[10px] mt-[10px] w-[250px]'>
+          </div>
+
+          <div className="rightTop flex justify-between w-[350px]">
+
+            <div className="flex flex-col justify-end">
+
+              <div className='flex items-center'>
                 <LuPhone />
                 <p className='text-[14px]'>{user?.phone}</p>
               </div>
 
               <div>
-                <div className='flex items-center gap-[10px] mt-[15px] w-[250px]'>
+                <div className='flex items-center gap-[10px] mt-[15px]'>
                   <LuCalendar />
                   <p>Joined {joinedMonth || "June"}</p>
                 </div>
@@ -238,29 +206,14 @@ const handleUpdate = async () => {
                 <p className='ml-[30px]'>
                   {joinedYear || "2024"}
                 </p>
-                </div>
               </div>
+
             </div>
 
-
-          </div>
-
-          <div className="rightTop flex justify-between w-[350px]">
-
-
-          <button
-  onClick={() => {
-    setEditForm({
-      phone: user?.phone || "",
-    });
-
-    setShowEditModal(true);
-  }}
-  className='flex items-center justify-center gap-[10px] w-[127px] h-[36px] rounded-[8px] bg-black text-white'
->
-  <LuSquarePen />
-  <p>Edit Profile</p>
-</button>
+            <button className='flex items-center justify-center gap-[10px] w-[127px] h-[36px] rounded-[8px] bg-black text-white'>
+              <LuSquarePen />
+              <p>Edit Profile</p>
+            </button>
 
           </div>
 
@@ -293,60 +246,53 @@ const handleUpdate = async () => {
 
       </div>
 
+      {/* PERSONAL INFO SECTION */}
+      <div className="middleBox w-[855px] border px-[24px] py-[26px] mt-[24px] rounded-[14px]">
 
-{showEditModal && (
-  <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div className='flex justify-between'>
+          <p>Personal Information</p>
 
-    <div className="bg-white w-[500px] rounded-[14px] p-6">
-
-      <h2 className="text-[20px] font-semibold mb-6">
-        Edit Profile
-      </h2>
-
-      <div className="flex flex-col gap-5">
-
-        <div>
-          <label className="block mb-2">
-            Phone Number
-          </label>
-
-          <input
-            type="text"
-            value={editForm.phone}
-            onChange={(e) =>
-              setEditForm({
-                ...editForm,
-                phone: e.target.value,
-              })
-            }
-            className="w-full h-[42px] border rounded-lg px-3"
-          />
+          <button className='flex items-center justify-center gap-[10px] w-[77px] h-[36px] rounded-[8px] text-[14px] text-textColor border'>
+            <LuSquarePen />
+            <p>Edit</p>
+          </button>
         </div>
 
-        <div className="flex justify-end gap-3">
+        <div>
+          <form>
+            <fieldset className='flex gap-[10px]'>
 
-          <button
-            onClick={() => setShowEditModal(false)}
-            className="border px-5 py-2 rounded-lg"
-          >
-            Cancel
-          </button>
+              <div className='flex flex-col'>
+                <label>Full Name</label>
+                <input className='w-[391px] bg-[#F3F3F5] h-[36px] rounded-[8px] pl-[12px]' />
+              </div>
 
-          <button
-            onClick={handleUpdate}
-            className="bg-black text-white px-5 py-2 rounded-lg"
-          >
-            Save
-          </button>
+              <div className='flex flex-col'>
+                <label>Email Address</label>
+                <input className='w-[391px] bg-[#F3F3F5] h-[36px] rounded-[8px] pl-[12px]' />
+              </div>
 
+            </fieldset>
+
+            <fieldset className='flex gap-[10px]'>
+
+              <div className='flex flex-col'>
+                <label>Phone Number</label>
+                <input className='w-[391px] bg-[#F3F3F5] h-[36px] rounded-[8px] pl-[12px]' />
+              </div>
+
+              <div className='flex flex-col'>
+                <label>Location</label>
+                <input className='w-[391px] bg-[#F3F3F5] h-[36px] rounded-[8px] pl-[12px]' />
+              </div>
+
+            </fieldset>
+
+          </form>
         </div>
 
       </div>
 
-    </div>
-
-  </div>
-)}
     </div>
   );
 };

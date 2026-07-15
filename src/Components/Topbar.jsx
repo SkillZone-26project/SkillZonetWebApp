@@ -1,9 +1,20 @@
-import React, { useState, useRef, useEffect } from "react";
-import { LuBell, LuMenu } from "react-icons/lu";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+} from "react";
+
+import {
+  LuBell,
+  LuMenu,
+} from "react-icons/lu";
+
 import { useLocation } from "react-router-dom";
-import axios from "axios"; // ✅ added
+
+import axios from "axios";
 
 const Topbar = ({ setSidebarOpen }) => {
+
   const location = useLocation();
 
   const pageTitles = {
@@ -17,19 +28,37 @@ const Topbar = ({ setSidebarOpen }) => {
     "/dashboard/settings": "Settings",
   };
 
-  const title = pageTitles[location.pathname] || "Dashboard";
+  const title =
+    pageTitles[location.pathname] ||
+    "Dashboard";
 
   /* ✅ USER STATE */
-  const [firstName, setFirstName] = useState("");
+  const [firstName, setFirstName] =
+    useState("");
 
-  /* ✅ FETCH USER (same API) */
+  /* ✅ FETCH USER */
   useEffect(() => {
+
     const fetchUser = async () => {
+
       try {
-        const token = localStorage.getItem("token");
+
+        console.log("=================================");
+        console.log("🚀 FETCHING ARTISAN PROFILE");
+        console.log("=================================");
+
+        const token =
+          localStorage.getItem("token");
+
+        console.log("TOKEN:", token);
+
+        if (!token) {
+          console.log("❌ No token found");
+          return;
+        }
 
         const res = await axios.get(
-          "https://skillzonet-backend-auth-v1.onrender.com/api/userAuth/profile",
+          "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/get-profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -37,48 +66,138 @@ const Topbar = ({ setSidebarOpen }) => {
           }
         );
 
-        // ✅ get first name from fullName
-        const fullName = res.data.fullName || "";
-        const first = fullName.split(" ")[0];
+        
+        console.log(
+          "✅ FULL RESPONSE:",
+          res.data
+        );
+
+        // ✅ CORRECT RESPONSE STRUCTURE
+        const artisan =
+          res.data?.artisan;
+
+        console.log(
+          "✅ ARTISAN DATA:",
+          artisan
+        );
+
+        // ✅ GET FULL NAME
+        const fullName =
+          artisan?.fullName || "";
+
+        console.log(
+          "✅ FULL NAME:",
+          fullName
+        );
+
+        // ✅ GET FIRST NAME
+        const first =
+          fullName.split(" ")[0];
+
+        console.log(
+          "✅ FIRST NAME:",
+          first
+        );
 
         setFirstName(first);
 
       } catch (err) {
-        console.log("❌ Failed to fetch user:", err.message);
+
+        console.log("=================================");
+        console.log("❌ FETCH PROFILE ERROR");
+        console.log("=================================");
+
+        console.log(
+          "FULL ERROR:",
+          err
+        );
+
+        console.log(
+          "ERROR MESSAGE:",
+          err.message
+        );
+
+        console.log(
+          "ERROR RESPONSE:",
+          err.response
+        );
+
+        console.log(
+          "ERROR STATUS:",
+          err.response?.status
+        );
+
+        console.log(
+          "ERROR DATA:",
+          err.response?.data
+        );
       }
+
     };
 
     fetchUser();
+
   }, []);
 
   /* DEMO NOTIFICATIONS */
   const [notifications] = useState([
-    { id: 1, message: "Your booking with John Artisan was confirmed." },
-    { id: 2, message: "A new artisan is available near you." },
-    { id: 3, message: "Your saved artisan updated their profile." },
+    {
+      id: 1,
+      message:
+        "Your booking with John Artisan was confirmed.",
+    },
+    {
+      id: 2,
+      message:
+        "A new artisan is available near you.",
+    },
+    {
+      id: 3,
+      message:
+        "Your saved artisan updated their profile.",
+    },
   ]);
 
-  const notificationCount = notifications.length;
+  const notificationCount =
+    notifications.length;
 
-  const [openDropdown, setOpenDropdown] = useState(false);
+  const [openDropdown, setOpenDropdown] =
+    useState(false);
+
   const dropdownRef = useRef(null);
 
   /* CLOSE DROPDOWN WHEN CLICKING OUTSIDE */
   useEffect(() => {
-    const handleClickOutside = (event) => {
+
+    const handleClickOutside = (
+      event
+    ) => {
+
       if (
         dropdownRef.current &&
-        !dropdownRef.current.contains(event.target)
+        !dropdownRef.current.contains(
+          event.target
+        )
       ) {
         setOpenDropdown(false);
       }
+
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+
     };
+
   }, []);
 
   return (
@@ -89,23 +208,31 @@ const Topbar = ({ setSidebarOpen }) => {
         {/* MOBILE MENU BUTTON */}
         <button
           className="lg:hidden text-2xl"
-          onClick={() => setSidebarOpen(true)}
+          onClick={() =>
+            setSidebarOpen(true)
+          }
         >
           <LuMenu />
         </button>
 
         <div>
+
           <h3 className="font-semibold text-textColor text-[18px] md:text-[20px] lg:text-[24px]">
             {title}
           </h3>
 
           <p className="text-[14px] text-textGray">
+
             Welcome back,{" "}
+
             <span className="onlyFirstName">
               {firstName || "User"}
             </span>
+
             !
+
           </p>
+
         </div>
 
       </div>
@@ -114,10 +241,12 @@ const Topbar = ({ setSidebarOpen }) => {
       <button
         ref={dropdownRef}
         onClick={() =>
-          notificationCount > 0 && setOpenDropdown(!openDropdown)
+          notificationCount > 0 &&
+          setOpenDropdown(!openDropdown)
         }
         className="relative flex items-center text-textColor text-[24px]"
       >
+
         <LuBell />
 
         {/* COUNT BADGE */}
@@ -128,7 +257,9 @@ const Topbar = ({ setSidebarOpen }) => {
         )}
 
         {/* DROPDOWN */}
-        {openDropdown && notificationCount > 0 && (
+        {openDropdown &&
+          notificationCount > 0 && (
+
           <div className="absolute right-0 top-10 w-[280px] bg-white shadow-lg rounded-lg border p-3 text-sm z-50">
 
             <p className="font-semibold mb-2 text-black">
@@ -136,17 +267,24 @@ const Topbar = ({ setSidebarOpen }) => {
             </p>
 
             <div className="space-y-2">
-              {notifications.map((note) => (
-                <div
-                  key={note.id}
-                  className="p-2 rounded hover:bg-gray-100 cursor-pointer"
-                >
-                  {note.message}
-                </div>
-              ))}
+
+              {notifications.map(
+                (note) => (
+
+                  <div
+                    key={note.id}
+                    className="p-2 rounded hover:bg-gray-100 cursor-pointer"
+                  >
+                    {note.message}
+                  </div>
+
+                )
+              )}
+
             </div>
 
           </div>
+
         )}
 
       </button>

@@ -1,15 +1,19 @@
-import React from 'react'
-import Nav from "../Nav/Nav"
+import React from "react";
+import Nav from "../../Components/Nav/Nav"
+import PowerfulFeatures from "./PowerfulFeatures";
+import FeaturesCTA from "./FeaturesCTA";
+import Footer from "../../Components/Footer/Footer"
 
-const Features = () => {
+function Features() {
   return (
-    <>
-    <Nav />
-    <main className='mt-[150px] flex items-center justify-center text-[90px]'>
-        <h1> Features Page </h1>
-    </main>
-    </>
-  )
+    <div className="flex flex-col min-h-screen pt-[85px]">
+      <Nav />
+      <PowerfulFeatures />
+      <FeaturesCTA />
+      <Footer /> 
+    </div>
+  );
 }
 
-export default Features
+
+export default Features;

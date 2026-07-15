@@ -25,66 +25,136 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   /* CLOSE WHEN CLICKING OUTSIDE */
   useEffect(() => {
+
     const handleClickOutside = (event) => {
+
       if (
         sidebarRef.current &&
         !sidebarRef.current.contains(event.target)
       ) {
         setSidebarOpen(false);
       }
+
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
 
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
     };
+
   }, []);
 
-  // ✅ FETCH ARTISAN DATA (same pattern as user sidebar)
+  // ✅ FETCH ARTISAN PROFILE
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const token = localStorage.getItem("token");
 
-        if (!token) return;
+    const fetchUser = async () => {
+
+      try {
+
+        console.log("=================================");
+        console.log("🚀 FETCHING ARTISAN PROFILE");
+        console.log("=================================");
+
+        const token =
+          localStorage.getItem("token");
+
+        console.log("TOKEN:", token);
+
+        if (!token) {
+
+          console.log("❌ NO TOKEN FOUND");
+
+          return;
+        }
 
         const res = await axios.get(
-          "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/profile",
+          "https://skillzonet-backend-auth-v1.onrender.com/api/artisans/get-profile",
           {
             headers: {
               Authorization: `Bearer ${token}`,
+
+              "Content-Type":
+                "application/json",
+
+              // ✅ SEND THESE
+              "x-device":
+                navigator.platform ||
+                "Web Browser",
+
+              "x-user-agent":
+                navigator.userAgent ||
+                "Unknown User Agent",
             },
           }
         );
 
-        console.log("ARTISAN DATA:", res.data);
+        console.log("=================================");
+        console.log("✅ API SUCCESS");
+        console.log("=================================");
 
-        // ✅ handle response format like user sidebar
-        const userData =
-          res.data?.user ||
-          res.data?.data ||
-          res.data;
+        console.log("FULL RESPONSE:", res);
+
+        console.log("RESPONSE DATA:", res.data);
+
+        console.log("STATUS:", res.status);
+
+        // ✅ IMPORTANT
+        const userData = res.data?.artisan;
+
+        console.log(
+          "FINAL USER DATA:",
+          userData
+        );
 
         setUser(userData);
 
       } catch (err) {
-        console.error(
-          "❌ Failed to fetch user:",
-          err.response?.data || err.message
+
+        console.log("=================================");
+        console.log("❌ FETCH PROFILE ERROR");
+        console.log("=================================");
+
+        console.log("FULL ERROR:", err);
+
+        console.log(
+          "ERROR MESSAGE:",
+          err.message
+        );
+
+        console.log(
+          "ERROR RESPONSE:",
+          err.response
+        );
+
+        console.log(
+          "ERROR STATUS:",
+          err.response?.status
+        );
+
+        console.log(
+          "ERROR DATA:",
+          err.response?.data
         );
       }
     };
 
     fetchUser();
+
   }, []);
 
-  // ✅ FIRST NAME (same logic as user sidebar but improved)
+  // ✅ NAME
   const firstName =
     user?.fullName?.split(" ")[0] ||
     user?.name?.split(" ")[0] ||
     user?.firstName ||
-    "Loading...";
+    "Artisan Name";
 
   return (
     <aside
@@ -104,27 +174,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
         <hr className="w-full" />
 
-        <div className="flex gap-[70px] px-6 mt-[20px]">
+        <div className="flex gap-[50px] px-6 mt-[20px]">
 
           <div className="flex items-center gap-3 mb-8">
+
             <img
               src={
                 user?.profilePic ||
                 "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1770670893/ProfilePic_c3yslh.png"
               }
               alt="Profile Pic"
-              className="w-[48px] h-[48px] rounded-full"
+              className="w-[48px] h-[48px] rounded-full object-cover"
             />
 
-            <div className="text-[16px] font-medium">
-              {/* ✅ FIRST NAME */}
-              <p className="text-textColor">{firstName}</p>
+            <div className="text-[16px] font-medium w-full">
 
-              {/* ✅ ROLE */}
+              <p className="text-textColor text-[18px]">
+                {firstName}
+              </p>
+
               <p className="text-xs text-textGray">
                 {user?.role || "Artisan"}
               </p>
+
             </div>
+
           </div>
 
           <div className="bg-[#FE9A00] flex items-center justify-center text-white text-[12px] px-3 py-1 rounded-[8px] font-medium w-fit mb-10">
@@ -138,21 +212,62 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {/* NAV LINKS */}
         <nav className="space-y-2 text-[16px] mt-[16px] font-medium px-6">
 
-          <SidebarLink to="/dashboard" icon={<LuHouse />} label="Dashboard" end setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard"
+            icon={<LuHouse />}
+            label="Dashboard"
+            end
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/jobrequests" icon={<LuBriefcase />} label="Job Requests" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/jobrequests"
+            icon={<LuBriefcase />}
+            label="Job Requests"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/activejobs" icon={<LuCalendar />} label="Active Jobs" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/activejobs"
+            icon={<LuCalendar />}
+            label="Active Jobs"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/messages" icon={<LuMessageCircle />} label="Messages" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/messages"
+            icon={<LuMessageCircle />}
+            label="Messages"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/wallet" icon={<LuWallet />} label="Wallet" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/wallet"
+            icon={<LuWallet />}
+            label="Wallet"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/reviews" icon={<LuStar />} label="Reviews" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/reviews"
+            icon={<LuStar />}
+            label="Reviews"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/profile" icon={<LuUser />} label="Profile" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/profile"
+            icon={<LuUser />}
+            label="Profile"
+            setSidebarOpen={setSidebarOpen}
+          />
 
-          <SidebarLink to="/dashboard/settings" icon={<LuSettings />} label="Settings" setSidebarOpen={setSidebarOpen} />
+          <SidebarLink
+            to="/dashboard/settings"
+            icon={<LuSettings />}
+            label="Settings"
+            setSidebarOpen={setSidebarOpen}
+          />
 
         </nav>
 
@@ -160,27 +275,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
       {/* LOGOUT */}
       <div className="border-t border-textGay px-6 py-4">
+
         <button
           onClick={() => {
+
             localStorage.removeItem("token");
             localStorage.removeItem("user");
+
             navigate("/");
+
           }}
           className="flex items-center gap-3 text-textRed text-sm hover:bg-red-50 px-3 py-2 rounded w-full"
         >
           <LuLogOut />
           Logout
         </button>
+
       </div>
 
     </aside>
   );
 };
 
-
 /* REUSABLE NAV LINK */
 
-const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
+const SidebarLink = ({
+  to,
+  icon,
+  label,
+  end,
+  setSidebarOpen,
+}) => {
+
   return (
     <NavLink
       to={to}
@@ -194,8 +320,12 @@ const SidebarLink = ({ to, icon, label, end, setSidebarOpen }) => {
         }`
       }
     >
-      <span className="text-lg">{icon}</span>
+      <span className="text-lg">
+        {icon}
+      </span>
+
       {label}
+
     </NavLink>
   );
 };

@@ -22,13 +22,18 @@ function Nav() {
         {/* Desktop Menu */}
         <ul className="hidden md:flex items-center gap-8 text-textColor font-medium">
           <li>
-            <Link to="/successfulPage" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/features" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               Features
             </Link>
           </li>
           {/* dashboard */}
           <li>
-            <Link to="/user" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
+            <Link to="/support" className="hover:text-yellow transition-colors hover:border hover: border-yellow p-[6px] rounded-[8px]">
               How It Works
             </Link>
           </li>
@@ -78,7 +83,16 @@ function Nav() {
       >
         <li>
           <Link
-            to="/dashboard"
+            to="/"
+            className="block hover:text-yellow transition-colors"
+            onClick={() => setIsOpen(false)}
+          >
+            Home
+          </Link>
+        </li>
+        <li>
+          <Link
+            to="/features"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >
@@ -87,7 +101,7 @@ function Nav() {
         </li>
         <li>
           <Link
-            to="/user"
+            to="/support"
             className="block hover:text-yellow transition-colors"
             onClick={() => setIsOpen(false)}
           >

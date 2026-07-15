@@ -5,6 +5,7 @@ import SignIn from "./Components/Auth/SignIn";
 import JoinAs from "./Components/JoinAs/JoinAs";
 import DashboardLayout from "./Layouts/DashboardLayout";
 import SuccessfulPage from "./Components/SuccessfulPage/SuccessfulPage"
+import Support from "./Components/Support/Support"
 
 // Artisan Dashboard Pages
 import Dashboard from "./Components/Pages/dashboard/Dashboard";
@@ -72,6 +73,7 @@ function App() {
       <Route path="joinAs" element={<JoinAs />} /> 
        <Route path="artisanLogin" element={<ArtisanLogin />} />
        <Route path="userLoginForm" element={<UserLoginForm />} />
+       <Route path="support" element={<Support />} />
        <Route path="userSignIn" element={<UserSignIn />} />
 
       {/* Auth Routes (Emmanuel) */}
