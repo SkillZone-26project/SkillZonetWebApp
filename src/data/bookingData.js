@@ -11,49 +11,49 @@ export const artisan = {
 export const subServices = {
   Plumbing: [
     {
-      id: 1,
+      id: "pipe-installation",
       name: "Pipe Installation",
     },
     {
-      id: 2,
+      id: "leak-repair",
       name: "Leak Repair",
     },
     {
-      id: 3,
+      id: "drain-cleaning",
       name: "Drain Cleaning",
     },
     {
-      id: 4,
+      id: "bathroom-fittings",
       name: "Bathroom Fittings",
     },
     {
-      id: 5,
+      id: "water-heater-installation",
       name: "Water Heater Installation",
     },
   ],
 
   Electrical: [
     {
-      id: 6,
+      id: "house-wiring",
       name: "House Wiring",
     },
     {
-      id: 7,
+      id: "socket-installation",
       name: "Socket Installation",
     },
     {
-      id: 8,
+      id: "light-installation",
       name: "Light Installation",
     },
   ],
 
   Painting: [
     {
-      id: 9,
+      id: "interior-painting",
       name: "Interior Painting",
     },
     {
-      id: 10,
+      id: "exterior-painting",
       name: "Exterior Painting",
     },
   ],
