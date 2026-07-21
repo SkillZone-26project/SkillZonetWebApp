@@ -32,7 +32,7 @@ const ConfirmBooking = ({
         `}
       >
         <CreditCard size={18}/>
-        Confirm & Pay ₦{total.toLocaleString()}
+        Confirm & Book
       </button>
 
     </section>
