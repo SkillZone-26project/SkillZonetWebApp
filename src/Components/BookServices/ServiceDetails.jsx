@@ -11,38 +11,15 @@ const ServiceDetails = ({
         Service Request
       </h2>
 
-      {/* Service */}
-      <div className="mb-5">
-
-        <label className="block text-sm font-medium mb-2">
-          Service
-        </label>
-
-        <input
-          type="text"
-          value={booking.service}
-          onChange={(e) =>
-            setBooking({
-              ...booking,
-              service: e.target.value,
-            })
-          }
-          placeholder="Search for a service"
-          className="w-full h-12 rounded-lg border border-gray-200 bg-[#F8F8FA] px-4 outline-none focus:ring-2 focus:ring-black"
-        />
-
-        {/* Suggestions dropdown will be added here later */}
-
-      </div>
-
             {/* Title */}
       <div className="mb-5">
         <label className="block text-sm font-medium mb-2">
-          Title
+          Request Title
         </label>
 
         <input
           type="text"
+          placeholder="Repair of Kitchen Sink"
           value={booking.title}
           onChange={(e) =>
             setBooking({
@@ -50,7 +27,7 @@ const ServiceDetails = ({
               title: e.target.value,
             })
           }
-          placeholder="Enter a short title"
+        
           className="w-full h-12 rounded-lg border border-gray-200 bg-[#F8F8FA] px-4 outline-none focus:ring-2 focus:ring-black"
         />
       </div>

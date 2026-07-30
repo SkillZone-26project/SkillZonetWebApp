@@ -106,16 +106,32 @@ const defaultArtisan = {
   ],
 
 
-  reviews:[
-    {
-      initial: "M",
-      userFullName: "Michael Chen",
-    }
+ reviews: [
 
-  ]
+  {
+    id: 1,
+    initial: "M",
+    userName: "Michael Chen",
+    rating: 5,
+    comment:
+      "John is amazing! Fixed my leaking pipes in no time. Will definitely call again.",
+    createdAt: "05/01/2026",
+  },
+
+
+  {
+    id: 2,
+    initial: "E",
+    userName: "Emily Davis",
+    rating: 4,
+    comment:
+      "Good service, arrived on time and did quality work.",
+    createdAt: "28/12/2025",
+  }
+
+],
 
 };
-
 
 
 
@@ -234,12 +250,9 @@ const ArtisanProfile = () => {
 
 
 
-          reviews:
+        reviews:
 
-          artisanData.reviews ||
-
-          [],
-
+artisanData.reviews || [],
 
 
           portfolioItems:
@@ -828,20 +841,18 @@ const ArtisanProfile = () => {
 
 
         <button
-
-          onClick={() => navigate(`/booking/${artisan.id}`)}
-
-          className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]"
-
-        >
-
-          <LuCalendar />
-
-          Book Now
-
-
-        </button>
-
+  onClick={() =>
+    navigate(`/bookService/${artisan.id || artisan._id}`, {
+      state: {
+        artisan: artisan,
+      },
+    })
+  }
+  className="flex items-center justify-center flex-1 bg-black text-white text-[14px] font-medium py-[14px] gap-[10px] rounded-[8px]"
+>
+  <LuCalendar />
+  Book Now
+</button>
 
 
 
@@ -1110,16 +1121,9 @@ const ArtisanProfile = () => {
 
 
                             {
-
-                              review.userName
-
-                              ?
-
-                              review.userName.charAt(0)
-
-                              :
-
-                              "U"
+review.initial ||
+review.userName?.charAt(0) ||
+"U"
 
                             }
 
@@ -1144,9 +1148,9 @@ const ArtisanProfile = () => {
 
                             {
 
-                              review.userName ||
-
-                              "Customer"
+                            review.userName ||
+review.userFullName ||
+"Customer"
 
                             }
 

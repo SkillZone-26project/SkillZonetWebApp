@@ -1,46 +1,148 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 import { MdKeyboardArrowDown } from "react-icons/md";
-import { LuSlidersHorizontal, LuArrowRight } from "react-icons/lu";
+import {
+  LuSlidersHorizontal,
+  LuArrowRight,
+} from "react-icons/lu";
 import { GrLocation } from "react-icons/gr";
+
 import AvailableArtisans from "../../UserPages/Userdashboard/AvailableArtisans";
 
+const SEARCH_STORAGE_PREFIX = "skillzonet_search_artisans";
+
 const UserFindArtisans = () => {
+  // =========================================================
+  // SKILLS
+  // =========================================================
+
   const [skills, setSkills] = useState([]);
   const [showSkills, setShowSkills] = useState(false);
-  const [selectedSkill, setSelectedSkill] = useState("");
 
+  const [selectedSkill, setSelectedSkill] = useState("");
   const [selectedSkillId, setSelectedSkillId] = useState("");
+
+  // =========================================================
+  // FILTERS
+  // =========================================================
+
   const [showFilters, setShowFilters] = useState(false);
 
+  const [filters, setFilters] = useState({
+    verifiedOnly: false,
+    premiumOnly: false,
+    experience: "",
+    rating: "",
+    distance: "",
+  });
+
+  // =========================================================
+  // PAGINATION
+  // =========================================================
+
   const [page, setPage] = useState(1);
-const [limit] = useState(10);
+  const [limit] = useState(10);
 
-const [pagination, setPagination] = useState({
-  total: 0,
-  totalPages: 1,
-});
-const [filters, setFilters] = useState({
-  verifiedOnly: false,
-  premiumOnly: false,
-  experience: "",
-  rating: "",
-  distance: "",
-});
+  const [pagination, setPagination] = useState({
+    total: 0,
+    totalPages: 1,
+  });
 
-  // LOCATION STATES
-  const [location, setLocation] = useState(""); 
+  // =========================================================
+  // LOCATION
+  // =========================================================
+
+  const [location, setLocation] = useState("");
   const [latitude, setLatitude] = useState(null);
-const [longitude, setLongitude] = useState(null);
-  const [suggestions, setSuggestions] = useState([]); 
+  const [longitude, setLongitude] = useState(null);
+
+  const [suggestions, setSuggestions] = useState([]);
+
+  // =========================================================
+  // ARTISAN SEARCH
+  // =========================================================
 
   const [artisans, setArtisans] = useState([]);
+
   const [searched, setSearched] = useState(false);
-  const [showNoArtisanModal, setShowNoArtisanModal] = useState(false);
+
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [showNoArtisanModal, setShowNoArtisanModal] =
+    useState(false);
+
+  // =========================================================
+  // REFS
+  // =========================================================
 
   const debounceRef = useRef(null);
   const sessionTokenRef = useRef("");
+
+  const skillDropdownRef = useRef(null);
+  const locationDropdownRef = useRef(null);
+
+  // =========================================================
+  // GET USER SEARCH STORAGE KEY
+  // =========================================================
+  //
+  // verifyEmail is used because it identifies the logged-in
+  // user and is already used in your authentication flow.
+  //
+  // This prevents User A's search from appearing for User B.
+  // =========================================================
+
+  const getSearchStorageKey = () => {
+    const email = localStorage.getItem("verifyEmail");
+
+    if (!email) {
+      return null;
+    }
+
+    return `${SEARCH_STORAGE_PREFIX}_${email
+      .toLowerCase()
+      .trim()}`;
+  };
+
+  // =========================================================
+  // CLOSE DROPDOWNS WHEN CLICKING OUTSIDE
+  // =========================================================
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Close skill dropdown
+      if (
+        skillDropdownRef.current &&
+        !skillDropdownRef.current.contains(event.target)
+      ) {
+        setShowSkills(false);
+      }
+
+      // Close location suggestions
+      if (
+        locationDropdownRef.current &&
+        !locationDropdownRef.current.contains(event.target)
+      ) {
+        setSuggestions([]);
+      }
+    };
+
+    document.addEventListener(
+      "mousedown",
+      handleClickOutside
+    );
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside
+      );
+    };
+  }, []);
+
+  // =========================================================
+  // FETCH SKILLS
+  // =========================================================
 
   useEffect(() => {
     const fetchSkills = async () => {
@@ -56,37 +158,51 @@ const [longitude, setLongitude] = useState(null);
           }
         );
 
-       
-
         const skillsData =
           res.data?.skills ||
           res.data?.data ||
           [];
 
-        const sortedSkills = [...skillsData].sort((a, b) =>
-          a.name.localeCompare(b.name)
+        const sortedSkills = [...skillsData].sort(
+          (a, b) =>
+            a.name.localeCompare(b.name)
         );
 
         setSkills(sortedSkills);
-
       } catch (err) {
-        console.log(err);
+        console.log(
+          "FETCH SKILLS ERROR:",
+          err
+        );
       }
     };
 
     fetchSkills();
   }, []);
 
-   useEffect(() => {
-  if (!searched) return;
+  // =========================================================
+  // RESEARCH WHEN PAGINATION CHANGES
+  // =========================================================
 
-  handleSearch();
-}, [page]);
+  useEffect(() => {
+    if (!searched) {
+      return;
+    }
 
-  // ================= LOCATION SEARCH =================
-  const searchLocation = async (value) => {
+    handleSearch(false);
+  }, [page]);
 
+  // =========================================================
+  // LOCATION SEARCH
+  // =========================================================
+
+  const searchLocation = (value) => {
     setLocation(value);
+
+    // User changed the location manually.
+    // The previous selected coordinates are no longer reliable.
+    setLatitude(null);
+    setLongitude(null);
 
     if (value.length < 3) {
       setSuggestions([]);
@@ -100,100 +216,300 @@ const [longitude, setLongitude] = useState(null);
 
     clearTimeout(debounceRef.current);
 
-    debounceRef.current = setTimeout(async () => {
+    debounceRef.current = setTimeout(
+      async () => {
+        try {
+          const res = await axios.post(
+            "https://skillzonet-backend-auth-v1.onrender.com/api/location/search-location",
+            {
+              input: value,
+              sessionToken:
+                sessionTokenRef.current,
+            }
+          );
 
-      try {
+          setSuggestions(
+            res.data?.suggestions || []
+          );
+        } catch (err) {
+          console.log(
+            "LOCATION SEARCH ERROR:",
+            err
+          );
 
-        const res = await axios.post(
-          "https://skillzonet-backend-auth-v1.onrender.com/api/location/search-location",
-          {
-            input: value,
-            sessionToken: sessionTokenRef.current,
-          }
-        );
-
-        setSuggestions(res.data.suggestions || []);
-
-      } catch (err) {
-        console.log(err);
-      }
-
-    }, 400);
+          setSuggestions([]);
+        }
+      },
+      400
+    );
   };
 
-const handleSearch = async () => {
- 
-  setSearched(true); 
-  console.log("===== SEARCH REQUEST =====");
-console.log({
-  latitude,
-  longitude,
-  skillId: selectedSkillId,
-  radiusInKm: filters.distance || 15,
-});
+  // =========================================================
+  // SELECT LOCATION
+  // =========================================================
 
-  try {
-    const res = await axios.get(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/job/artisans/nearby",
-      {
-        params: {
-          latitude,
-          longitude,
-          skillId: selectedSkillId,
-          radiusInKm: filters.distance || 15, 
-            isSubSkill: false,
-      page,
-      limit,
-        },
-      }
-    );
+  const handleSelectLocation = async (item) => {
+    try {
+      const res = await axios.post(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/location/search-location",
+        {
+          placeId: item.placeId,
+          sessionToken:
+            sessionTokenRef.current,
+        }
+      );
 
-    console.log("===== FULL RESPONSE =====");
-console.log(res.data);
-    const artisansData =
-  res.data?.data?.artisans ||
-  res.data?.data?.data ||
-  [];
+      const place = res.data;
 
-const meta = res.data?.data?.meta || {};
+      setLocation(
+        place.formattedAddress || item.name
+      );
 
-setPagination({
-  total: meta.total || 0,
-  totalPages: meta.totalPages || 1,
-});
-      console.log("===== ARTISANS =====");
-console.log(artisansData);
-console.log("Number of artisans:", artisansData.length);
+      setLatitude(place.lat);
+      setLongitude(place.lng);
 
-    if (artisansData.length > 0) {
-      setArtisans(artisansData);
-      setShowNoArtisanModal(false);
-    } else {
-      setArtisans([]);
-      setShowNoArtisanModal(true);
+      setSuggestions([]);
+
+      sessionTokenRef.current = "";
+    } catch (err) {
+      console.log(
+        "SELECT LOCATION ERROR:",
+        err
+      );
+    }
+  };
+
+  // =========================================================
+  // SEARCH ARTISANS
+  // =========================================================
+
+  const handleSearch = async (
+    openSearch = true
+  ) => {
+    // We only mark it as a search when the user
+    // actually clicks Search.
+    if (openSearch) {
+      setSearched(true);
+      setPage(1);
     }
 
-  } catch (err) {
-    console.log(err.response?.data || err.message);
+    // No location selected
+    if (
+      latitude === null ||
+      longitude === null
+    ) {
+      setShowNoArtisanModal(true);
+      setIsSearching(false);
+      return;
+    }
+
+    setIsSearching(true);
+    setShowNoArtisanModal(false);
+
+    try {
+      console.log(
+        "===== SEARCH REQUEST ====="
+      );
+
+      console.log({
+        latitude,
+        longitude,
+        skillId: selectedSkillId,
+        radiusInKm:
+          filters.distance || 15,
+        page,
+        limit,
+      });
+
+      const res = await axios.get(
+        "https://skillzonet-backend-auth-v1.onrender.com/api/job/artisans/nearby",
+        {
+          params: {
+            latitude,
+            longitude,
+            skillId: selectedSkillId,
+            radiusInKm:
+              filters.distance || 15,
+            isSubSkill: false,
+            page,
+            limit,
+
+            // Keep these ready if your backend
+            // supports them.
+            verifiedOnly:
+              filters.verifiedOnly,
+            premiumOnly:
+              filters.premiumOnly,
+            experience:
+              filters.experience,
+            rating:
+              filters.rating,
+          },
+        }
+      );
+
+      console.log(
+        "===== FULL RESPONSE ====="
+      );
+
+      console.log(res.data);
+
+      const artisansData =
+        res.data?.data?.artisans ||
+        res.data?.data?.data ||
+        [];
+
+      const meta =
+        res.data?.data?.meta || {};
+
+      setPagination({
+        total: meta.total || 0,
+        totalPages:
+          meta.totalPages || 1,
+      });
+
+      console.log(
+        "===== ARTISANS ====="
+      );
+
+      console.log(artisansData);
+
+      // =====================================================
+      // ARTISANS FOUND
+      // =====================================================
+
+      if (
+        Array.isArray(artisansData) &&
+        artisansData.length > 0
+      ) {
+        setArtisans(artisansData);
+
+        setShowNoArtisanModal(false);
+
+        // Save successful search for this user.
+        const storageKey =
+          getSearchStorageKey();
+
+        if (storageKey) {
+          localStorage.setItem(
+            storageKey,
+            JSON.stringify({
+              artisans: artisansData,
+              totalResults:
+                meta.total ||
+                artisansData.length,
+              search: {
+                selectedSkill,
+                selectedSkillId,
+                location,
+                latitude,
+                longitude,
+                filters,
+              },
+            })
+          );
+        }
+      }
+
+      // =====================================================
+      // NO ARTISANS FOUND
+      // =====================================================
+
+      else {
+        setArtisans([]);
+
+        // IMPORTANT:
+        // Remove previous successful search.
+        // This prevents old results from appearing
+        // after the user clicks OK.
+        const storageKey =
+          getSearchStorageKey();
+
+        if (storageKey) {
+          localStorage.removeItem(
+            storageKey
+          );
+        }
+
+        setShowNoArtisanModal(true);
+      }
+    } catch (err) {
+      console.log(
+        "SEARCH ARTISANS ERROR:",
+        err.response?.data ||
+          err.message
+      );
+
+      setArtisans([]);
+
+      const storageKey =
+        getSearchStorageKey();
+
+      if (storageKey) {
+        localStorage.removeItem(
+          storageKey
+        );
+      }
+
+      setShowNoArtisanModal(true);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // =========================================================
+  // RETURN TO DEFAULT ARTISANS
+  // =========================================================
+
+  const handleReturnToDefault = () => {
+    const storageKey =
+      getSearchStorageKey();
+
+    if (storageKey) {
+      localStorage.removeItem(
+        storageKey
+      );
+    }
+
+    setShowNoArtisanModal(false);
+
+    setSearched(false);
 
     setArtisans([]);
-    setShowNoArtisanModal(true);
-  }
-};
 
+    setPagination({
+      total: 0,
+      totalPages: 1,
+    });
 
+    setPage(1);
+  };
+
+  // =========================================================
+  // JSX
+  // =========================================================
 
   return (
     <main className="pt-[85px] px-4">
 
-      {/* Search Bar section */}
+      {/* =====================================================
+          SKILL SEARCH
+      ===================================================== */}
+
       <section className="flex flex-col sm:flex-row items-center gap-[8px]">
 
-        <div className="relative w-full max-w-[1060px]">
+        <div
+          ref={skillDropdownRef}
+          className="relative w-full max-w-[1060px]"
+        >
 
           <div
             className="w-full flex items-center justify-between px-[10px] py-[9px] rounded-[8px] bg-[#F3F3F5] cursor-pointer"
-            onClick={() => setShowSkills(!showSkills)}
+            onClick={() =>
+              setShowSkills(
+                (previous) => !previous
+              )
+            }
           >
 
             <input
@@ -213,27 +529,39 @@ console.log("Number of artisans:", artisansData.length);
 
           </div>
 
+          {/* SKILL DROPDOWN */}
+
           {showSkills && (
             <div className="absolute left-0 right-0 mt-2 bg-white border rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto">
 
               {skills.length > 0 ? (
-                skills.map((skill) => (
-                  <div
-                    key={skill._id}
-                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer"
-                  onClick={() => {
-  console.log("Selected Skill");
-  console.log(skill);
+                skills.map((skill) => {
 
-  setSelectedSkill(skill.name);
-  setSelectedSkillId(skill.id);
+                  const skillId =
+                    skill.id ||
+                    skill._id;
 
-  setShowSkills(false);
-}}
-                  >
-                    {skill.name}
-                  </div>
-                ))
+                  return (
+                    <div
+                      key={skillId}
+                      className="px-4 py-3 hover:bg-gray-100 cursor-pointer"
+                      onClick={() => {
+
+                        setSelectedSkill(
+                          skill.name
+                        );
+
+                        setSelectedSkillId(
+                          skillId
+                        );
+
+                        setShowSkills(false);
+                      }}
+                    >
+                      {skill.name}
+                    </div>
+                  );
+                })
               ) : (
                 <div className="px-4 py-3 text-gray-500">
                   No skills found
@@ -245,20 +573,35 @@ console.log("Number of artisans:", artisansData.length);
 
         </div>
 
-       <button
-  onClick={() => setShowFilters(true)}
-  className="w-[36px] h-[36px] rounded-[8px] border flex items-center justify-center"
->
-  <LuSlidersHorizontal className="text-[18px]" />
-</button>
+        {/* FILTER BUTTON */}
+
+        <button
+          type="button"
+          onClick={() =>
+            setShowFilters(true)
+          }
+          className="w-[36px] h-[36px] rounded-[8px] border flex items-center justify-center"
+        >
+          <LuSlidersHorizontal className="text-[18px]" />
+        </button>
+
       </section>
 
-      {/* Search Bar down */}
+      {/* =====================================================
+          LOCATION SEARCH
+      ===================================================== */}
+
       <section className="flex flex-col sm:flex-row items-center gap-[10px] mt-[16px]">
 
-        <div className="relative w-full flex items-center gap-[5px] max-w-[750px] px-[10px] py-[9px] rounded-[8px] bg-[#F3F3F5]">
+        <div
+          ref={locationDropdownRef}
+          className="relative w-full flex items-center gap-[5px] max-w-[750px] px-[10px] py-[9px] rounded-[8px] bg-[#F3F3F5]"
+        >
 
-          <button className="text-[18px]">
+          <button
+            type="button"
+            className="text-[18px]"
+          >
             <GrLocation />
           </button>
 
@@ -266,339 +609,465 @@ console.log("Number of artisans:", artisansData.length);
             type="text"
             placeholder="Enter your location"
             value={location}
-            onChange={(e) => searchLocation(e.target.value)}
+            onChange={(e) =>
+              searchLocation(
+                e.target.value
+              )
+            }
             className="bg-transparent w-full text-[14px] outline-none"
           />
+
+          {/* LOCATION SUGGESTIONS */}
 
           {suggestions.length > 0 && (
             <div className="absolute left-0 right-0 top-full mt-2 bg-white border rounded-lg shadow-lg z-50 max-h-72 overflow-y-auto">
 
-              {suggestions.map((item) => (
-
-                <div
-                  key={item.placeId}
-                 onClick={async () => {
-  try {
-
-    const res = await axios.post(
-      "https://skillzonet-backend-auth-v1.onrender.com/api/location/search-location",
-      {
-        placeId: item.placeId,
-        sessionToken: sessionTokenRef.current,
-      }
-    );
-
-    const place = res.data;
-
-    setLocation(place.formattedAddress);
-
-    setLatitude(place.lat);
-
-    setLongitude(place.lng);
-    console.log("Selected Location");
-console.log({
-  address: place.formattedAddress,
-  latitude: place.lat,
-  longitude: place.lng,
-});
-
-    setSuggestions([]);
-
-    sessionTokenRef.current = "";
-
-  } catch (err) {
-    console.log(err);
-  }
-}}
-                >
-                  {item.name}
-                </div>
-
-              ))}
+              {suggestions.map(
+                (item) => (
+                  <div
+                    key={
+                      item.placeId
+                    }
+                    onClick={() =>
+                      handleSelectLocation(
+                        item
+                      )
+                    }
+                    className="px-4 py-3 hover:bg-gray-100 cursor-pointer"
+                  >
+                    {item.name}
+                  </div>
+                )
+              )}
 
             </div>
           )}
 
         </div>
 
-      <button
-  onClick={handleSearch}
-  className="w-full sm:w-[200px] h-[36px] flex items-center gap-[10px] rounded-[8px] bg-black text-white justify-center"
->
-          <p>Search</p>
-          <LuArrowRight className="text-[18px]" />
+        {/* SEARCH BUTTON */}
+
+        <button
+          type="button"
+          onClick={() =>
+            handleSearch(true)
+          }
+          disabled={isSearching}
+          className={`w-full sm:w-[200px] h-[36px] flex items-center gap-[10px] rounded-[8px] text-white justify-center ${
+            isSearching
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-black"
+          }`}
+        >
+
+          <p>
+            {isSearching
+              ? "Searching..."
+              : "Search"}
+          </p>
+
+          {!isSearching && (
+            <LuArrowRight className="text-[18px]" />
+          )}
+
         </button>
 
       </section>
-<AvailableArtisans
-  artisans={artisans}
-  searched={searched}
-   totalResults={pagination.total}
-/>
 
-{pagination.totalPages > 1 && (
-  <div className="flex justify-center items-center gap-2 mt-8">
-    <button
-      disabled={page === 1}
-      onClick={() => setPage((prev) => prev - 1)}
-      className={`px-4 py-2 rounded border ${
-        page === 1
-          ? "bg-gray-200 cursor-not-allowed"
-          : "bg-white hover:bg-gray-100"
-      }`}
-    >
-      Previous
-    </button>
+      {/* =====================================================
+          ARTISANS
+      ===================================================== */}
 
-    {Array.from(
-      { length: pagination.totalPages },
-      (_, i) => i + 1
-    ).map((pageNumber) => (
-      <button
-        key={pageNumber}
-        onClick={() => setPage(pageNumber)}
-        className={`w-10 h-10 rounded ${
-          page === pageNumber
-            ? "bg-black text-white"
-            : "bg-white border hover:bg-gray-100"
-        }`}
-      >
-        {pageNumber}
-      </button>
-    ))}
+      <AvailableArtisans
+        artisans={artisans}
+        searched={searched}
+        totalResults={
+          pagination.total
+        }
+        isSearching={isSearching}
+      />
 
-    <button
-      disabled={page === pagination.totalPages}
-      onClick={() => setPage((prev) => prev + 1)}
-      className={`px-4 py-2 rounded border ${
-        page === pagination.totalPages
-          ? "bg-gray-200 cursor-not-allowed"
-          : "bg-white hover:bg-gray-100"
-      }`}
-    >
-      Next
-    </button>
-  </div>
-)}
+      {/* =====================================================
+          PAGINATION
+      ===================================================== */}
 
-{showNoArtisanModal && (
-  <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[9999]">
+      {!isSearching &&
+        searched &&
+        pagination.totalPages > 1 && (
+          <div className="flex justify-center items-center gap-2 mt-8 flex-wrap">
 
-    <div className="bg-white rounded-xl w-[360px] p-6 relative">
+            <button
+              type="button"
+              disabled={page === 1}
+              onClick={() =>
+                setPage(
+                  (previous) =>
+                    previous - 1
+                )
+              }
+              className={`px-4 py-2 rounded border ${
+                page === 1
+                  ? "bg-gray-200 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
+              }`}
+            >
+              Previous
+            </button>
 
-      <button
-        onClick={() => {
-          setShowNoArtisanModal(false);
-          setSearched(false);
-        }}
-        className="absolute right-4 top-3 text-2xl"
-      >
-        ×
-      </button>
+            {Array.from(
+              {
+                length:
+                  pagination.totalPages,
+              },
+              (_, index) =>
+                index + 1
+            ).map(
+              (pageNumber) => (
+                <button
+                  type="button"
+                  key={pageNumber}
+                  onClick={() =>
+                    setPage(
+                      pageNumber
+                    )
+                  }
+                  className={`w-10 h-10 rounded ${
+                    page === pageNumber
+                      ? "bg-black text-white"
+                      : "bg-white border hover:bg-gray-100"
+                  }`}
+                >
+                  {pageNumber}
+                </button>
+              )
+            )}
 
-      <h2 className="text-xl font-semibold text-center mb-3">
-        No Artisan Found
-      </h2>
+            <button
+              type="button"
+              disabled={
+                page ===
+                pagination.totalPages
+              }
+              onClick={() =>
+                setPage(
+                  (previous) =>
+                    previous + 1
+                )
+              }
+              className={`px-4 py-2 rounded border ${
+                page ===
+                pagination.totalPages
+                  ? "bg-gray-200 cursor-not-allowed"
+                  : "bg-white hover:bg-gray-100"
+              }`}
+            >
+              Next
+            </button>
 
-      <p className="text-center text-gray-500">
-        No artisan was found for this location.
-        Please try another location or another skill.
-      </p>
+          </div>
+        )}
 
-      <button
-        onClick={() => {
-          setShowNoArtisanModal(false);
-          setSearched(false);
-        }}
-        className="mt-6 w-full bg-black text-white rounded-lg py-2"
-      >
-        OK
-      </button>
+      {/* =====================================================
+          NO ARTISAN MODAL
+      ===================================================== */}
 
-    </div>
+      {showNoArtisanModal && (
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[9999] px-4">
 
-  </div>
-)}
+          <div className="bg-white rounded-xl w-full max-w-[360px] p-6 relative">
+
+            <button
+              type="button"
+              onClick={
+                handleReturnToDefault
+              }
+              className="absolute right-4 top-3 text-2xl"
+            >
+              ×
+            </button>
+
+            <h2 className="text-xl font-semibold text-center mb-3">
+              No Artisan Found
+            </h2>
+
+            <p className="text-center text-gray-500">
+              No artisan was found for
+              this search. Please try
+              another location or another
+              skill.
+            </p>
+
+            <button
+              type="button"
+              onClick={
+                handleReturnToDefault
+              }
+              className="mt-6 w-full bg-black text-white rounded-lg py-2"
+            >
+              OK
+            </button>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* =====================================================
+          FILTER SIDEBAR
+      ===================================================== */}
+
       {showFilters && (
-  <div className="fixed inset-0 bg-black/40 flex justify-end z-50">
+        <div className="fixed inset-0 bg-black/40 flex justify-end z-[9998]">
 
-    <div className="bg-white w-[360px] h-full p-6 overflow-y-auto">
+          <div className="bg-white w-full sm:w-[360px] h-full p-6 overflow-y-auto">
 
-      <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">
-          Filters
-        </h2>
+            <div className="flex justify-between items-center mb-6">
 
-        <button
-          onClick={() => setShowFilters(false)}
-          className="text-2xl"
-        >
-          ×
-        </button>
-      </div>
+              <h2 className="text-xl font-semibold">
+                Filters
+              </h2>
 
-      {/* Verified */}
+              <button
+                type="button"
+                onClick={() =>
+                  setShowFilters(false)
+                }
+                className="text-2xl"
+              >
+                ×
+              </button>
 
-      <div className="mb-6">
+            </div>
 
-        <label className="flex items-center gap-3">
+            {/* VERIFIED */}
 
-          <input
-            type="checkbox"
-            checked={filters.verifiedOnly}
-            onChange={(e) =>
-              setFilters({
-                ...filters,
-                verifiedOnly: e.target.checked,
-              })
-            }
-          />
+            <div className="mb-6">
 
-          <span>Verified Artisans Only</span>
+              <label className="flex items-center gap-3">
 
-        </label>
+                <input
+                  type="checkbox"
+                  checked={
+                    filters.verifiedOnly
+                  }
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      verifiedOnly:
+                        e.target.checked,
+                    })
+                  }
+                />
 
-      </div>
+                <span>
+                  Verified Artisans Only
+                </span>
 
-      {/* Premium */}
+              </label>
 
-      <div className="mb-6">
+            </div>
 
-        <label className="flex items-center gap-3">
+            {/* PREMIUM */}
 
-          <input
-            type="checkbox"
-            checked={filters.premiumOnly}
-            onChange={(e) =>
-              setFilters({
-                ...filters,
-                premiumOnly: e.target.checked,
-              })
-            }
-          />
+            <div className="mb-6">
 
-          <span>Premium Members Only</span>
+              <label className="flex items-center gap-3">
 
-        </label>
+                <input
+                  type="checkbox"
+                  checked={
+                    filters.premiumOnly
+                  }
+                  onChange={(e) =>
+                    setFilters({
+                      ...filters,
+                      premiumOnly:
+                        e.target.checked,
+                    })
+                  }
+                />
 
-      </div>
+                <span>
+                  Premium Members Only
+                </span>
 
-      {/* Experience */}
+              </label>
 
-      <div className="mb-6">
+            </div>
 
-        <label className="block mb-2 font-medium">
-          Experience
-        </label>
+            {/* EXPERIENCE */}
 
-        <select
-          value={filters.experience}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              experience: e.target.value,
-            })
-          }
-          className="w-full border rounded-lg p-2"
-        >
-          <option value="">Any</option>
-          <option value="1">1+ Years</option>
-          <option value="3">3+ Years</option>
-          <option value="5">5+ Years</option>
-          <option value="10">10+ Years</option>
-        </select>
+            <div className="mb-6">
 
-      </div>
+              <label className="block mb-2 font-medium">
+                Experience
+              </label>
 
-      {/* Rating */}
+              <select
+                value={
+                  filters.experience
+                }
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    experience:
+                      e.target.value,
+                  })
+                }
+                className="w-full border rounded-lg p-2"
+              >
 
-      <div className="mb-6">
+                <option value="">
+                  Any
+                </option>
 
-        <label className="block mb-2 font-medium">
-          Rating
-        </label>
+                <option value="1">
+                  1+ Years
+                </option>
 
-        <select
-          value={filters.rating}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              rating: e.target.value,
-            })
-          }
-          className="w-full border rounded-lg p-2"
-        >
-          <option value="">Any</option>
-          <option value="5">5 ★</option>
-          <option value="4.5">4.5 ★ & Above</option>
-          <option value="4">4 ★ & Above</option>
-          <option value="3">3 ★ & Above</option>
-        </select>
+                <option value="3">
+                  3+ Years
+                </option>
 
-      </div>
+                <option value="5">
+                  5+ Years
+                </option>
 
-      {/* Distance */}
+                <option value="10">
+                  10+ Years
+                </option>
 
-      <div className="mb-8">
+              </select>
 
-        <label className="block mb-2 font-medium">
-          Distance
-        </label>
+            </div>
 
-        <select
-          value={filters.distance}
-          onChange={(e) =>
-            setFilters({
-              ...filters,
-              distance: e.target.value,
-            })
-          }
-          className="w-full border rounded-lg p-2"
-        >
-          <option value="">Anywhere</option>
-          <option value="2">Within 2 km</option>
-          <option value="5">Within 5 km</option>
-          <option value="10">Within 10 km</option>
-          <option value="20">Within 20 km</option>
-        </select>
+            {/* RATING */}
 
-      </div>
+            <div className="mb-6">
 
-      {/* Buttons */}
+              <label className="block mb-2 font-medium">
+                Rating
+              </label>
 
-      <div className="flex gap-3">
+              <select
+                value={filters.rating}
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    rating:
+                      e.target.value,
+                  })
+                }
+                className="w-full border rounded-lg p-2"
+              >
 
-        <button
-          onClick={() => {
-            setFilters({
-              verifiedOnly: false,
-              premiumOnly: false,
-              experience: "",
-              rating: "",
-              distance: "",
-            });
-          }}
-          className="flex-1 border rounded-lg py-2"
-        >
-          Reset
-        </button>
+                <option value="">
+                  Any
+                </option>
 
-        <button
-          onClick={() => {
-            console.log(filters);
-            setShowFilters(false);
-          }}
-          className="flex-1 bg-black text-white rounded-lg py-2"
-        >
-          Apply
-        </button>
+                <option value="5">
+                  5 ★
+                </option>
 
-      </div>
+                <option value="4.5">
+                  4.5 ★ & Above
+                </option>
 
-    </div>
+                <option value="4">
+                  4 ★ & Above
+                </option>
 
-  </div>
-)}
+                <option value="3">
+                  3 ★ & Above
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* DISTANCE */}
+
+            <div className="mb-8">
+
+              <label className="block mb-2 font-medium">
+                Distance
+              </label>
+
+              <select
+                value={
+                  filters.distance
+                }
+                onChange={(e) =>
+                  setFilters({
+                    ...filters,
+                    distance:
+                      e.target.value,
+                  })
+                }
+                className="w-full border rounded-lg p-2"
+              >
+
+                <option value="">
+                  Anywhere
+                </option>
+
+                <option value="2">
+                  Within 2 km
+                </option>
+
+                <option value="5">
+                  Within 5 km
+                </option>
+
+                <option value="10">
+                  Within 10 km
+                </option>
+
+                <option value="20">
+                  Within 20 km
+                </option>
+
+              </select>
+
+            </div>
+
+            {/* FILTER BUTTONS */}
+
+            <div className="flex gap-3">
+
+              <button
+                type="button"
+                onClick={() =>
+                  setFilters({
+                    verifiedOnly: false,
+                    premiumOnly: false,
+                    experience: "",
+                    rating: "",
+                    distance: "",
+                  })
+                }
+                className="flex-1 border rounded-lg py-2"
+              >
+                Reset
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setPage(1);
+                  setShowFilters(false);
+                }}
+                className="flex-1 bg-black text-white rounded-lg py-2"
+              >
+                Apply
+              </button>
+
+            </div>
+
+          </div>
+
+        </div>
+      )}
 
     </main>
   );

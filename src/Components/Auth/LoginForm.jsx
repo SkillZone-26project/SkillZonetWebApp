@@ -17,7 +17,7 @@ const LoginForm = () => {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  const onSubmit = async (data) => {
+ const onSubmit = async (data) => {
   try {
     const payload = {
       email: data.email,
@@ -36,23 +36,105 @@ const LoginForm = () => {
       }
     );
 
-    if (response.status === 200) {
-      const { token, refreshToken, sessionId } = response.data;
+    console.log("ARTISAN LOGIN RESPONSE:", response.data);
 
-      // ✅ SAVE ONLY TOKENS
+    if (response.status === 200) {
+      const {
+        token,
+        refreshToken,
+        sessionId,
+        id,
+        artisanId,
+        user,
+        artisan,
+        data: responseData,
+      } = response.data;
+
+      // Save tokens
       localStorage.setItem("token", token);
       localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("sessionId", sessionId);
 
-      // ✅ GO TO DASHBOARD
+      // ----------------------------------------
+      // Try to get artisan ID from response
+      // ----------------------------------------
+      let loggedInArtisanId =
+        artisanId ||
+        id ||
+        artisan?.id ||
+        user?.id ||
+        responseData?.artisanId ||
+        responseData?.id ||
+        responseData?.artisan?.id ||
+        responseData?.user?.id;
+
+      // ----------------------------------------
+      // If response doesn't contain ID,
+      // try to get it from JWT token
+      // ----------------------------------------
+      if (!loggedInArtisanId && token) {
+        try {
+          const tokenParts = token.split(".");
+
+          if (tokenParts.length === 3) {
+            const decodedPayload = JSON.parse(
+              atob(
+                tokenParts[1]
+                  .replace(/-/g, "+")
+                  .replace(/_/g, "/")
+              )
+            );
+
+            console.log(
+              "DECODED ARTISAN TOKEN:",
+              decodedPayload
+            );
+
+            loggedInArtisanId =
+              decodedPayload.id ||
+              decodedPayload.userId ||
+              decodedPayload.artisanId ||
+              decodedPayload.sub;
+          }
+        } catch (decodeError) {
+          console.error(
+            "Could not decode artisan token:",
+            decodeError
+          );
+        }
+      }
+
+      // ----------------------------------------
+      // Save artisan ID
+      // ----------------------------------------
+      if (loggedInArtisanId) {
+        localStorage.setItem(
+          "artisanId",
+          loggedInArtisanId
+        );
+
+        console.log(
+          "ARTISAN ID SAVED:",
+          loggedInArtisanId
+        );
+      } else {
+        console.error(
+          "ARTISAN ID COULD NOT BE FOUND"
+        );
+      }
+
+      // Go to dashboard
       navigate("/dashboard");
     }
-
   } catch (error) {
-    console.error("Login failed:", error.response?.data || error.message);
+    console.error(
+      "Login failed:",
+      error.response?.data || error.message
+    );
 
     alert(
-      error.response?.data?.message || "Login failed. Please try again."
+      error.response?.data?.message ||
+        "Login failed. Please try again."
     );
   }
 };

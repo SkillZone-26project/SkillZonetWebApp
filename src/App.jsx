@@ -46,6 +46,7 @@ import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalIn
 // import UserLocation from "./Components/USER-ONBOARDING/UserLocation";
 // import UserServicePreference from "./Components/USER-ONBOARDING/UserServicePreference";
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding"; 
+import BookService from "./Components/BookServices/BookService"
 
 // Auth (Emmanuel’s branch)
 import LoginForm from "./Components/Auth/LoginForm";
@@ -59,6 +60,9 @@ import UserResetPassword from "./Components/UserAuth/UserResetPassword"
 import UserOtpVerification from "./Components/UserAuth/UserOtpVerification"
 
 import ArtisanProfile from "./Components/UserPages/Userdashboard/ArtisanProfile";
+
+import AvailableArtisansHero from "./Components/Hero/AvailableArtisansHero"
+import SelectToProceed from "./Components/Hero/SelectToProceed"
 
 function App() { 
   return (
@@ -119,6 +123,7 @@ function App() {
       <Route path="/otpVerification" element={<OTPVerification />} />
       <Route path="/selectYourRole" element={<SelectYourRole />} />
       <Route path="/selectLogin" element={<SelectLogin />} />
+      <Route path="/bookService/:id" element={<BookService />} />
 
       {/* Artisan Onboarding */}
       <Route path="/artisan-onboarding" element={<ArtisanOnboarding />}>
@@ -139,6 +144,12 @@ function App() {
         {/* <Route path="user-location" element={<UserLocation />} /> */}
         {/* <Route path="user-service-preference" element={<UserServicePreference />} /> */}
       </Route>
+
+      {/* Extra Pages */}
+     <Route path="/artisans" element={<AvailableArtisansHero />} />
+     <Route path="/selectToProceed" element={<SelectToProceed />} />
+
+    
 
     </Routes>
   );
