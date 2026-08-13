@@ -1,9 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
+import CreateAccount from "./Components/HelpArticles/CreateAccount";
+import BookingAndTrackingArticle from "./Components/HelpArticles/BookingAndTrackingArticle";
 
 import Home from "./Components/Home/Home";
 import Features from "./Components/Features/Features";
 import JoinAs from "./Components/JoinAs/JoinAs";
 import Support from "./Components/Support/Support";
+import BookService from "./Components/BookServices/BookService";
 
 // Auth
 import SignIn from "./Components/Auth/SignIn";
@@ -44,6 +47,12 @@ import Location from "./Components/ARTISAN-ONBOARDING/Location";
 import DocumentVerification from "./Components/ARTISAN-ONBOARDING/DocumentVerification";
 import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 
+// Artisan Contract
+import ArtisanContract from "./Components/ArtisanContract/ArtisanContract";
+
+// Client Contract
+import ClientContract from "./Components/ClientContract/ClientContract";
+
 // User Onboarding
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
 import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
@@ -60,17 +69,33 @@ function App() {
   return (
     <Routes>
 
+      
+
       {/* Public Routes */}
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="/home" element={<Home />} />
       <Route path="/features" element={<Features />} />
       <Route path="/joinAs" element={<JoinAs />} />
       <Route path="/support" element={<Support />} />
+      <Route path="/book-service" element={<BookService />} />
+
+      {/* Contract Routes */}
+      <Route path="/artisan-contract" element={<ArtisanContract />} />
+      <Route path="/client-contract" element={<ClientContract />}
+/>
+
 
       {/* Help Pages */}
       <Route path="/help/getting-started" element={<GettingStarted />} />
       <Route path="/help/billing" element={<Billing />} />
       <Route path="/help/tracking" element={<Tracking />} />
+      
+      <Route path="/article/create-account" element={<CreateAccount />} />
+      <Route path="/article/booking-tracking" element={<BookingAndTrackingArticle />} />
+      
+
+
+
       
 
       {/* Auth */}
@@ -131,6 +156,8 @@ function App() {
         <Route index element={<Navigate to="user-personal-info" replace />} />
         <Route path="user-personal-info" element={<UserPersonalInformation />} />
       </Route>
+
+    
 
     </Routes>
   );
