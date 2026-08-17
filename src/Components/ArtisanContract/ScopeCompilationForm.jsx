@@ -8,10 +8,12 @@ import {
   Lock,
   LockKeyhole,
   CreditCard,
+  X,
 } from "lucide-react";
 import { FaCircleCheck } from "react-icons/fa6";
 import {contractInfo } from "../../data/contractData";
 import PayInInstallmentsModal from "./PayInInstallmentsModal";
+import RejectAgreementModal from "./RejectAgreementModal";
 import MaterialsSection from "./MaterialsSection";
 
 
@@ -35,6 +37,7 @@ const ScopeCompilationForm = () => {
 
   const { payment } = contractInfo;
   const [showInstallmentModal, setShowInstallmentModal] = useState(false);
+  const [showArtisanRejectModal, setShowArtisanRejectModal] = useState(false);
 
   // Temporary images (replace with backend data later)
   const sitePhotos = [
@@ -236,6 +239,16 @@ const ScopeCompilationForm = () => {
   </div>
 
 </div>
+<button
+            onClick={() => setShowArtisanRejectModal(true)}
+            className="h-11 rounded-md border border-[#DD2D35] text-[#E7000B] font-medium hover:bg-red-50 transition text-sm"
+          >
+            <div className="px-2 flex items-center justify-center gap-2">
+              <X size={20}/>
+              Reject Agreement
+            </div>
+
+          </button>
 
 {/* Payment Schedule */}
 
@@ -249,13 +262,13 @@ const ScopeCompilationForm = () => {
     Receive payment in installments as work progresses
   </p>
 
-  <div className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4">
+  <div className=" mt-5 w-full max-w-[572px] min-h-[72px] rounded-[8px] px-3 sm:px-4 py-[14px] bg-[#F5F5F5] shadow-[0_0_12px_0_#0000001A] flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
 
     {/* Full Payment */}
 
     <button
       type="button"
-      className="flex-1 h-11 px-2 py-3 rounded-lg border border-[#111827] bg-white
+      className="flex-1 h-11 px-2 py-3 rounded-lg border border-[#111827] 
       flex items-center justify-center gap-2
       text-sm font-semibold text-[#111827]
       hover:bg-gray-50 transition"
@@ -279,7 +292,7 @@ const ScopeCompilationForm = () => {
     <button
       type="button"
       onClick={() => setShowInstallmentModal(true)}
-      className="flex-1 h-11 px-2 py-3 rounded-lg border border-[#E5A23A] bg-white
+      className="flex-1 h-11 px-2 py-3 rounded-lg border border-[#E5A23A]
       flex items-center justify-center gap-2
       text-sm font-semibold text-[#D18400]
       hover:bg-[#FFF8EC] transition"
@@ -495,6 +508,16 @@ const ScopeCompilationForm = () => {
     // Installment configuration comes next
   }}
 />
+
+<RejectAgreementModal
+      isOpen={showArtisanRejectModal}
+      onClose={() => setShowArtisanRejectModal(false)}
+      onConfirm={() => {
+    // API call later
+    setShowArtisanRejectModal(false);
+    }}
+  />
+
 
     </section>
   );

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { CircleX, X } from "lucide-react";
 
-const RejectCancelModal = ({
+const RejectAgreementModal = ({
   isOpen,
   onClose,
   onConfirm,
@@ -34,7 +34,7 @@ const RejectCancelModal = ({
             />
 
             <h2 className="text-[20px] font-bold text-[#111827]">
-              Reject and Cancel Agreement
+              Reject Agreement
             </h2>
 
           </div>
@@ -56,11 +56,11 @@ const RejectCancelModal = ({
           <div className="space-y-1 mb-7">
 
             <p className="text-[16px] font-semibold text-[#A3A2B1]">
-              You are about to cancel and reject this agreement.
+              You are about to reject this agreement.
             </p>
 
             <p className="text-[16px] font-semibold text-[#A3A2B1]">
-              Please tell the artisan why you're canceling
+              Please tell the client why you are rejecting
             </p>
 
           </div>
@@ -70,7 +70,7 @@ const RejectCancelModal = ({
 
             <label className="block text-[20px] font-semibold text-[#111827] mb-7">
 
-              Reason for cancellation{" "}
+              Reason for rejecting{" "}
 
               <span className="text-[#EF4444]">
                 (required)
@@ -82,7 +82,7 @@ const RejectCancelModal = ({
               value={reason}
               onChange={(e) => setReason(e.target.value)}
               placeholder="Please provide a reason for rejecting or canceling this agreement"
-              className=" w-full h-[77px] resize-none rounded-md border border-[#F0D69A] bg-[#FFFDF7] px-3 py-3 text-[16px] font-medium text-gray-700 outline-none placeholder:text-[#C9C9D1] focus:border-[#E62E3B] focus:ring-1 focus:ring-[#E62E3B]"/>
+              className="w-full h-[77px] resize-none rounded-md border border-[#F0D69A] bg-[#FFFDF7] px-3 py-3 text-[16px] font-medium text-gray-700 outline-none placeholder:text-[#C9C9D1] focus:border-[#E62E3B] focus:ring-1 focus:ring-[#E62E3B]"/>
 
           </div>
 
@@ -94,7 +94,7 @@ const RejectCancelModal = ({
               disabled={!reason.trim()}
               onClick={handleConfirm}
               className="h-11 px-4 rounded-md bg-[#E62E3B] text-white text-[14px] font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
-              Confirm Cancel
+              Confirm Rejection 
             </button>
 
           </div>
@@ -107,4 +107,4 @@ const RejectCancelModal = ({
   );
 };
 
-export default RejectCancelModal;
+export default RejectAgreementModal;

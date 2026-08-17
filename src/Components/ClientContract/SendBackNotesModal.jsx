@@ -88,25 +88,7 @@ const SendBackNotesModal = ({
               maxLength={500}
               onChange={(e) => setNotes(e.target.value)}
               placeholder="Describe the changes you'd like the artisan to make..."
-              className="
-                w-full
-                h-[90px]
-                resize-none
-                rounded-sm
-                border
-                border-[#F1D9A8]
-                bg-[#FFFDF7]
-                px-3
-                py-3
-                text-[12px]
-                text-gray-700
-                outline-none
-                placeholder:text-gray-400
-                focus:border-[#D97706]
-                focus:ring-1
-                focus:ring-[#D97706]
-              "
-            />
+              className="w-full h-[90px] resize-none rounded-sm border border-[#F1D9A8]  bg-[#FFFDF7] px-3 py-3 text-[12px] text-gray-700 outline-none placeholder:text-gray-400 focus:border-[#D97706] focus:ring-1 focus:ring-[#D97706]"/>
 
             <div className="flex justify-end mt-1">
               <span className="text-[10px] text-gray-400">
@@ -138,20 +120,7 @@ const SendBackNotesModal = ({
               type="button"
               disabled={!notes.trim()}
               onClick={handleSubmit}
-              className="
-                h-9
-                px-5
-                rounded-md
-                bg-[#F59E0B]
-                text-white
-                text-[11px]
-                font-semibold
-                hover:bg-[#D97706]
-                disabled:opacity-50
-                disabled:cursor-not-allowed
-                transition
-              "
-            >
+              className="h-9 px-5 rounded-md bg-[#F59E0B] text-white text-[11px] font-semibold hover:bg-[#D97706] disabled:opacity-50 disabled:cursor-not-allowed transition">
               Send Back
             </button>
 
