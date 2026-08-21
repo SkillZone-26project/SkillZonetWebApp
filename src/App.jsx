@@ -28,6 +28,7 @@ import UserDashboard from "./Components/UserPages/Userdashboard/UserDashboard";
 import UserFindArtisans from "./Components/UserPages/Userdashboard/UserFindArtisans";
 import UserMyBookings from "./Components/UserPages/Userdashboard/UserMyBookings";
 import UserMessages from "./Components/UserPages/Userdashboard/UserMessages";
+import UserWallet from "./Components/UserPages/Userdashboard/UserWallet";
 import UserSavedArtisans from "./Components/UserPages/Userdashboard/UserSavedArtisans";
 import UserProfile from "./Components/UserPages/Userdashboard/UserProfile";
 import UserSettings from "./Components/UserPages/Userdashboard/UserSettings";
@@ -115,6 +116,7 @@ function App() {
         <Route path="find-artisans" element={<UserFindArtisans />} />
         <Route path="bookings" element={<UserMyBookings />} />
         <Route path="messages" element={<UserMessages />} />
+        <Route path="wallet" element={<UserWallet />} />
         <Route path="saved-artisans" element={<UserSavedArtisans />} />
         <Route path="profile" element={<UserProfile />} />
         <Route path="settings" element={<UserSettings />} />

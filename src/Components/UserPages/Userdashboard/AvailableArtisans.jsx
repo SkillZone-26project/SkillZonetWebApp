@@ -511,26 +511,16 @@ const AvailableArtisans = ({
   =========================================================
   */
 
-  const handleViewProfile = (
-    artisan
-  ) => {
-    const artisanId =
-      artisan?._id ||
-      artisan?.id;
+  const handleViewProfile = (artisan) => {
+  const artisanId = artisan?._id || artisan?.id;
 
-    if (!artisanId) {
-      console.error(
-        "ARTISAN ID NOT FOUND:",
-        artisan
-      );
+  if (!artisanId) {
+    console.error("ARTISAN ID NOT FOUND:", artisan);
+    return;
+  }
 
-      return;
-    }
-
-    navigate(
-      `/selectLogin?redirect=/artisan-profile/${artisanId}`
-    );
-  };
+  navigate(`/artisan-profile/${artisanId}`);
+};
 
   /*
   =========================================================

@@ -63,7 +63,7 @@ const percent = Math.round((step / TOTAL_STEPS) * 100);
         {/* Footer */}
         <div className="text-xs text-center text-textGray">
         <p className="mt-3">
-          Already have an Account? <Link to="/login" className="text-black font-semibold">
+          Already have an Account? <Link to="/user-login" className="text-black font-semibold">
   Sign in
 </Link>
         </p>

@@ -1,6 +1,9 @@
 import React from "react";
+import { Link, useNavigate } from "react-router-dom"; 
 
 const Ready = () => {
+
+    const navigate = useNavigate();
   return (
     <section className="w-full bg-black text-white flex flex-col items-center justify-center text-center px-4 py-16 md:py-20 lg:h-[316px]">
       
@@ -13,13 +16,17 @@ const Ready = () => {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-4 text-[14px] w-full sm:w-auto justify-center">
+        <Link to="/user-onboarding">
         <button className="bg-white text-black px-6 py-3 rounded-lg font-medium w-full sm:w-auto">
           Find an Artisan
         </button>
+        </Link>
 
+<Link to="/artisan-onboarding">
         <button className="border border-white px-6 py-3 rounded-lg font-medium w-full sm:w-auto">
           Become an Artisan
         </button>
+        </Link>
       </div>
 
     </section>

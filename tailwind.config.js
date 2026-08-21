@@ -1,20 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 export default {
- content: [
+  content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+
   theme: {
     extend: {
-       colors: {
-        "textColor": "#0A0A0A", //Main text color
+
+      colors: {
+        "textColor": "#0A0A0A",
         "textGray": "#717182",
         "bgGray": "#F3F3F5",
         "black": "#030213",
         "textRed": "#E7000B",
         "textBlue": "#193CB8",
         "textGreen": "#016630",
-        "textGreenCap": "#016630",
         "white": "#FFFFFF",
         "pink": "#AD46FF",
         "yellow": "#F0B100",
@@ -24,10 +25,9 @@ export default {
         "premiumbg": "#FE9A00",
         "barbg": "#ECECF0",
         "payColor": "#00A63E",
-        //Icons
+
         "active": "#155DFC",
         "bgActive": "#DBEAFE",
-        "thisMonth": "#155DFC",
         "completed": "#00A63E",
         "bgCompleted": "#DCFCE7",
         "wallet": "#00A63E",
@@ -43,18 +43,40 @@ export default {
         "iconGreen": "#00C950",
         "yellowIcon": "#FDC700",
 
-        //Others 
         "primary": "#2563EB",
         "secondary": "#64748B",
         "background": "#F8FAFC",
         "accent": "#22C55E",
         "error": "#EF4444",
       },
+
+
       fontFamily: {
         inter: ["Inter", "sans-serif"],
       },
+
+
+      keyframes: {
+        heartbeat: {
+          "0%, 100%": {
+            transform: "scale(1)",
+          },
+
+          "50%": {
+            transform: "scale(1.08)",
+          },
+        },
+      },
+
+
+      animation: {
+        heartbeat: "heartbeat 1.5s ease-in-out infinite",
+      },
+
+
     },
   },
-  plugins: [],
-}
 
+
+  plugins: [],
+};

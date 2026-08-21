@@ -8,9 +8,10 @@ const UserHeader = ({ setSidebarOpen }) => {
 
   const pageTitles = {
     "/user/dashboard": "Client Dashboard",
-    "/user/find-artisans": "Search",
+    "/user/find-artisans": "Find Artisans",
     "/user/bookings": "My Bookings",
     "/user/messages": "Messages",
+    "/user/wallet": "Wallet",
     "/user/saved-artisans": "Saved Artisans",
     "/user/profile": "Profile",
     "/user/settings": "Settings",

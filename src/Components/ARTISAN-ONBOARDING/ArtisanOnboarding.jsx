@@ -1,10 +1,13 @@
 import { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom"; 
+import { Link, useNavigate } from "react-router-dom";
 
 function ArtisanOnboarding() {
   // 1. Initialize the "master" state for the whole form
   const [formValues, setFormValues] = useState({});
-  const location = useLocation();
+  const location = useLocation(); 
+
+  const navigate = useNavigate();
 
   const stepMap = {
     "/artisan-onboarding/personal-info": 1,
@@ -61,9 +64,16 @@ function ArtisanOnboarding() {
         </div>
 
         {/* Footer */}
-        <p className="text-xs text-center text-textGray mt-4">
+        <div className="flex flex-col items-center">
+          <p className="mt-3">
+          Already have an Account? <Link to="/login" className="text-black font-semibold">
+  Sign in
+</Link>
+        </p>
+        <p className="text-xs text-center text-textGray">
           Need help? <span className="text-black">Contact support</span>
         </p>
+        </div>
       </div>
     </div>
   );

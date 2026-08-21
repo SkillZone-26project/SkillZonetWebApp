@@ -101,7 +101,7 @@ const SelectToProceed = () => {
             <h1 className="text-[16px] sm:text-[24px] font-bold text-gray-900 mb-2">
             Have Account 
           </h1>
-          <Link to="/user-login">
+          <Link to="/selectLogin">
             <button
               className="w-full lg:w-[250px] flex items-center justify-center gap-2 bg-black text-white font-medium text-[18px] py-3 px-4 rounded-lg mb-[12px]"
             >
@@ -113,7 +113,7 @@ const SelectToProceed = () => {
             <h1 className="text-[16px] sm:text-[24px] font-bold text-gray-900 mb-[8px]">
            Don't Have Acount 
           </h1>
-          <Link to="/user-onboarding">
+          <Link to="/SelectYourRole">
             <button
               className="w-full lg:w-[250px]  flex items-center justify-center gap-2 bg-black text-white font-medium text-[18px] py-3 px-4 rounded-lg mb-4"
             >

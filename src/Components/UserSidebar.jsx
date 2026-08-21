@@ -4,6 +4,7 @@ import {
   LuSearch,
   LuCalendar,
   LuMessageCircle,
+  LuWallet,
   LuBookmark,
   LuUser,
   LuSettings,
@@ -115,6 +116,7 @@ const UserSidebar = ({ sidebarOpen, setSidebarOpen }) => {
           <SidebarLink to="/user/find-artisans" icon={<LuSearch />} label="Find Artisans" setSidebarOpen={setSidebarOpen} />
           <SidebarLink to="/user/bookings" icon={<LuCalendar />} label="My Bookings" setSidebarOpen={setSidebarOpen} />
           <SidebarLink to="/user/messages" icon={<LuMessageCircle />} label="Messages" setSidebarOpen={setSidebarOpen} />
+           <SidebarLink  to="/user/wallet" icon={<LuWallet />} label="Wallet" setSidebarOpen={setSidebarOpen}/>
           <SidebarLink to="/user/saved-artisans" icon={<LuBookmark />} label="Saved Artisans" setSidebarOpen={setSidebarOpen} />
           <SidebarLink to="/user/profile" icon={<LuUser />} label="Profile" setSidebarOpen={setSidebarOpen} />
           <SidebarLink to="/user/settings" icon={<LuSettings />} label="Settings" setSidebarOpen={setSidebarOpen} />
