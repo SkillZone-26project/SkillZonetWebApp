@@ -14,7 +14,6 @@ const SupportContacts = () => {
   <div className="max-w-[1200px] mx-auto px-4 lg:px-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-12">
 
     {/* LEFT */}
-    {/* LEFT */}
 <div className="max-w-[552px] space-y-4 text-center md:text-center lg:text-left mx-auto lg:mx-0">
       <h2 className="text-3xl md:text-4xl font-semibold leading-tight">
         {supportContacts.title}

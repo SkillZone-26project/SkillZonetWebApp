@@ -18,8 +18,11 @@ const PowerfulFeatures = () => {
 
       {/* GRID */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        
+        {/* 1. Map through the powerfulFeatures  */}
 
         {powerfulFeatures.map((item) => (
+          // 2. identify the keys and style
           <div key={item.id} className="flex flex-col gap-4">
 
             {/* IMAGE */}
