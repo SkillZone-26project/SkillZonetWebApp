@@ -1,4 +1,4 @@
-import HelpBookingAndTrackingLayout from "./HelpBookingAndTrackingLayout";
+import HelpLayout from "./HelpLayout";
 import { bookingAndTrackingArticle } from "../../data/helpArticlesData";
 import Nav from "../../Components/Nav/Nav"
 
@@ -7,7 +7,7 @@ const BookingAndTrackingArticle = () => {
     <div>
       <Nav />
       <div className="pt-[72px]">
-        <HelpBookingAndTrackingLayout article={bookingAndTrackingArticle} />
+        <HelpLayout article={bookingAndTrackingArticle} />
       </div>
       
 

@@ -59,9 +59,9 @@ sidebarLinks: [
 };
 
 export const bookingAndTrackingArticle = {
- sidebarTitle: "Booking & Tracking",
- current: "Track Your Bookings",
- title: "Tracking Your Bookings",
+ sidebarTitle: "Track Your Booking",
+ current: "Tracking Your Bookings",
+ title: "Track Your Bookings",
  description: "Check the status of your booking in real time and stay updated",
 
  sidebarLinks: [
@@ -77,7 +77,7 @@ export const bookingAndTrackingArticle = {
   },
   {
     id: 3,
-    title: "Track Your Bookings",
+    title: "Tracking Your Bookings",
     href: "/article/track-booking",
   },
   {
@@ -118,4 +118,68 @@ export const bookingAndTrackingArticle = {
     },
   ],
 
+};
+export const paymentMethodArticle = {
+  sidebarTitle: "Account & Billing",
+  current: "Payment Method",
+  title: "Account & Billing",
+  description: "Go to Payment Methods and click on Add Payment Method ",
+
+  sidebarLinks: [
+    {
+      id: 1,
+      title: "Payment Method",
+      href: "/article/payment-method",
+    },
+    {
+      id: 2,
+      title: "View Invoices",
+      href: "/article/view-invoices",
+    },
+    {
+      id: 3,
+      title: "Billing Question",
+      href: "/article/billing-questions",
+    },
+    {
+      id: 4,
+      title: "Update Billing Retail",
+      href: "/article/update-billing-retail",
+    },
+  ],
+
+  steps: [
+    {
+      id: 1,
+      title: "Add Payment Method",
+      description: "Go to payment methods and click on Add Payment Method",
+      illustrationType:
+        "payment-method-1",
+    },
+
+    {
+      id: 2,
+      title: "Enter Card Details",
+      description: "Enter your Card information and billing details securely",
+      illustrationType:
+        "payment-method-2",
+    },
+
+    {
+      id: 3,
+      title: "Set As Default",
+      description: "Choose a payment method and set it as your default option",
+      illustrationType:
+        "payment-method-3",
+    },
+
+    {
+      id: 4,
+      title: "Indicators",
+      description:
+        "Different colored button showing different status of payment order",
+      illustrationType:
+        "payment-method-4",
+    },
+  ],
 };

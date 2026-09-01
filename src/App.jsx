@@ -64,13 +64,13 @@ import UserSignIn from "./Components/UserAuth/UserSignIn";
 import GettingStarted from "./Components/help/GettingStarted";
 import Billing from "./Components/help/Billing";
 import Tracking from "./Components/help/Tracking";
+import PaymentMethodArticle from "./Components/HelpArticles/PaymentMethodArticle";
+import Payout from "./Components/Payout/Payout";
+import ContractDispute from "./Components/ContractDispute/ContractDispute";
 
 function App() {
   return (
     <Routes>
-
-      
-
       {/* Public Routes */}
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="/home" element={<Home />} />
@@ -81,22 +81,27 @@ function App() {
 
       {/* Contract Routes */}
       <Route path="/artisan-contract" element={<ArtisanContract />} />
-      <Route path="/client-contract" element={<ClientContract />}
-/>
+      <Route path="/client-contract" element={<ClientContract />} />
+      <Route path="/contract-dispute" element={<ContractDispute />} />
 
+
+      {/* Payout */}
+      <Route path="/payout" element={<Payout />} />
 
       {/* Help Pages */}
       <Route path="/help/getting-started" element={<GettingStarted />} />
       <Route path="/help/billing" element={<Billing />} />
       <Route path="/help/tracking" element={<Tracking />} />
-      
+
       <Route path="/article/create-account" element={<CreateAccount />} />
-      <Route path="/article/booking-tracking" element={<BookingAndTrackingArticle />} />
-      
-
-
-
-      
+      <Route 
+        path="/article/booking-tracking"
+        element={<BookingAndTrackingArticle />}
+      />
+      <Route
+        path="/article/payment-method"
+        element={<PaymentMethodArticle />}
+      />
 
       {/* Auth */}
       <Route element={<SignIn />}>
@@ -112,7 +117,7 @@ function App() {
         <Route path="/user-forgot-password" element={<UserForgotPassword />} />
         <Route path="/user-reset-password" element={<UserResetPassword />} />
       </Route>
-       <Route path="/user-otpVerification" element={<UserOtpVerification />} />
+      <Route path="/user-otpVerification" element={<UserOtpVerification />} />
 
       {/* Artisan Dashboard */}
       <Route path="/dashboard" element={<DashboardLayout />}>
@@ -147,18 +152,21 @@ function App() {
         <Route path="personal-info" element={<PersonalInformation />} />
         <Route path="professional-details" element={<ProfessionalDetails />} />
         <Route path="location" element={<Location />} />
-        <Route path="document-verification" element={<DocumentVerification />} />
+        <Route
+          path="document-verification"
+          element={<DocumentVerification />}
+        />
         <Route path="bank-details" element={<BankDetails />} />
       </Route>
 
       {/* User Onboarding */}
       <Route path="/user-onboarding" element={<UserOnboarding />}>
         <Route index element={<Navigate to="user-personal-info" replace />} />
-        <Route path="user-personal-info" element={<UserPersonalInformation />} />
+        <Route
+          path="user-personal-info"
+          element={<UserPersonalInformation />}
+        />
       </Route>
-
-    
-
     </Routes>
   );
 }
