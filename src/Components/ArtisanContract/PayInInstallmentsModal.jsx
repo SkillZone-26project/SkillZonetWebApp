@@ -15,11 +15,11 @@ const PayInInstallmentsModal = ({ isOpen, onClose, onContinue }) => {
             </div>
 
             <div>
-              <h2 className="text-[20px] font-bold text-[#111827] leading-6">
+              <h2 className="text-[20px] font-bold text-black leading-6">
                 Pay in Installments
               </h2>
 
-              <p className="text-xs text-[#111827] mt-1">
+              <p className="text-xs text-textGray mt-1">
                 define how you will be paid in this project
               </p>
             </div>

@@ -22,7 +22,7 @@ const RejectAgreementModal = ({ isOpen, onClose, onConfirm }) => {
             <CircleX size={36} strokeWidth={2} className="text-[#E62E3B]" />
 
             <h2 className="text-[20px] font-bold text-[#111827]">
-              Reject Agreement
+              Cancel Agreement
             </h2>
           </div>
 
@@ -39,27 +39,27 @@ const RejectAgreementModal = ({ isOpen, onClose, onConfirm }) => {
         <div className="px-7 pb-8 pt-8">
           {/* Description */}
           <div className="space-y-1 mb-7">
-            <p className="text-[16px] font-semibold text-[#A3A2B1]">
-              You are about to reject this agreement.
+            <p className="text-[16px] text-textGray">
+              You are about to cancel this agreement.
             </p>
 
-            <p className="text-[16px] font-semibold text-[#A3A2B1]">
-              Please tell the client why you are rejecting
+            <p className="text-[16px] text-textGray">
+              Please tell the client why you are cancelling
             </p>
           </div>
 
           {/* Reason */}
           <div>
-            <label className="block text-[20px] font-semibold text-[#111827] mb-7">
-              Reason for rejecting{" "}
-              <span className="text-[#EF4444]">(required)</span>
+            <label className="block text-[20px] font-semibold text-black mb-7">
+              Reason for cancelling{" "}
+              <span className="text-red-500">(required)</span>
             </label>
 
             <textarea
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Please provide a reason for rejecting or canceling this agreement"
-              className="w-full h-[77px] resize-none rounded-md border border-[#F0D69A] bg-[#FFFDF7] px-3 py-3 text-[16px] font-medium text-gray-700 outline-none placeholder:text-[#C9C9D1] focus:border-[#E62E3B] focus:ring-1 focus:ring-[#E62E3B]"
+              placeholder="Please provide a reason for rejecting or cancelling this agreement"
+              className="w-full h-[77px] resize-none rounded-md border border-[#F0D69A] bg-[#FFFDF7] px-3 py-3 text-[16px] text-gray-700 outline-none placeholder:text-textGray focus:border-red-500 focus:ring-1 focus:ring-red-500 transition"
             />
           </div>
 
@@ -71,7 +71,7 @@ const RejectAgreementModal = ({ isOpen, onClose, onConfirm }) => {
               onClick={handleConfirm}
               className="h-11 px-4 rounded-md bg-[#E62E3B] text-white text-[14px] font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
             >
-              Confirm Rejection
+              Confirm Cancellation
             </button>
           </div>
         </div>
