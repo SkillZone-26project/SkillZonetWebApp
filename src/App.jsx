@@ -63,10 +63,11 @@ import BankDetails from "./Components/ARTISAN-ONBOARDING/BankDetails";
 // Contracts
 import ArtisanContract from "./Components/ArtisanContract/ArtisanContract";
 import ClientContract from "./Components/ClientContract/ClientContract";
+import ContractDispute from "./Components/ContractDispute/ContractDispute";
 
 // User Onboarding
-import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
 import UserOnboarding from "./Components/USER-ONBOARDING/UserOnboarding";
+import UserPersonalInformation from "./Components/USER-ONBOARDING/UserPersonalInformation";
 
 // Booking
 import BookService from "./Components/BookServices/BookService";
@@ -75,14 +76,25 @@ import BookService from "./Components/BookServices/BookService";
 import AvailableArtisansHero from "./Components/Hero/AvailableArtisansHero";
 import SelectToProceed from "./Components/Hero/SelectToProceed";
 
+// Help Pages
+import GettingStarted from "./Components/help/GettingStarted";
+import Billing from "./Components/help/Billing";
+import Tracking from "./Components/help/Tracking";
+
 // Help Articles
 import CreateAccount from "./Components/HelpArticles/CreateAccount";
 import BookingAndTrackingArticle from "./Components/HelpArticles/BookingAndTrackingArticle";
+import PaymentMethodArticle from "./Components/HelpArticles/PaymentMethodArticle";
+
+// Payout
+import Payout from "./Components/Payout/Payout";
 
 function App() {
   return (
     <Routes>
-      {/* Public Routes */}
+      {/* =========================
+          PUBLIC ROUTES
+      ========================== */}
       <Route path="/" element={<Navigate to="/home" replace />} />
       <Route path="/home" element={<Home />} />
       <Route path="/features" element={<Features />} />
@@ -90,36 +102,64 @@ function App() {
       <Route path="/support" element={<Support />} />
       <Route path="/successfulPage" element={<SuccessfulPage />} />
 
-      {/* Booking */}
+      {/* =========================
+          BOOKING
+      ========================== */}
       <Route path="/book-service" element={<BookService />} />
       <Route path="/bookService/:id" element={<BookService />} />
 
-      {/* Contract Routes */}
+      {/* =========================
+          CONTRACTS
+      ========================== */}
       <Route path="/artisan-contract" element={<ArtisanContract />} />
       <Route path="/client-contract" element={<ClientContract />} />
+      <Route path="/contract-dispute" element={<ContractDispute />} />
 
-      {/* Help Pages */}
+      {/* =========================
+          PAYOUT
+      ========================== */}
+      <Route path="/payout" element={<Payout />} />
+
+      {/* =========================
+          HELP PAGES
+      ========================== */}
+      <Route path="/help/getting-started" element={<GettingStarted />} />
+      <Route path="/help/billing" element={<Billing />} />
+      <Route path="/help/tracking" element={<Tracking />} />
+
+      {/* =========================
+          HELP ARTICLES
+      ========================== */}
       <Route
         path="/article/create-account"
         element={<CreateAccount />}
       />
+
       <Route
         path="/article/booking-tracking"
         element={<BookingAndTrackingArticle />}
       />
 
-      {/* Auth Routes */}
-      <Route path="/login" element={<SignIn />}>
-        <Route index element={<LoginForm />} />
-        <Route path="forgot-password" element={<ForgotPassword />} />
-        <Route path="reset-password" element={<ResetPassword />} />
+      <Route
+        path="/article/payment-method"
+        element={<PaymentMethodArticle />}
+      />
+
+      {/* =========================
+          ARTISAN AUTH
+      ========================== */}
+      <Route element={<SignIn />}>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
+        <Route path="/otpVerification" element={<OTPVerification />} />
       </Route>
 
       <Route path="/artisanLogin" element={<ArtisanLogin />} />
-      <Route path="/userLoginForm" element={<UserLoginForm />} />
-      <Route path="/userSignIn" element={<UserSignIn />} />
 
-      {/* User Auth */}
+      {/* =========================
+          USER AUTH
+      ========================== */}
       <Route element={<UserSignIn />}>
         <Route path="/user-login" element={<UserLoginForm />} />
         <Route
@@ -132,12 +172,24 @@ function App() {
         />
       </Route>
 
+      {/* Kept for compatibility with existing links */}
+      <Route path="/userLoginForm" element={<UserLoginForm />} />
+      <Route path="/userSignIn" element={<UserSignIn />} />
+
       <Route
         path="/user-otpVerification"
         element={<UserOtpVerification />}
       />
 
-      {/* Artisan Dashboard */}
+      {/* =========================
+          ROLE / LOGIN SELECTION
+      ========================== */}
+      <Route path="/selectYourRole" element={<SelectYourRole />} />
+      <Route path="/selectLogin" element={<SelectLogin />} />
+
+      {/* =========================
+          ARTISAN DASHBOARD
+      ========================== */}
       <Route path="/dashboard" element={<DashboardLayout />}>
         <Route index element={<Dashboard />} />
         <Route path="jobrequests" element={<JobRequests />} />
@@ -149,9 +201,15 @@ function App() {
         <Route path="settings" element={<Settings />} />
       </Route>
 
-      {/* User Dashboard */}
+      {/* =========================
+          USER DASHBOARD
+      ========================== */}
       <Route path="/user" element={<UserDashboardLayout />}>
-        <Route index element={<Navigate to="dashboard" replace />} />
+        <Route
+          index
+          element={<Navigate to="dashboard" replace />}
+        />
+
         <Route path="dashboard" element={<UserDashboard />} />
         <Route path="find-artisans" element={<UserFindArtisans />} />
         <Route path="bookings" element={<UserMyBookings />} />
@@ -162,16 +220,17 @@ function App() {
         <Route path="settings" element={<UserSettings />} />
       </Route>
 
-      {/* Other User Pages */}
+      {/* =========================
+          OTHER USER PAGES
+      ========================== */}
       <Route
         path="/artisan-profile/:id"
         element={<ArtisanProfile />}
       />
-      <Route path="/otpVerification" element={<OTPVerification />} />
-      <Route path="/selectYourRole" element={<SelectYourRole />} />
-      <Route path="/selectLogin" element={<SelectLogin />} />
 
-      {/* Artisan Onboarding */}
+      {/* =========================
+          ARTISAN ONBOARDING
+      ========================== */}
       <Route
         path="/artisan-onboarding"
         element={<ArtisanOnboarding />}
@@ -180,27 +239,38 @@ function App() {
           index
           element={<Navigate to="personal-info" replace />}
         />
+
         <Route
           path="personal-info"
           element={<PersonalInformation />}
         />
+
         <Route
           path="professional-details"
           element={<ProfessionalDetails />}
         />
+
         <Route
           path="locationSearch"
           element={<LocationSearch />}
         />
+
         <Route path="location" element={<Location />} />
+
         <Route
           path="document-verification"
           element={<DocumentVerification />}
         />
-        <Route path="bank-details" element={<BankDetails />} />
+
+        <Route
+          path="bank-details"
+          element={<BankDetails />}
+        />
       </Route>
 
-      {/* User Onboarding */}
+      {/* =========================
+          USER ONBOARDING
+      ========================== */}
       <Route
         path="/user-onboarding"
         element={<UserOnboarding />}
@@ -209,17 +279,21 @@ function App() {
           index
           element={<Navigate to="user-personal-info" replace />}
         />
+
         <Route
           path="user-personal-info"
           element={<UserPersonalInformation />}
         />
       </Route>
 
-      {/* Extra Pages */}
+      {/* =========================
+          HERO / ARTISAN PAGES
+      ========================== */}
       <Route
         path="/artisans"
         element={<AvailableArtisansHero />}
       />
+
       <Route
         path="/selectToProceed"
         element={<SelectToProceed />}

@@ -1,4 +1,4 @@
-import HelpArticleLayout from "./HelpArticleLayout";
+import HelpLayout from "./HelpLayout";
 import { createAccountArticle } from "../../data/helpArticlesData";
 import Nav from "../../Components/Nav/Nav"
 
@@ -7,9 +7,8 @@ const CreateAccount = () => {
     <div>
       <Nav />
       <div className="pt-[72px]">
-        <HelpArticleLayout article={createAccountArticle} />
+        <HelpLayout article={createAccountArticle} />
       </div>
-      
 
     </div>
     

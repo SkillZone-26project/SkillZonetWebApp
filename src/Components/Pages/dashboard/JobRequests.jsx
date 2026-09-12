@@ -9,7 +9,8 @@ import {
 } from "react-icons/lu";
 import axios from "axios";
 
-import CompleteInformation from "./CompleteInformation";
+import CompleteInformation from "./CompleteInformation"; 
+import { useNavigate } from "react-router-dom";
 
 const JobRequests = () => {
   const [newRequests, setNewRequests] = useState([]);
@@ -20,7 +21,8 @@ const JobRequests = () => {
   const [selectedJob, setSelectedJob] = useState(null);
 
   const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0); 
+  const navigate = useNavigate();
 
   const limit = 10;
 
@@ -774,17 +776,16 @@ console.log(
 
                   {/* ACCEPT */}
 
-                  <button
-                    className="bg-black text-white w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]"
-                  >
+                 <button
+  onClick={() => navigate("/artisan-contract")}
+  className="bg-black text-white w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]"
+>
+  <LuCircleCheckBig />
 
-                    <LuCircleCheckBig />
-
-                    <span>
-                      Accept Job
-                    </span>
-
-                  </button>
+  <span>
+    Accept Job
+  </span>
+</button>
 
                   {/* DECLINE */}
 

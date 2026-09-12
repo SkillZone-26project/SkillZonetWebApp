@@ -8,6 +8,7 @@ import {
 import { FaArrowTrendUp } from "react-icons/fa6";
 import { FiAward } from "react-icons/fi";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
   const totalJobs = 30;
@@ -21,7 +22,8 @@ const Dashboard = () => {
   const satisfactionProgress = (satisfactionScore / satisfactionTotal) * 100;
 
   const [activeTab, setActiveTab] = useState("requests");
-  const [requestStatus, setRequestStatus] = useState(null);
+  const [requestStatus, setRequestStatus] = useState(null); 
+  const navigate = useNavigate();
 
   return (
     <main className="space-y-6 px-2 sm:px-4 min-h-screen pt-[85px]">
@@ -86,20 +88,29 @@ const Dashboard = () => {
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Wallet */}
-        <div className="border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <p className="text-[16px] sm:text-[18px] font-semibold text-textColor">
-              Wallet
-            </p>
-            <p className="text-[26px] sm:text-[30px] font-bold text-textColor">
-              ₦1,250
-            </p>
-            <p className="text-[14px] text-textGray">Available to withdraw</p>
-          </div>
-          <button className="w-full sm:w-[95px] h-[36px] bg-black text-white rounded-[8px] text-[14px] font-medium">
-            Withdraw
-          </button>
-        </div>
+<div className="border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div>
+    <p className="text-[16px] sm:text-[18px] font-semibold text-textColor">
+      Wallet
+    </p>
+
+    <p className="text-[26px] sm:text-[30px] font-bold text-textColor">
+      ₦1,250
+    </p>
+
+    <p className="text-[14px] text-textGray">
+      Available to withdraw
+    </p>
+  </div>
+
+  <button
+    onClick={() => navigate("/payout")}
+    className="w-full sm:w-[95px] h-[36px] bg-black text-white rounded-[8px] text-[14px] font-medium"
+  >
+    Withdraw
+  </button>
+</div>
+
 
         {/* Subscription */}
         <div className="border rounded-[14px] p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

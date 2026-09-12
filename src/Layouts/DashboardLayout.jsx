@@ -4,30 +4,34 @@ import Sidebar from "../Components/Sidebar";
 import Topbar from "../Components/Topbar";
 
 const DashboardLayout = () => {
-
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen bg-white mb-[55px]">
-      
-      {/* Sidebar */}
+    <div className="flex min-h-screen bg-white">
+
+      {/* ==========================================
+          SIDEBAR
+      ========================================== */}
       <Sidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
       />
 
-      {/* Right Section */}
-      <div className="flex flex-col flex-1">
+      {/* ==========================================
+          RIGHT SECTION
+      ========================================== */}
+      <div className="flex flex-col flex-1 min-w-0">
 
-        {/* Topbar */}
+        {/* TOPBAR */}
         <Topbar setSidebarOpen={setSidebarOpen} />
 
-        {/* Main Content */}
-        <main className="p-6 bg-white min-h-screen">
+        {/* MAIN CONTENT */}
+        <main className="p-6 bg-white flex-1 min-w-0">
           <Outlet />
         </main>
 
       </div>
+
     </div>
   );
 };
