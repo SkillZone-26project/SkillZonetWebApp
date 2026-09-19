@@ -8,7 +8,7 @@ import MaterialsSection from "./MaterialsSection";
 import { FaCircleCheck } from "react-icons/fa6";
 import { Clock3, CreditCard, UploadCloud, X, Lock } from "lucide-react";
 
-const ScopeCompilationForm = () => {
+const ScopeCompilationForm = (onArtisanDispute) => {
   const [scopeForm, setScopeForm] = useState({
     commencementDate: "",
     completionDate: "",
@@ -42,6 +42,7 @@ const [isTermsAgreed, setIsTermsAgreed] = useState(false);
   const handleContractResubmit = () => alert("Resubmitting updated parameters to client...");
   const handleSignoffRequest = () => alert("Requesting project milestone signoff...");
   const handleDisputeOpen = () => alert("Opening a neutral platform contract dispute...");
+  
 
   const processFiles = (files) => {
     const validFiles = files.filter((file) => {
@@ -256,10 +257,10 @@ const [isTermsAgreed, setIsTermsAgreed] = useState(false);
             </p>
           </div>
         </div>
-        {/* Payment Options */}
+        {/* Payment Plan */}
         <div className="rounded-lg border border-gray-300 p-4">
           <h3 className="text-base font-semibold text-[#111827]">
-            Payment Options
+            Payment plan
           </h3>
 
           <p className="text-sm text-[#797786] mt-2">
@@ -273,11 +274,7 @@ const [isTermsAgreed, setIsTermsAgreed] = useState(false);
               type="button"
               className="flex-1 h-11 px-2 py-3 rounded-lg border border-black flex items-center justify-center gap-2 text-sm font-semibold text-black hover:bg-gray-50 transition"
             >
-              <CreditCard
-                size={18}
-                strokeWidth={2}
-                className="text-black"
-              />
+              <CreditCard size={18} strokeWidth={2} className="text-black" />
 
               <span>Full Payment</span>
             </button>
@@ -401,57 +398,65 @@ const [isTermsAgreed, setIsTermsAgreed] = useState(false);
 
         {/* Unified Bottom Layout Form Action Footer Section */}
         <div className="pt-5 mt-4 border-t border-gray-100/80 space-y-4">
-          {/* 1. Dynamic Interactive Checkbox Layout Row */}
-          <label className="flex items-start gap-3 cursor-pointer group select-none">
-            <input
-              type="checkbox"
-              checked={isTermsAgreed}
-              onChange={(e) => {
-                // Prevent checking the box if zero photos are present
-                if (uploadedFiles.length === 0) {
-                  alert(
-                    "Please upload at least one site verification photo before confirming.",
-                  );
-                  return;
-                }
-                setIsTermsAgreed(e.target.checked);
-              }}
-              className={`mt-0.5 w-4 h-4 rounded border-gray-300 text-black focus:ring-black accent-black cursor-pointer ${
-                uploadedFiles.length === 0
-                  ? "opacity-50 cursor-not-allowed"
-                  : ""
-              }`}
-            />
-            <span className="text-xs text-black font-medium leading-tight group-hover:text-gray-900 transition-colors">
-              By checking the box you have subscribe to skillzonet ‘s Terms and
-              privacy policy and you agree to the terms of this contract.
-            </span>
-          </label>
+          {/* Hide the confirmation checkbox entirely if the status is already DISPUTED */}
+          {status !== "DISPUTED" && (
+            <>
+              <label className="flex items-start gap-3 cursor-pointer group select-none">
+                <input
+                  type="checkbox"
+                  checked={isTermsAgreed}
+                  onChange={(e) => {
+                    if (uploadedFiles.length === 0) {
+                      alert(
+                        "Please upload at least one site verification photo before confirming.",
+                      );
+                      return;
+                    }
+                    setIsTermsAgreed(e.target.checked);
+                  }}
+                  className={`mt-0.5 w-4 h-4 rounded border-gray-300 text-black focus:ring-black accent-black cursor-pointer ${
+                    uploadedFiles.length === 0
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                />
+                <span className="text-xs text-gray-500 font-medium leading-tight group-hover:text-gray-900 transition-colors">
+                  I confirm that the project scope details, verification
+                  requirements, and selected payment terms are correct and
+                  binding.
+                </span>
+              </label>
 
-          {/* Inline warning context tracker if files are missing */}
-          {uploadedFiles.length === 0 && (
-            <p className="text-[11px] text-amber-600 bg-amber-50 border border-amber-100/70 rounded-md p-2 font-medium">
-              ⚠️ Upload at least one verification photo above to unlock contract
-              actions.
-            </p>
+              {uploadedFiles.length === 0 && (
+                <p className="text-[11px] text-amber-600 bg-amber-50 border border-amber-100/70 rounded-md p-2 font-medium">
+                  ⚠️ Upload at least one verification photo above to unlock
+                  contract actions.
+                </p>
+              )}
+            </>
           )}
 
-          {/* 2. Action Router Buttons Container */}
+          {/* 
+            🌟 FIXED LOGIC LAYER:
+            If status is "DISPUTED", remove the pointer-events-none lock entirely 
+            so the dispute dashboard button becomes instantly active and clickable!
+          */}
           <div
             className={`transition-all duration-300 ${
-              !isTermsAgreed || uploadedFiles.length === 0
+              status !== "DISPUTED" &&
+              (!isTermsAgreed || uploadedFiles.length === 0)
                 ? "opacity-40 pointer-events-none filter grayscale-[30%]"
                 : "opacity-100"
             }`}
           >
             <ContractActions
               status={status}
-              isPartPaymentSelected={scopeForm.materialsRequired === "yes"}
+              isPartPaymentSelected={isPartPaymentSelected}
               onSubmit={handleContractSubmit}
               onCancel={() => setShowArtisanRejectModal(true)}
               onResubmit={handleContractResubmit}
               onRequestSignoff={handleSignoffRequest}
-              onOpenDispute={handleDisputeOpen}
+              onOpenDispute={onArtisanDispute || handleDisputeOpen}
               onPartPayment={() => setShowInstallmentModal(true)}
             />
           </div>

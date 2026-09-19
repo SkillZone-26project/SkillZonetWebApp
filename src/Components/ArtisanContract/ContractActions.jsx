@@ -127,6 +127,31 @@ const ContractActions = ({
         </div>
       );
 
+    /* ========================================================================= */
+    /* FIXED: MATCHING DISPUTED LAYOUT BLOCK FOR ARTISAN VIEW SIDE CONTROLLERS   */
+    /* ========================================================================= */
+    case "DISPUTED":
+      return (
+        <div className="flex flex-col items-center gap-3 w-full">
+          {/* Frozen Alert Banner */}
+          <div className="w-full rounded-xl bg-red-50 border border-red-100 py-4 px-4 text-center text-xs font-bold text-red-600 tracking-wide">
+            Contract is currently under dispute. Actions are temporarily frozen.
+          </div>
+
+          {/* FIXED: sm:w-auto sm:px-8 handles keeping button tight and beautifully centered */}
+          <button
+            type="button"
+            onClick={onOpenDispute}
+            className={`${baseBtnStyle} border border-red-200 text-red-600 bg-red-50/10 hover:bg-red-50 sm:w-auto sm:px-8`}
+          >
+            <span className="flex items-center gap-2">
+              <AlertTriangle size={15} className="shrink-0" />
+              <span>Open Dispute</span>
+            </span>
+          </button>
+        </div>
+      );
+
     case "ON_HOLD":
       return (
         <div className="w-full rounded-xl bg-gray-50 border border-gray-200 py-4 text-center text-xs font-semibold text-gray-500 tracking-wide">

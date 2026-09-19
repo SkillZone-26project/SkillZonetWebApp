@@ -3,7 +3,7 @@
 export const contractInfo = {
   trackingId: "#JOB-2026-6691",
   projectId: "SZ-2026-0286991",
-  status: "DRAFT", // Active state toggle anchor
+  status: "AGREED_ESCROW_LOCKED", // Active state toggle anchor
 
   artisan: {
     name: "David Nwosu",
@@ -96,7 +96,7 @@ export const contractStatusConfig = {
   DRAFT: {
     label: "Draft",
     description: "Contract draft is ready for submission.",
-    userActions: [],
+    userActions: ["cancel_contract"],
     artisanActions: ["submit_contract", "cancel_contract"],
   },
 
@@ -110,17 +110,31 @@ export const contractStatusConfig = {
   REVISION_REQUESTED: {
     label: "Revision Requested",
     description: "Client has requested changes to the contract.",
-    userActions: [],
+    userActions: ["cancel_contract"],
     artisanActions: ["resubmit_contract", "cancel_contract"],
   },
 
   AGREED_ESCROW_LOCKED: {
     label: "Agreed • Escrow Locked",
     description: "Contract is agreed and funds are secured in escrow.",
-    userActions: ["complete_contract", "open_dispute"],
-    artisanActions: ["request_signoff", "open_dispute"],
+    userActions: [
+      "complete_contract",
+      "open_dispute",
+      "request_installment_payment",
+    ],
+    artisanActions: [
+      "request_signoff",
+      "open_dispute",
+      "request_installment_payment",
+    ],
   },
-
+  DISPUTED: {
+    label: "Disputed",
+    description:
+      "Contract actions frozen. No contract updates or cancellations allowed.",
+    userActions: ["open_dispute"],
+    artisanActions: ["open_dispute"],
+  },
   ON_HOLD: {
     label: "On Hold",
     description: "Contract is temporarily paused.",
