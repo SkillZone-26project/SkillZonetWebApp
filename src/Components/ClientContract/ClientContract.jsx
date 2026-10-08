@@ -1,7 +1,7 @@
 import Nav from "../../Components/Nav/Nav";
 import { useState } from "react";
 import ClientApprovalForm from "./ClientApprovalForm";
-import ContractPreview from "../ArtisanContract/ContractPreview";
+import ContractPreview from "../../Components/ArtisanContract/ContractPreview";
 import { contractInfo } from "../../data/contractData";
 
 

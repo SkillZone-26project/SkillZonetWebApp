@@ -110,7 +110,7 @@ const [isTermsAgreed, setIsTermsAgreed] = useState(false);
             <p className="text-xs sm:text-sm text-gray-500 mt-1">
               Complete the details below and submit for client approval.
             </p>
-          </div>
+          </div> 
         </div>
         <div className="flex items-center gap-3 mt-5 sm:mt-6 flex-wrap">
           <p className="text-[13px] font-semibold text-[#111827]">
