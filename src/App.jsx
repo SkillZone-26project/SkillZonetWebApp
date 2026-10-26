@@ -111,7 +111,10 @@ function App() {
       {/* =========================
           CONTRACTS
       ========================== */}
-      <Route path="/artisan-contract/:jobId" element={<ArtisanContract />} />
+      <Route
+  path="/artisan-contract/:contractId"
+  element={<ArtisanContract />}
+/>
       <Route path="/client-contract" element={<ClientContract />} />
       <Route path="/contract-dispute" element={<ContractDispute />} />
 
