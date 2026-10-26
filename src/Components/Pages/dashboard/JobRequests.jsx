@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   LuCalendar,
@@ -8,26 +9,36 @@ import {
   LuEye,
 } from "react-icons/lu";
 import axios from "axios";
-
+import { useNavigate } from "react-router-dom";
 import CompleteInformation from "./CompleteInformation";
+
+const API_BASE_URL =
+  "https://skillzonet-backend-auth-v1.onrender.com";
+
+const DEFAULT_IMAGE =
+  "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png";
 
 const JobRequests = () => {
   const [newRequests, setNewRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-
   const [requestTab, setRequestTab] = useState("new");
   const [selectedJob, setSelectedJob] = useState(null);
-
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
 
+  // Accept Job Modal
+  const [acceptedJob, setAcceptedJob] = useState(null);
+  const [acceptingJob, setAcceptingJob] = useState(false);
+  const [acceptError, setAcceptError] = useState("");
+
+  const navigate = useNavigate();
   const limit = 10;
 
   /* =====================================================
      FALLBACK DATA
-     This displays ONLY when the API succeeds but there
-     are no real job requests.
+     Displayed only when the API succeeds but returns no
+     pending requests.
   ====================================================== */
 
   const defaultRequests = [
@@ -35,8 +46,7 @@ const JobRequests = () => {
       id: "default-1",
       name: "David Brown",
       role: "Client",
-      image:
-        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png",
+      image: DEFAULT_IMAGE,
       title: "Bathroom Renovation",
       description:
         "Need to install a new water heater in the bathroom. The old one stopped working.",
@@ -46,7 +56,6 @@ const JobRequests = () => {
       price: 45000,
       status: "ASSIGNED",
     },
-
     {
       id: "default-2",
       name: "Michael Okonkwo",
@@ -62,7 +71,6 @@ const JobRequests = () => {
       price: 35000,
       status: "ASSIGNED",
     },
-
     {
       id: "default-3",
       name: "Fatima Bello",
@@ -82,7 +90,6 @@ const JobRequests = () => {
 
   /* =====================================================
      RESPONDED FALLBACK
-     This is still static for now.
   ====================================================== */
 
   const respondedRequests = [
@@ -90,8 +97,7 @@ const JobRequests = () => {
       id: "responded-1",
       name: "David Brown",
       role: "Client",
-      image:
-        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png",
+      image: DEFAULT_IMAGE,
       title: "Bathroom Renovation",
       description:
         "Need to install a new water heater in the bathroom.",
@@ -101,7 +107,6 @@ const JobRequests = () => {
       price: 45000,
       status: "accepted",
     },
-
     {
       id: "responded-2",
       name: "Michael Okonkwo",
@@ -125,23 +130,15 @@ const JobRequests = () => {
 
   const getArtisanId = () => {
     try {
-      // First check artisanId saved directly
-      const storedArtisanId =
-        localStorage.getItem("artisanId");
+      const storedArtisanId = localStorage.getItem("artisanId");
 
       if (storedArtisanId) {
-        console.log(
-          "Artisan ID from localStorage:",
-          storedArtisanId
-        );
-
+        console.log("Artisan ID from localStorage:", storedArtisanId);
         return storedArtisanId;
       }
 
-      // Fallback to user object
-      const user = JSON.parse(
-        localStorage.getItem("user")
-      );
+      const storedUser = localStorage.getItem("user");
+      const user = storedUser ? JSON.parse(storedUser) : null;
 
       console.log("Logged in user:", user);
 
@@ -153,11 +150,7 @@ const JobRequests = () => {
         null
       );
     } catch (error) {
-      console.error(
-        "Could not read logged-in user:",
-        error
-      );
-
+      console.error("Could not read logged-in user:", error);
       return null;
     }
   };
@@ -173,82 +166,52 @@ const JobRequests = () => {
 
     return {
       id: job.id,
+      jobId: job.id,
 
-      name:
-        job.user?.fullName ||
-        "Client",
-
-      role: "Client",
-
-      image:
-        job.user?.profilePic ||
-        "https://res.cloudinary.com/dqtyrjpeh/image/upload/v1771352177/Primitive.img_rd3rwi.png",
-
-      title:
-        job.title ||
-        "Job Request",
-
-      description:
-        job.description ||
+      // Keep contract information when the backend provides it.
+      contractId:
+        job.contractId ||
+        job.contract?.id ||
+        job.contractDetails?.id ||
         "",
 
-      date: scheduledDate
-        ? scheduledDate.toDateString()
-        : job.createdAt
-        ? new Date(job.createdAt).toDateString()
-        : "Date not available",
+      name: job.user?.fullName || "Client",
+      role: "Client",
+      image: job.user?.profilePic || DEFAULT_IMAGE,
+      title: job.title || "Job Request",
+      description: job.description || "",
+
+      date:
+        scheduledDate && !Number.isNaN(scheduledDate.getTime())
+          ? scheduledDate.toDateString()
+          : job.createdAt
+          ? new Date(job.createdAt).toDateString()
+          : "Date not available",
 
       location:
         job.city && job.state
           ? `${job.city}, ${job.state}`
-          : job.address ||
-            "Location not available",
+          : job.address || "Location not available",
 
-      requestedTime: scheduledDate
-        ? scheduledDate.toLocaleTimeString(
-            "en-US",
-            {
+      requestedTime:
+        scheduledDate && !Number.isNaN(scheduledDate.getTime())
+          ? scheduledDate.toLocaleTimeString("en-US", {
               hour: "2-digit",
               minute: "2-digit",
-            }
-          )
-        : "Not scheduled",
+            })
+          : "Not scheduled",
 
-      price:
-        job.budgetAmount || 0,
-
-      status:
-        job.status || "ASSIGNED",
-
-      email:
-        job.user?.email || "",
-
-      phone:
-        job.user?.phone || "",
-
-      address:
-        job.address || "",
-
-      latitude:
-        job.latitude,
-
-      longitude:
-        job.longitude,
-
-      scheduledAt:
-        job.scheduledAt,
-
-      subSkill:
-        job.subSkill?.name || "",
-
-      subSkillId:
-        job.subSkillId ||
-        job.subSkill?.id ||
-        "",
-
-      skill:
-        job.subSkill?.skill?.name ||
-        "",
+      price: job.budgetAmount || 0,
+      status: job.status || "ASSIGNED",
+      email: job.user?.email || "",
+      phone: job.user?.phone || "",
+      address: job.address || "",
+      latitude: job.latitude,
+      longitude: job.longitude,
+      scheduledAt: job.scheduledAt,
+      subSkill: job.subSkill?.name || "",
+      subSkillId: job.subSkillId || job.subSkill?.id || "",
+      skill: job.subSkill?.skill?.name || "",
     };
   };
 
@@ -256,203 +219,223 @@ const JobRequests = () => {
      FETCH JOB REQUESTS
   ====================================================== */
 
-  const fetchRequests = async (
-    pageNumber = 1
-  ) => {
+  const fetchRequests = async (pageNumber = 1) => {
     try {
       setLoading(true);
-
-      // Clear previous API error before a new request
       setError("");
 
-      const token =
-        localStorage.getItem("token");
+      const token = localStorage.getItem("token");
+      const artisanId = getArtisanId();
 
-      const artisanId =
-        getArtisanId();
-
-      console.log(
-        "ARTISAN ID:",
-        artisanId
-      );
-
-      console.log(
-        "TOKEN EXISTS:",
-        !!token
-      );
-
-      /* ---------------------------------------------
-         NO ARTISAN ID
-      --------------------------------------------- */
+      console.log("ARTISAN ID:", artisanId);
+      console.log("TOKEN EXISTS:", Boolean(token));
 
       if (!artisanId) {
-        console.log(
-          "No artisan ID found."
-        );
-
-        setError(
-          "Artisan information could not be found."
-        );
-
+        setError("Artisan information could not be found.");
         setNewRequests([]);
         setTotalCount(0);
-
         return;
       }
-
-      /* ---------------------------------------------
-         NO TOKEN
-      --------------------------------------------- */
 
       if (!token) {
-        console.log(
-          "No authentication token found."
-        );
-
-        setError(
-          "Authentication token not found. Please login again."
-        );
-
+        setError("Authentication token not found. Please login again.");
         setNewRequests([]);
         setTotalCount(0);
-
         return;
       }
 
-     /* ---------------------------------------------
-   API REQUEST
---------------------------------------------- */
-
-const response = await axios.get(
-  `https://skillzonet-backend-auth-v1.onrender.com/api/artisans/jobs/requests/${artisanId}`,
-  {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    params: {
-      page: pageNumber,
-      limit: limit,
-    },
-  }
-);
-
-console.log(
-  "JOB REQUEST API RESPONSE:",
-  response.data
-);
-
-      /* ---------------------------------------------
-         BACKEND DATA
-      --------------------------------------------- */
-
-      const backendData =
-        response.data?.data;
-
-      const pendingRequests =
-        backendData?.pendingRequests ||
-        [];
-
-      const backendTotalCount =
-        backendData?.totalCount ||
-        0;
-
-      setTotalCount(
-        backendTotalCount
+      const response = await axios.get(
+        `${API_BASE_URL}/api/artisans/jobs/requests/${artisanId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          params: {
+            page: pageNumber,
+            limit,
+          },
+        }
       );
 
-      /* ---------------------------------------------
-         REAL REQUESTS EXIST
-      --------------------------------------------- */
+      console.log("JOB REQUEST API RESPONSE:", response.data);
 
-      if (
-        pendingRequests.length > 0
-      ) {
-        const formattedRequests =
-          pendingRequests.map(
-            formatJob
-          );
+      const backendData = response.data?.data;
+      const pendingRequests = Array.isArray(backendData?.pendingRequests)
+        ? backendData.pendingRequests
+        : [];
 
-        console.log(
-          "FORMATTED JOB REQUESTS:",
-          formattedRequests
-        );
+      const backendTotalCount = backendData?.totalCount || 0;
+
+      setTotalCount(backendTotalCount);
+
+      if (pendingRequests.length > 0) {
+        const formattedRequests = pendingRequests.map(formatJob);
+
+        console.log("FORMATTED JOB REQUESTS:", formattedRequests);
 
         if (pageNumber === 1) {
-          // Replace default data with real backend data
-          setNewRequests(
-            formattedRequests
-          );
+          setNewRequests(formattedRequests);
         } else {
-          // Add next page to existing requests
-          setNewRequests(
-            (prev) => [
-              ...prev,
-              ...formattedRequests,
-            ]
-          );
+          setNewRequests((previous) => [
+            ...previous,
+            ...formattedRequests,
+          ]);
         }
 
         return;
       }
 
-      /* ---------------------------------------------
-         NO REAL REQUESTS
-         
-         API succeeded but there are no pending jobs.
-         In this case, show your default/sample data.
-      --------------------------------------------- */
-
+      // Show sample data only when the API succeeds with no pending jobs.
       if (pageNumber === 1) {
-        setNewRequests(
-          defaultRequests
-        );
+        setNewRequests(defaultRequests);
       }
-
     } catch (error) {
       console.error(
         "FETCH JOB REQUEST ERROR:",
-        error.response?.data ||
-          error.message
+        error.response?.data || error.message
       );
-
-      /* ---------------------------------------------
-         BACKEND/API ERROR
-         
-         IMPORTANT:
-         Do NOT show defaultRequests here.
-      --------------------------------------------- */
 
       const backendMessage =
         error.response?.data?.message ||
         error.response?.data?.error ||
         "Unable to fetch job requests. Please try again.";
 
-      setError(
-        backendMessage
-      );
+      setError(backendMessage);
 
-      /*
-        If this is the first page, clear the list
-        so default data does not appear when the
-        backend has failed.
-      */
-
+      // Do not show sample data when the API fails.
       if (pageNumber === 1) {
         setNewRequests([]);
         setTotalCount(0);
       }
-
     } finally {
       setLoading(false);
     }
   };
 
   /* =====================================================
-     VIEW JOB
+     VIEW JOB DETAILS
   ====================================================== */
 
   const handleView = (job) => {
     setSelectedJob(job);
+  };
+
+  /* =====================================================
+     ACCEPT JOB
+  ====================================================== */
+
+  const handleAcceptJob = async (job) => {
+    const jobId = job?.jobId || job?.id;
+    const token = localStorage.getItem("token");
+
+    setAcceptError("");
+
+    if (
+      !jobId ||
+      String(jobId).startsWith("default-") ||
+      String(jobId).startsWith("responded-")
+    ) {
+      setAcceptError("A valid job ID is required to accept this job.");
+      return;
+    }
+
+    if (!token) {
+      setAcceptError(
+        "Authentication token not found. Please log in again."
+      );
+      return;
+    }
+
+    try {
+      setAcceptingJob(true);
+
+      const response = await axios.post(
+        `${API_BASE_URL}/api/job/acceptances`,
+        { jobId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("JOB ACCEPTANCE API RESPONSE:", response.data);
+
+      const acceptanceData =
+        response.data?.data?.data || response.data?.data;
+
+      const contractId = acceptanceData?.contractId;
+      const acceptedJobId = acceptanceData?.jobId || jobId;
+
+      if (response.data?.success !== true || !contractId) {
+        throw new Error(
+          response.data?.message ||
+            "The acceptance API did not return a contract ID. Please try again or contact the backend team."
+        );
+      }
+
+      const accepted = {
+        ...job,
+        id: acceptedJobId,
+        jobId: acceptedJobId,
+        contractId,
+        status: acceptanceData?.status || "accepted",
+      };
+
+      setAcceptedJob(accepted);
+
+      setNewRequests((previous) =>
+        previous.map((item) =>
+          String(item.jobId || item.id) === String(jobId)
+            ? {
+                ...item,
+                jobId: acceptedJobId,
+                contractId,
+                status: "accepted",
+              }
+            : item
+        )
+      );
+    } catch (error) {
+      console.error(
+        "ACCEPT JOB ERROR:",
+        error.response?.data || error.message
+      );
+
+      setAcceptError(
+        error.response?.data?.message ||
+          error.message ||
+          "Unable to accept this job. Please try again."
+      );
+    } finally {
+      setAcceptingJob(false);
+    }
+  };
+
+  /* =====================================================
+     VIEW CONTRACT
+  ====================================================== */
+
+  const handleViewContract = (job) => {
+    const contractId =
+      job?.contractId ||
+      job?.contract?.id ||
+      job?.contractDetails?.id;
+
+    if (!contractId) {
+      setAcceptError(
+        "Contract ID is unavailable for this job. Please accept the job first."
+      );
+      return;
+    }
+
+    setAcceptError("");
+    setAcceptedJob(null);
+
+    navigate(
+      `/artisan-contract/${encodeURIComponent(contractId)}`
+    );
   };
 
   /* =====================================================
@@ -461,9 +444,7 @@ console.log(
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
-
     setPage(nextPage);
-
     fetchRequests(nextPage);
   };
 
@@ -473,6 +454,8 @@ console.log(
 
   useEffect(() => {
     fetchRequests(1);
+    // Fetch once when the page mounts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   /* =====================================================
@@ -480,9 +463,7 @@ console.log(
   ====================================================== */
 
   const currentData =
-    requestTab === "new"
-      ? newRequests
-      : respondedRequests;
+    requestTab === "new" ? newRequests : respondedRequests;
 
   /* =====================================================
      UI
@@ -490,54 +471,36 @@ console.log(
 
   return (
     <main className="pt-[85px]">
-
-      {/* =================================================
-          HEADER
-      ================================================= */}
+      {/* HEADER */}
 
       <div>
-        <h2 className="text-2xl font-semibold">
-          Job Requests
-        </h2>
+        <h2 className="text-2xl font-semibold">Job Requests</h2>
 
         <p className="text-textGray">
           Review and respond to incoming job requests
         </p>
       </div>
 
-      {/* =================================================
-          TABS
-      ================================================= */}
+      {/* TABS */}
 
-      <div className="flex gap-[10px] w-[353px] h-[36px] bg-[#ECECF0] rounded-[14px] text-[14px] font-medium p-[4px] mt-5">
-
-        {/* NEW REQUESTS */}
-
+      <div className="flex gap-[10px] w-full max-w-[353px] h-[36px] bg-[#ECECF0] rounded-[14px] text-[14px] font-medium p-[4px] mt-5">
         <button
-          onClick={() =>
-            setRequestTab("new")
-          }
+          onClick={() => setRequestTab("new")}
           className={`flex items-center justify-center gap-[20px] flex-1 rounded-[14px] transition-all ${
             requestTab === "new"
               ? "bg-white text-textColor"
               : "text-textColor"
           }`}
         >
-          <span>
-            New Requests
-          </span>
+          <span>New Requests</span>
 
           <span className="w-[25px] h-[22px] bg-black text-white rounded-[8px] flex items-center justify-center text-[12px]">
             {newRequests.length}
           </span>
         </button>
 
-        {/* RESPONDED */}
-
         <button
-          onClick={() =>
-            setRequestTab("responded")
-          }
+          onClick={() => setRequestTab("responded")}
           className={`flex-1 rounded-[14px] transition-all ${
             requestTab === "responded"
               ? "bg-white text-textColor"
@@ -548,33 +511,24 @@ console.log(
         </button>
       </div>
 
-      {/* =================================================
-          CARDS
-      ================================================= */}
+      {/* ACCEPTANCE ERROR */}
+
+      {acceptError && (
+        <p className="mt-3 text-sm text-red-600" role="alert">
+          {acceptError}
+        </p>
+      )}
+
+      {/* JOB CARDS */}
 
       <div className="mt-4">
-
-        {/* =================================================
-            LOADING
-        ================================================= */}
-
         {loading ? (
-
           <div className="border rounded-xl p-10 text-center text-gray-400">
             Loading job requests...
           </div>
-
         ) : error ? (
-
-          /* =================================================
-             ERROR
-          ================================================= */
-
           <div className="border border-red-200 bg-red-50 rounded-xl p-6 text-center text-red-600">
-
-            <p className="font-medium">
-              {error}
-            </p>
+            <p className="font-medium">{error}</p>
 
             <button
               onClick={() => {
@@ -585,36 +539,24 @@ console.log(
             >
               Try Again
             </button>
-
           </div>
-
         ) : currentData.length > 0 ? (
-
-          /* =================================================
-             REQUEST CARDS
-          ================================================= */
-
           currentData.map((job) => (
-
             <div
               key={job.id}
               className="border p-4 rounded-lg mt-[16px]"
             >
+              {/* CARD HEADER */}
 
-              {/* ================= HEADER ================= */}
-
-              <div className="flex justify-between">
-
+              <div className="flex justify-between gap-3">
                 <div className="profile flex gap-[16px]">
-
                   <img
-                    src={job.image}
+                    src={job.image || DEFAULT_IMAGE}
                     alt={job.name}
                     className="w-[48px] h-[48px] rounded-[24px] object-cover"
                   />
 
                   <div>
-
                     <p className="text-[18px] font-semibold text-textColor">
                       {job.name}
                     </p>
@@ -622,296 +564,225 @@ console.log(
                     <p className="text-[14px] text-textGray">
                       {job.role}
                     </p>
-
                   </div>
-
                 </div>
 
                 {/* STATUS */}
 
                 {requestTab === "new" ? (
-
-                  <button className="w-[94px] h-[22px] bg-[#F0B100] text-white text-[12px] rounded-[8px]">
+                  <span className="h-[22px] px-3 bg-[#F0B100] text-white text-[12px] rounded-[8px] flex items-center justify-center whitespace-nowrap">
                     New Request
-                  </button>
-
+                  </span>
                 ) : (
-
-                  <button
-                    className={`w-[94px] h-[22px] text-white text-[12px] rounded-[8px] ${
+                  <span
+                    className={`h-[22px] px-3 text-white text-[12px] rounded-[8px] flex items-center justify-center whitespace-nowrap ${
                       job.status === "accepted"
                         ? "bg-[#00C950]"
                         : "bg-[#FB2C36]"
                     }`}
                   >
-                    {job.status === "accepted"
-                      ? "Accepted"
-                      : "Declined"}
-                  </button>
-
+                    {job.status === "accepted" ? "Accepted" : "Declined"}
+                  </span>
                 )}
-
               </div>
 
-              {/* ================= TITLE ================= */}
+              {/* TITLE */}
 
-              <p className="mt-[41px]">
-                Title: {job.title}
-              </p>
+              <p className="mt-[41px]">Title: {job.title}</p>
 
-              {/* ================= DETAILS ================= */}
+              {/* JOB DETAILS */}
 
-              <div className="flex">
-
+              <div className="flex flex-col lg:flex-row gap-5">
                 {/* LEFT */}
 
-                <div className="left mt-[12px] w-[519px]">
-
-                  {/* DATE */}
-
+                <div className="left mt-[12px] w-full lg:w-[519px]">
                   <div className="flex items-center gap-[10px] text-[14px]">
-
                     <LuCalendar />
-
-                    <p>
-                      {job.date}
-                    </p>
-
+                    <p>{job.date}</p>
                   </div>
 
-                  {/* LOCATION */}
-
                   <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-
                     <LuMapPin />
-
-                    <p>
-                      {job.location}
-                    </p>
-
+                    <p>{job.location}</p>
                   </div>
-
-                  {/* TIME */}
 
                   <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-
                     <LuClock4 />
-
-                    <p>
-                      Requested{" "}
-                      {job.requestedTime}
-                    </p>
-
+                    <p>Requested {job.requestedTime}</p>
                   </div>
-
                 </div>
 
                 {/* RIGHT */}
 
-                <div className="right w-[400px]">
-
-                  <p>
-                    Description:
-                  </p>
+                <div className="right w-full lg:w-[400px]">
+                  <p>Description:</p>
 
                   <div className="flex items-center gap-[10px] text-[14px]">
-
-                    <p
-                      className="
-                        text-[14px]
-                        text-textGray
-                        leading-6
-                        max-h-[4.5rem]
-                        overflow-y-auto
-                        pr-2
-                      "
-                    >
+                    <p className="text-[14px] text-textGray leading-6 max-h-[4.5rem] overflow-y-auto pr-2">
                       {job.description}
                     </p>
-
                   </div>
-
-                  {/* PRICE */}
 
                   <div className="flex items-center gap-[10px] text-[14px] mt-[14px]">
-
                     <p className="text-[28px]">
-
-                      ₦
-                      {Number(
-                        job.price || 0
-                      ).toLocaleString()}
-
+                      ₦{Number(job.price || 0).toLocaleString()}
                     </p>
-
                   </div>
-
                 </div>
-
               </div>
 
-              {/* ================= SUB-SKILL ================= */}
+              {/* SUB-SKILL */}
 
               {job.subSkill && (
-
                 <div className="mt-3 text-sm text-gray-500">
-
                   Service:{" "}
-
                   <span className="font-medium text-gray-700">
                     {job.subSkill}
                   </span>
-
                 </div>
-
               )}
 
-              {/* ================= ACTIONS ================= */}
+              {/* ACTIONS */}
 
               {requestTab === "new" ? (
-
-                <div className="buttons mt-[25px] flex gap-[10px]">
-
-                  {/* ACCEPT */}
-
+                <div className="buttons mt-[25px] flex flex-wrap gap-[10px]">
                   <button
-                    className="bg-black text-white w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]"
+                    onClick={() => handleAcceptJob(job)}
+                    disabled={acceptingJob}
+                    className="bg-black text-white min-w-[140px] flex-1 min-h-[40px] px-4 flex items-center justify-center rounded-[8px] gap-[10px] disabled:opacity-60"
                   >
-
                     <LuCircleCheckBig />
-
                     <span>
-                      Accept Job
+                      {acceptingJob ? "Accepting Job..." : "Accept Job"}
                     </span>
-
                   </button>
 
-                  {/* DECLINE */}
-
                   <button
-                    className="border w-[480px] h-[40px] flex items-center justify-center rounded-[8px] gap-[10px]"
+                    onClick={() => handleViewContract(job)}
+                    className="bg-white text-textColor border min-w-[160px] flex-1 min-h-[40px] px-4 flex items-center justify-center rounded-[8px] gap-[10px] transition-colors hover:bg-gray-100"
                   >
-
-                    <LuCircleX />
-
-                    <span>
-                      Decline
-                    </span>
-
-                  </button>
-
-                  {/* VIEW */}
-
-                  <button
-                    onClick={() =>
-                      handleView(job)
-                    }
-                    className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border"
-                  >
-
                     <LuEye />
-
+                    <span>View Contract Page</span>
                   </button>
 
+                  {/* The decline API is not implemented in the supplied code. */}
+                  <button
+                    type="button"
+                    disabled
+                    title="Decline functionality is not connected yet"
+                    className="border min-w-[120px] flex-1 min-h-[40px] px-4 flex items-center justify-center rounded-[8px] gap-[10px] opacity-60 cursor-not-allowed"
+                  >
+                    <LuCircleX />
+                    <span>Decline</span>
+                  </button>
+
+                  <button
+                    onClick={() => handleView(job)}
+                    className="w-[50px] h-[40px] rounded-[8px] flex items-center justify-center border"
+                    aria-label="View job details"
+                    title="View job details"
+                  >
+                    <LuEye />
+                  </button>
                 </div>
-
               ) : job.status === "accepted" ? (
-
-                <div className="mt-[25px] flex items-center pl-[18px] bg-[#F0FDF4] rounded-[10px] text-[#016630] gap-[10px] h-[54px] border border-[#B9F8CF]">
-
+                <div className="mt-[25px] flex items-center px-[18px] bg-[#F0FDF4] rounded-[10px] text-[#016630] gap-[10px] min-h-[54px] border border-[#B9F8CF]">
                   <LuCircleCheckBig />
 
                   <p>
-                    You've accepted this job.
-                    The client has been notified.
+                    You've accepted this job. The client has been notified.
                   </p>
-
                 </div>
-
               ) : (
-
-                <div className="mt-[25px] flex items-center pl-[18px] bg-[#FEF2F2] rounded-[10px] text-[#9F0712] gap-[10px] h-[54px] border border-[#FFC9C9]">
-
+                <div className="mt-[25px] flex items-center px-[18px] bg-[#FEF2F2] rounded-[10px] text-[#9F0712] gap-[10px] min-h-[54px] border border-[#FFC9C9]">
                   <LuCircleX />
 
                   <p>
-                    You've declined this job.
-                    The client has been notified.
+                    You've declined this job. The client has been notified.
                   </p>
-
                 </div>
-
               )}
-
             </div>
-
           ))
-
         ) : (
-
-          /* =================================================
-             NO REQUESTS
-          ================================================= */
-
           <div className="border rounded-xl p-10 text-center text-gray-400">
             No job requests yet.
           </div>
-
         )}
-
       </div>
 
-      {/* =================================================
-          LOAD MORE
-      ================================================= */}
+      {/* LOAD MORE */}
 
       {requestTab === "new" &&
         !loading &&
         !error &&
         totalCount > newRequests.length &&
-        !newRequests.some(
-          (job) =>
-            String(job.id).startsWith(
-              "default-"
-            )
+        !newRequests.some((job) =>
+          String(job.id).startsWith("default-")
         ) && (
-
           <div className="flex justify-center mt-6">
-
             <button
               onClick={handleLoadMore}
               disabled={loading}
               className="px-6 py-3 bg-black text-white rounded-lg disabled:bg-gray-400"
             >
-
-              {loading
-                ? "Loading..."
-                : "Load More"}
-
+              {loading ? "Loading..." : "Load More"}
             </button>
-
           </div>
-
         )}
 
-      {/* =================================================
-          MODAL
-      ================================================= */}
+      {/* ACCEPT JOB MODAL */}
 
-      {selectedJob && (
+      {acceptedJob && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
+          <div className="bg-white w-full max-w-[500px] rounded-[12px] p-[30px] shadow-xl">
+            <div className="flex justify-center mb-[20px]">
+              <div className="w-[56px] h-[56px] rounded-full bg-[#F0FDF4] flex items-center justify-center text-[#016630]">
+                <LuCircleCheckBig size={28} />
+              </div>
+            </div>
 
-        <CompleteInformation
-          job={selectedJob}
-          onClose={() =>
-            setSelectedJob(null)
-          }
-        />
+            <div className="text-center">
+              <h2 className="text-[22px] font-semibold text-textColor">
+                Job Accepted!
+              </h2>
 
+              <p className="text-[15px] text-textGray mt-[10px]">
+                You can now view and activate your contract and proceed
+                with the job.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-[12px] mt-[28px]">
+              <button
+                onClick={() => setAcceptedJob(null)}
+                className="w-full min-h-[42px] border border-gray-300 rounded-[8px] text-textColor flex items-center justify-center gap-[8px] transition-colors hover:bg-gray-100"
+              >
+                Close
+              </button>
+
+              <button
+                onClick={() => handleViewContract(acceptedJob)}
+                className="w-full min-h-[42px] bg-black text-white rounded-[8px] flex items-center justify-center gap-[8px] transition-colors hover:bg-gray-800"
+              >
+                <LuEye />
+                <span>View Contract Page</span>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
 
+      {/* COMPLETE INFORMATION MODAL */}
+
+      {selectedJob && (
+        <CompleteInformation
+          job={selectedJob}
+          onClose={() => setSelectedJob(null)}
+        />
+      )}
     </main>
   );
 };
 
 export default JobRequests;
-
